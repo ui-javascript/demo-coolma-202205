@@ -12,6 +12,5 @@ module.exports = {
   // showNav: false,
   showNav: true,
 
-  // entry: './__demo/**/*.js',
-  entry: './_hooks/**/*.js',
+  entry: './_directive/**/*.js',
 }
