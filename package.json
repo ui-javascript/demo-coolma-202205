@@ -32,6 +32,8 @@
     "jszip": "^3.2.2",
     "lodash": "^4.17.15",
     "md5": "^2.2.1",
+    "micromark": "^3.0.10",
+    "micromark-extension-directive": "^2.1.1",
     "moment": "^2.24.0",
     "normalize.css": "^8.0.1",
     "path-to-regexp": "^5.0.0",

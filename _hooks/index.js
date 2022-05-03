@@ -1,81 +1,46 @@
 import Vue from 'vue'
+import * as fs from 'fs'
+import {micromark} from 'micromark'
+import {directive, directiveHtml} from 'micromark-extension-directive'
 
 import VueCompositionApi, {computed, reactive, ref } from '@vue/composition-api';
 Vue.use(VueCompositionApi);
-
-import { useDateNow } from "vue-composable";
-import { usePagination } from "vue-composable";
 
 
 const App = {
   template: `
     <div>
-        <p>page {{ currentPage }} of {{ lastPage }}</p>
-        <p>
-          <button @click="prev">prev</button>
-          <button @click="next">next</button>
-        </p>
-        <ul>
-          <li v-for="n in result" :key="n">{{ n }}</li>
-        </ul>
-      
-      <button @click="increment">
-        count is: {{ state.count }},
-        double is: {{ state.double }},
-        {{ now }}
-
- 
-      </button>
+  
+    sss
       
     </div>
     
   `,
   setup() {
-    const state = reactive({
-      count: 0,
-      double: computed(() => state.count * 2)
+    
+    const output = micromark(fs.readFileSync('./example.md'), {
+      extensions: [directive()],
+      htmlExtensions: [directiveHtml({abbr})]
     })
-
-    const { now } = useDateNow();
-
-    function increment() {
-      state.count++
+    
+    console.log(output)
+    
+    function abbr(d) {
+      if (d.type !== 'textDirective') return false
+    
+      this.tag('<abbr')
+    
+      if (d.attributes && 'title' in d.attributes) {
+        this.tag(' title="' + this.encode(d.attributes.title) + '"')
+      }
+    
+      this.tag('>')
+      this.raw(d.label || '')
+      this.tag('</abbr>')
     }
 
-
-
-    const arrayRef = ref(new Array(100).fill(1).map((_, i) => i));
-    // paginate array
-    const {
-      currentPage,
-      lastPage,
-      next,
-      prev,
-      offset,
-      pageSize
-    } = usePagination({
-      currentPage: 1,
-      pageSize: 10,
-      total: computed(() => arrayRef.value.length)
-    });
-
-    const result = computed(() => {
-      const array = arrayRef.value;
-      if (!Array.isArray(array)) return [];
-      return array.slice(offset.value, offset.value + pageSize.value);
-    });
-
-
     return {
-      state,
-      increment,
-      now,
-
-      currentPage,
-      lastPage,
-      next,
-      prev,
-      result
+   
     }
   }
 }
