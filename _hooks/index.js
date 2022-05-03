@@ -1,29 +1,31 @@
 import Vue from 'vue'
-import * as fs from 'fs'
+// import fs from 'fs-extra'
 import {micromark} from 'micromark'
 import {directive, directiveHtml} from 'micromark-extension-directive'
 
-import VueCompositionApi, {computed, reactive, ref } from '@vue/composition-api';
+import VueCompositionApi from '@vue/composition-api';
 Vue.use(VueCompositionApi);
-
 
 const App = {
   template: `
     <div>
   
-    sss
-      
+    <pre>
+    {{ before }}
+    {{ after }}
+    </pre>  
     </div>
     
   `,
   setup() {
+
+    const before = `A lovely language know as :abbr[HTML]{title="HyperText Markup Language"}.`
     
-    const output = micromark(fs.readFileSync('./example.md'), {
+    const after = micromark(before, {
       extensions: [directive()],
       htmlExtensions: [directiveHtml({abbr})]
     })
     
-    console.log(output)
     
     function abbr(d) {
       if (d.type !== 'textDirective') return false
@@ -40,7 +42,8 @@ const App = {
     }
 
     return {
-   
+      before,
+      after
     }
   }
 }
