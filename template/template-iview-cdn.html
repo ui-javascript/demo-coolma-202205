@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+
+    <link href="https://cdn.bootcss.com/normalize/7.0.0/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/tailwindcss/0.7.3/utilities.min.css" rel="stylesheet">
+    <!-- import stylesheet -->
+    <!--    iview 新版 -->
+    <!--    <link rel="stylesheet" href="//unpkg.com/view-design/dist/styles/iview.css">-->
+    <link href="https://cdn.bootcss.com/iview/3.5.1/styles/iview.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+<noscript>
+    <strong>We're sorry but multi-pages doesn't work properly without JavaScript
+        enabled. Please enable it to continue.</strong>
+</noscript>
+
+<% if (htmlWebpackPlugin.options._browserPage && NODE_ENV != 'production') { %>
+<ul>
+    <% for(var i=0; i< htmlWebpackPlugin.options._browserPage.length; i++) {%>
+    <li>
+        <a href='<%= htmlWebpackPlugin.options._browserPage[i] %>'>
+            <%= htmlWebpackPlugin.options._browserPage[i] %>
+        </a>
+    </li>
+    <% } %>
+</ul>
+
+<hr />
+<% } %>
+
+<div id="app"></div>
+<!-- built files will be auto injected -->
+
+<!-- jQuery =========== -->
+<script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+<!-- import Vue.js -->
+<script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+
+
+<!-- import iView 新版 -->
+<!--<script src="//unpkg.com/view-design/dist/iview.min.js"></script>-->
+
+<!-- iview -->
+<script src="https://cdn.bootcss.com/iview/3.5.1/iview.min.js"></script>
+<script src="https://cdn.bootcss.com/iview/3.5.1/locale/zh-CN.js"></script>
+
+<script>
+    Vue.config.productionTip = false
+</script>
+
+</body>
+</html>

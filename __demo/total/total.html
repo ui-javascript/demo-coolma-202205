@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+
+    <link href="https://cdn.bootcss.com/normalize/7.0.0/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/tailwindcss/0.7.3/utilities.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<% if (htmlWebpackPlugin.options._browserPage && NODE_ENV != 'production') { %>
+<ul>
+  <% for(var i=0; i< htmlWebpackPlugin.options._browserPage.length; i++) {%>
+  <li>
+    <a href='<%= htmlWebpackPlugin.options._browserPage[i] %>'>
+      <%= htmlWebpackPlugin.options._browserPage[i] %>
+    </a>
+  </li>
+  <% } %>
+</ul>
+
+<hr />
+<% } %>
+
+<mark>自定义模板, 优先级比较高</mark>
+
+<div id="app"></div>
+
+</body>
+</html>
