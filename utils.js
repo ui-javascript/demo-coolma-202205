@@ -63,7 +63,7 @@ function getEntry (globPath) {
         }
 
         let uuid = `${prefix}${moduleName}`
-        browserPages.push(`http://localhost:${CONFIG.port}/${uuid}.html`)
+        browserPages.push(`./${uuid}.html`)
 
         entries[uuid] = {
             // js入口

@@ -12,6 +12,8 @@ const App = {
   
     <pre>
     {{ before }}
+
+
     {{ after }}
     </pre>  
     </div>
