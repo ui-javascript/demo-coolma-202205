@@ -1,7 +1,8 @@
 import Vue from 'vue'
 // import fs from 'fs-extra'
 import {micromark} from 'micromark'
-import {directive, directiveHtml} from 'micromark-extension-directive'
+// import {directive, directiveHtml} from 'micromark-extension-directive'
+import {directive, directiveHtml} from 'coolma'
 
 import VueCompositionApi from '@vue/composition-api';
 Vue.use(VueCompositionApi);
@@ -10,18 +11,18 @@ const App = {
   template: `
     <div>
   
-    <pre>
+    
     {{ before }}
 
 
     {{ after }}
-    </pre>  
+   
     </div>
     
   `,
   setup() {
 
-    const before = `A lovely language know as :abbr[HTML]{title="HyperText Markup Language"}.`
+    const before = `A lovely language know as @abbr(HTML){title="HyperText Markup Language"}.`
     
     const after = micromark(before, {
       extensions: [directive()],
