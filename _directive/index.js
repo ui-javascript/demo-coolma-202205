@@ -11,11 +11,8 @@ const App = {
   template: `
     <div>
   
-    
-    {{ before }}
-
-
-    {{ after }}
+    <div v-html="before"></div>
+    <div v-html="after"></div>
    
     </div>
     
