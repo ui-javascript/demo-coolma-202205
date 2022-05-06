@@ -4,14 +4,15 @@ import {micromark} from 'micromark'
 // import {directive, directiveHtml} from 'micromark-extension-directive'
 import {directive, directiveHtml} from 'coolma'
 
-import VueCompositionApi from '@vue/composition-api';
+import VueCompositionApi, {ref, computed} from '@vue/composition-api';
 Vue.use(VueCompositionApi);
 
 const App = {
   template: `
     <div>
   
-    <div v-html="before"></div>
+    <textarea style="width:100%;height: 100px;" v-model="before"></textarea>
+
     <div v-html="after"></div>
    
     </div>
@@ -19,12 +20,16 @@ const App = {
   `,
   setup() {
 
-    const before = `A lovely language know as @abbr(HTML){title="HyperText Markup Language"}.`
+    const before = ref(`A lovely language know as @abbr(HTML){title="HyperText Markup Language"}.`)
     
-    const after = micromark(before, {
-      extensions: [directive()],
-      htmlExtensions: [directiveHtml({abbr})]
+    const after = computed(() => {
+      console.log("触发更新")
+      return micromark(before.value, {
+        extensions: [directive()],
+        htmlExtensions: [directiveHtml({abbr})]
+      })
     })
+    
     
     
     function abbr(d) {
