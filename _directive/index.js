@@ -20,7 +20,7 @@ const App = {
   `,
   setup() {
 
-    const before = ref(`A lovely language know as @abbr(HTML){title="HyperText Markup Language"}.`)
+    const before = ref(`A lovely language know as @abbr(HTML){title: "HyperText Markup Language" name=12}`)
     
     const after = computed(() => {
       console.log("触发更新")
@@ -30,10 +30,9 @@ const App = {
       })
     })
     
-    
-    
     function abbr(d) {
       if (d.type !== 'textDirective') return false
+      console.log(d)
     
       this.tag('<abbr')
     
