@@ -20,7 +20,7 @@ const App = {
   `,
   setup() {
 
-    const before = ref(`A lovely language know as @abbr(HTML){title: "HyperText Markup Language" name=12}`)
+    const before = ref(`A lovely language know as @abbr(HTML){title: "HyperText Markup Language", name=12 attr=attrxxxxx}`)
     
     const after = computed(() => {
       console.log("触发更新")
