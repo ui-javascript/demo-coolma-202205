@@ -20,8 +20,13 @@ const App = {
   `,
   setup() {
 
-    const before = ref(`A lovely language know as @abbr[namespace](HTML){title="HyperText Markup Language"}
+    const before = ref(`# abbr测试
+- demo1
+
+A lovely language know as @abbr[namespace](HTML){title="HyperText Markup Language"}
     
+- demo2
+
 A lovely language know as @abbr[namespace](HTML){
 title: "HyperText Markup Language"
 , name:12
