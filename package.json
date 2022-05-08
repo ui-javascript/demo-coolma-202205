@@ -21,7 +21,7 @@
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-veui": "^1.0.0-alpha.33",
     "babel-polyfill": "^6.26.0",
-    "coolma": "^3.0.2",
+    "coolma": "^3.0.3",
     "core-js": "^3.4.1",
     "dayjs": "^1.8.17",
     "driver.js": "^0.9.8",
