@@ -12,5 +12,5 @@ module.exports = {
   // showNav: false,
   showNav: true,
 
-  entry: './_directive/**/*.js',
+  entry: './_directive/*.js',
 }

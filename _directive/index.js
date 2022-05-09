@@ -5,6 +5,8 @@ import {micromark} from 'micromark'
 import {directive, directiveHtml} from 'coolma'
 import "./index.less"
 import VueCompositionApi, {ref, computed} from '@vue/composition-api';
+import {visit} from 'unist-util-visit'
+
 Vue.use(VueCompositionApi);
 
 const App = {
@@ -45,9 +47,10 @@ title: "HyperText Markup Language"
     })
     
     function abbr(d) {
-      if (d.type !== 'textDirective') return false
+     
+      // if (d.type !== 'textDirective') return false
       console.log(d)
-    
+
       this.tag('<abbr')
     
       if (d.attributes) {
