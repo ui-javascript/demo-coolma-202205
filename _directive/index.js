@@ -11,7 +11,7 @@ const App = {
   template: `
     <div>
   
-    <textarea style="width:100%;height: 100px;" v-model="before"></textarea>
+    <textarea style="width:100%;height: 300px;" v-model="before"></textarea>
 
     <div v-html="after"></div>
    
@@ -23,7 +23,7 @@ const App = {
     const before = ref(`# abbr测试
 - demo1
 
-A lovely language know as @abbr[namespace](HTML, "HyperText Markup Language"){.red}
+A lovely language know as @abbr[namespace](HTML, "HyperText Markup Language的缩写"){.red}
     
 - demo2
 
@@ -32,6 +32,7 @@ title: "HyperText Markup Language"
 , name:12
 , attr: attrxxxxx
 .bg-blue
+#id_html
 }
 `)
     
@@ -53,7 +54,7 @@ title: "HyperText Markup Language"
         if ('title' in d.attributes) {
           this.tag(' title="' + this.encode(d.attributes.title) + '"')
         } else {
-          this.tag(' title="' + this.encode(d.args && d.args.length > 2 ? d.args[1] : '') + '"')
+          this.tag(' title="' + this.encode(d.args && d.args.length > 1 ? d.args[1] : '') + '"')
         }
 
         if ('id' in d.attributes) {
