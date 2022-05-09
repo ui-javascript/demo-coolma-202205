@@ -66,12 +66,12 @@ export const directiveToMarkdown = {
       inConstruct: ['leafDirectiveArgs', 'containerDirectiveArgs']
     },
     {
-      before: '[^:]',
-      character: ':',
+      before: '[^@]',
+      character: '@',
       after: '[A-Za-z]',
       inConstruct: ['phrasing']
     },
-    {atBreak: true, character: ':', after: ':'}
+    {atBreak: true, character: '@', after: '@'}
   ],
   handlers: {
     containerDirective: handleDirective,
@@ -369,7 +369,7 @@ function fence(node) {
     size = 1
   }
 
-  return ':'.repeat(size)
+  return '@'.repeat(size)
 
   /** @type {import('unist-util-visit-parents/complex-types').BuildVisitor<Root, Directive>} */
   function onvisit(_, parents) {
