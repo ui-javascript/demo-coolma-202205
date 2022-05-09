@@ -18,7 +18,7 @@ export const directiveFromMarkdown = {
   enter: {
     directiveContainer: enterContainer,
     directiveContainerAttributes: enterAttributes,
-    directiveContainerLabel: enterContainerLabel,
+    directiveContainerArgs: enterContainerArgs,
 
     directiveLeaf: enterLeaf,
     directiveLeafAttributes: enterAttributes,
@@ -33,7 +33,7 @@ export const directiveFromMarkdown = {
     directiveContainerAttributeName: exitAttributeName,
     directiveContainerAttributeValue: exitAttributeValue,
     directiveContainerAttributes: exitAttributes,
-    directiveContainerLabel: exitContainerLabel,
+    directiveContainerArgs: exitContainerArgs,
     directiveContainerName: exitName,
 
     directiveLeaf: exit,
@@ -59,11 +59,11 @@ export const directiveToMarkdown = {
   unsafe: [
     {
       character: '\r',
-      inConstruct: ['leafDirectiveLabel', 'containerDirectiveLabel']
+      inConstruct: ['leafDirectiveArgs', 'containerDirectiveArgs']
     },
     {
       character: '\n',
-      inConstruct: ['leafDirectiveLabel', 'containerDirectiveLabel']
+      inConstruct: ['leafDirectiveArgs', 'containerDirectiveArgs']
     },
     {
       before: '[^:]',
@@ -114,15 +114,15 @@ function exitName(token) {
 }
 
 /** @type {FromMarkdownHandle} */
-function enterContainerLabel(token) {
+function enterContainerArgs(token) {
   this.enter(
-    {type: 'paragraph', data: {directiveLabel: true}, children: []},
+    {type: 'paragraph', data: {directiveArgs: true}, children: []},
     token
   )
 }
 
 /** @type {FromMarkdownHandle} */
-function exitContainerLabel(token) {
+function exitContainerArgs(token) {
   this.exit(token)
 }
 
@@ -209,23 +209,25 @@ function handleDirective(node, _, context, safeOptions) {
   /** @type {Directive|Paragraph|undefined} */
   let label = node
 
+  console.log(label, "<== label")
+
   if (node.type === 'containerDirective') {
     const head = (node.children || [])[0]
-    label = inlineDirectiveLabel(head) ? head : undefined
+    label = inlineDirectiveArgs(head) ? head : undefined
   }
 
   if (label && label.children && label.children.length > 0) {
-    const exit = context.enter('label')
-    const subexit = context.enter(node.type + 'Label')
-    value += tracker.move('[')
+    const exit = context.enter('args')
+    const subexit = context.enter(node.type + 'Args')
+    value += tracker.move('(')
     value += tracker.move(
       containerPhrasing(label, context, {
         ...tracker.current(),
         before: value,
-        after: ']'
+        after: ')'
       })
     )
-    value += tracker.move(']')
+    value += tracker.move(')')
     subexit()
     exit()
   }
@@ -236,7 +238,7 @@ function handleDirective(node, _, context, safeOptions) {
     const head = (node.children || [])[0]
     let shallow = node
 
-    if (inlineDirectiveLabel(head)) {
+    if (inlineDirectiveArgs(head)) {
       shallow = Object.assign({}, node, {children: node.children.slice(1)})
     }
 
@@ -254,7 +256,7 @@ function handleDirective(node, _, context, safeOptions) {
 
 /** @type {ToMarkdownHandle} */
 function peekDirective() {
-  return ':'
+  return '@'
 }
 
 /**
@@ -343,11 +345,11 @@ function attributes(node, context) {
 
 /**
  * @param {BlockContent} node
- * @returns {node is Paragraph & {data: {directiveLabel: boolean}}}
+ * @returns {node is Paragraph & {data: {directiveArgs: boolean}}}
  */
-function inlineDirectiveLabel(node) {
+function inlineDirectiveArgs(node) {
   return Boolean(
-    node && node.type === 'paragraph' && node.data && node.data.directiveLabel
+    node && node.type === 'paragraph' && node.data && node.data.directiveArgs
   )
 }
 

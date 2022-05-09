@@ -9,8 +9,8 @@ import {visit} from 'unist-util-visit'
 import {h} from 'hastscript'
 
 // import {directive, directiveHtml} from 'micromark-extension-directive'
-import {directive} from 'coolma'
-import {directiveFromMarkdown, directiveToMarkdown} from './libs/mdast-util-directive'
+import {directive, directiveHtml} from 'coolma'
+import { directiveToMarkdown} from './libs/mdast-util-directive'
 
 import "./index.less"
 import VueCompositionApi, {ref, computed} from '@vue/composition-api';
@@ -21,7 +21,7 @@ export default function remarkDirective() {
   const data = this.data()
 
   add('micromarkExtensions', directive())
-  add('fromMarkdownExtensions', directiveFromMarkdown)
+  add('fromMarkdownExtensions', directiveHtml)
   add('toMarkdownExtensions', directiveToMarkdown)
 
   /**
@@ -47,7 +47,7 @@ async function main() {
     .use(remarkRehype)
     .use(rehypeFormat)
     .use(rehypeStringify)
-    .process(`A lovely language know as @abbr[namespace](HTML, "HyperText Markup Language的缩写"){.red}`)
+    .process(`A lovely language know as @abbr[HTML]{.red}`)
 
   console.log(String(file))
 }
@@ -60,6 +60,8 @@ function myRemarkPlugin() {
         node.type === 'leafDirective' ||
         node.type === 'containerDirective'
       ) {
+        console.log("node ==>")
+        console.log(node)
         const data = node.data || (node.data = {})
         const hast = h(node.name, node.attributes)
 
