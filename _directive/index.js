@@ -23,7 +23,7 @@ const App = {
     const before = ref(`# abbr测试
 - demo1
 
-A lovely language know as @abbr[namespace](HTML){title="HyperText Markup Language" .red}
+A lovely language know as @abbr[namespace](HTML, "HyperText Markup Language"){.red}
     
 - demo2
 
@@ -31,6 +31,7 @@ A lovely language know as @abbr[namespace](HTML){
 title: "HyperText Markup Language"
 , name:12
 , attr: attrxxxxx
+.bg-blue
 }
 `)
     
@@ -51,7 +52,10 @@ title: "HyperText Markup Language"
       if (d.attributes) {
         if ('title' in d.attributes) {
           this.tag(' title="' + this.encode(d.attributes.title) + '"')
+        } else {
+          this.tag(' title="' + this.encode(d.args && d.args.length > 2 ? d.args[1] : '') + '"')
         }
+
         if ('id' in d.attributes) {
           this.tag(' id="' + this.encode(d.attributes.id) + '"')
         }
@@ -61,7 +65,7 @@ title: "HyperText Markup Language"
       }
     
       this.tag('>')
-      this.raw(d.label || '')
+      this.raw(d.args && d.args.length > 0 ? d.args[0] : '')
       this.tag('</abbr>')
     }
 
