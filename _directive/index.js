@@ -1,28 +1,168 @@
 import Vue from 'vue'
 // import fs from 'fs-extra'
-import {micromark} from 'micromark'
-// import {directive, directiveHtml} from 'micromark-extension-directive'
-import {directive, directiveHtml} from 'coolma'
-import "./index.less"
-import VueCompositionApi, {ref, computed, watchEffect} from '@vue/composition-api';
+import {unified} from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeFormat from 'rehype-format'
+import rehypeStringify from 'rehype-stringify'
+import {visit} from 'unist-util-visit'
+import {h} from 'hastscript'
+import {u} from 'unist-builder'
 
 import {visitParents} from "unist-util-visit-parents"
-import {h} from 'hastscript'
 
-import {fromMarkdown} from 'mdast-util-from-markdown'
-import {toMarkdown} from 'mdast-util-to-markdown'
+// import {directive, directiveHtml} from 'micromark-extension-directive'
+import {directive, directiveHtml} from 'coolma'
+import { directiveToMarkdown, directiveFromMarkdown} from './libs/mdast-util-directive'
 
-import { directiveFromMarkdown, directiveToMarkdown} from './libs/mdast-util-directive'
-
-
+import "./style.less"
+import VueCompositionApi, {ref, computed, watchEffect} from '@vue/composition-api';
+import { trim } from 'lodash'
 Vue.use(VueCompositionApi);
+
+
+export default function remarkDirective() {
+  const data = this.data()
+
+  add('micromarkExtensions', directive())
+  add('fromMarkdownExtensions', directiveFromMarkdown)
+  add('toMarkdownExtensions', directiveToMarkdown)
+
+  /**
+   * @param {string} field
+   * @param {unknown} value
+   */
+  function add(field, value) {
+    const list = /** @type {unknown[]} */ (
+      // Other extensions
+      /* c8 ignore next 2 */
+      data[field] ? data[field] : (data[field] = [])
+    )
+
+    list.push(value)
+  }
+}
+
+
+function myRemarkPlugin() {
+  return (tree) => {
+
+    visitParents(tree, 'textDirective', (node, ancestors) => {
+      
+      if (ancestors && ancestors.length > 1 && node.name == "nice" && (!node.args || node.args.length === 0)) {
+        console.log("父节点")
+        console.log(ancestors)
+
+        const latestAncestors = ancestors[ancestors.length-1]
+
+        if (latestAncestors.children && latestAncestors.children.length > 0) {
+          for (let idx in latestAncestors.children) {
+              // console.log("节点" + idx)
+              // console.log(item)
+              const item = latestAncestors.children[idx]
+              idx = parseInt(idx)
+
+              if ((item.type === 'textDirective' && item.name === "nice") // @todo 准确定位标签
+                && (!item.args || item.args.length === 0)) {
+                  let nextIdx = idx
+                  let prevIdx = idx
+                  let nextNode = null
+                  let prevNode = null
+
+                  while (++nextIdx < latestAncestors.children.length) {
+                    const tempNode = latestAncestors.children[nextIdx]
+                    
+                    if (tempNode && tempNode.type === "text" && trim(tempNode.value)) {
+                      nextNode = tempNode
+                      break;
+                    }
+                  }  
+
+                  if (!nextNode) {
+                    debugger
+                    while (--prevIdx > -1) {
+                      const tempNode = latestAncestors.children[prevIdx]
+                                          
+                      if (tempNode && tempNode.type === "text" && trim(tempNode.value)) {
+                        debugger
+                        prevNode = tempNode
+                        break;
+                      }
+                    }  
+                  }
+
+
+                  if (nextNode) {
+                    console.log("修改后节点")
+                    console.log(nextNode)
+
+                    const data = nextNode.data || (nextNode.data = {})
+                    const hast = h('mark', nextNode.value)
+                    data.hName = hast.tagName
+                    data.hProperties = hast.properties
+                    data.hChildren = hast.children
+
+
+                  } else if (prevNode) {
+                    console.log("修改前节点")
+                    console.log(prevNode)
+
+                    const data = prevNode.data || (prevNode.data = {})
+                    const hast = h('mark', prevNode.value)
+                    data.hName = hast.tagName
+                    data.hProperties = hast.properties
+                    data.hChildren = hast.children
+                   
+                  }
+
+                  // @todo 暂时先伪装成块内元素
+                  const nodeData = node.data || (node.data = {})
+                  nodeData.hName = h('span', {}).tagName 
+
+                  break;
+              }
+
+          }
+        }
+      }
+
+    })
+
+    visit(tree, (node) => {
+      if (
+        node.type === 'textDirective' ||
+        node.type === 'leafDirective' ||
+        node.type === 'containerDirective'
+      ) {
+
+        console.log("node ==>")
+        console.log(node)
+
+        if (node.name === 'abbr') {
+          const data = node.data || (node.data = {})
+          if (!('title' in node.attributes) && node.args && node.args.length > 1) {
+            node.attributes.title = node.args[1]
+          }
+          const hast = h(node.name, node.attributes, [node.args && node.args.length > 0 ? node.args[0] : ''])
+  
+          data.hName = hast.tagName
+          data.hProperties = hast.properties
+          console.log(hast)
+
+          node.children = hast.children
+        }
+     
+        
+      }
+    })
+  }
+}
 
 const App = {
   template: `
     <div>
   
-    演示 @abbr + @nice
-
+  
     <textarea style="width:100%;height: 300px;" v-model="before"></textarea>
 
     <div v-html="after"></div>
@@ -32,148 +172,41 @@ const App = {
   `,
   setup() {
 
-    const initContent = `# abbr测试 @nice   @abbr("222", "2222"){.red}
-    
-- 简单示例
+    const before = ref(`# A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red.blue #id} @nice
 
-A lovely language know as @abbr(HTML, "HyperText Markup Language")
-    
-- 复杂示例
+@abbr(HTML, "HTML的全称"){.bg-blue}
 
-A lovely language know as @abbr[namespace](HTML){
-title: "HyperText Markup Language的缩写"
-, name:12
-, attr: attrxxxxx
-.bg-blue
-.red
-#id_html
-}
+hello @nice
+  
+@nice hello
 
+hello hi @nice @nice
 
+hello hi *em* @abbr(HTML, "HTML的全称"){.bg-blue} @nice @nice
 
-原始文字 @nice 
+hello @nice @nice hi
+`);
 
-@nice 原始文字
+    const after = ref("")
+    watchEffect(async () => {
+      const res = await unified()
+        .use(remarkParse)
+        .use(remarkDirective)
+        .use(myRemarkPlugin)
+        .use(remarkRehype)
+        .use(rehypeFormat)
+        .use(rehypeStringify)
+        .process(before.value)
 
-原始文字A @nice 原始文字B
-
-原始文字A 原始文字B @nice 
-
-原始文字A 原始文字B @nice @nice
-
-`
-
-    const before = ref(initContent)
-    
-    const tree = computed(() => {
-      const tree = fromMarkdown(before.value, {
-        extensions: [directive()],
-        mdastExtensions: [directiveFromMarkdown]
-      })
-
-      visitParents(tree, 'textDirective', (node, ancestors) => {
-      
-        if (ancestors && ancestors.length > 1 && node.name == "nice" && (!node.args || node.args.length === 0)) {
-          console.log("父节点")
-          console.log(ancestors)
-
-          const latestAncestors = ancestors[ancestors.length-1]
-
-          if (latestAncestors.children && latestAncestors.children.length > 0) {
-            for (let idx in latestAncestors.children) {
-                // console.log("节点" + idx)
-                // console.log(item)
-                const item = latestAncestors.children[idx]
-                idx = parseInt(idx)
-
-                if ((item.type === 'textDirective' && item.name === "nice") // @todo 准确定位标签
-                  && (!item.args || item.args.length === 0)) {
-                    const nextNode = latestAncestors.children[idx+1]
-                    const prevNode = latestAncestors.children[idx-1]
-
-                    if (nextNode && nextNode.type === "text") {
-                      console.log("修改后节点")
-                      // console.log(nextNode)
-                      // nextNode.type = "em"
-                      nextNode.value = nextNode.value + "(替换)"
-                      // node.args = [nextNode.value]
-
-                    } else if (prevNode && prevNode.type === "text") {
-                      console.log("修改前节点")
-                      // console.log(prevNode)
-
-                      prevNode.value =  prevNode.value + "(替换)"
-                      // ancestors[1].children[idx-1] = h("textttt", {}, ["ssss"])
-                      // node.args = [prevNode.value]
-
-                    }
-
-                    break;
-                }
-
-            }
-          }
-        }
- 
-      })
-
-      return tree
-    }) 
- 
-
-    
-    const out = computed(() => {
-      console.log("树")
-      console.log(tree.value)
-      return toMarkdown(tree.value, {extensions: [directiveToMarkdown]})
-    }) 
-
-    const after = computed(() => {
-      // console.log("触发更新")
-      return micromark(out.value, {
-        extensions: [directive()],
-        htmlExtensions: [directiveHtml({abbr})]
-      })
+      console.log(String(res))
+      after.value = String(res)
     })
-    
-    function abbr(d) {
-     
-      if (d.type !== 'textDirective') return false
-      // console.log(d)
-
-      // visitParents(d, "textDirective", (_, parents) => {
-      //   console.log("父节点")
-      //   console.log(parents)
-      //   console.log(_)
-      // })
-
-      this.tag('<abbr')
-    
-      if (d.attributes) {
-        if ('id' in d.attributes) {
-          this.tag(' id="' + this.encode(d.attributes.id) + '"')
-        }
-        if ('class' in d.attributes) {
-          this.tag(' class="' + this.encode(d.attributes.class) + '"')
-        }
-      }
-
-      if (d.attributes && 'title' in d.attributes) {
-        this.tag(' title="' + this.encode(d.attributes.title) + '"')
-      } else {
-        this.tag(' title="' + this.encode(d.args && d.args.length > 1 ? d.args[1] : '') + '"')
-      }
-
-    
-      this.tag('>')
-      this.raw(d.args && d.args.length > 0 ? d.args[0] : '')
-      this.tag('</abbr>')
-    }
 
     return {
       before,
       after
     }
+
   }
 }
 
