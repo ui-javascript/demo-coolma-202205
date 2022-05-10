@@ -1,136 +1,125 @@
 import Axios from "axios";
 import { renderVoidElement } from "../utils/utils";
 import { h } from "hastscript";
-import { nanoid } from 'nanoid';
+import { nanoid } from "nanoid";
 
+const registerAnnoFetch = async (node, ancestors) => {
 
+  if (
+    (!node.attributes || !("weather" in node.attributes)) &&
+    (!node.args || node.args.length === 0)
+  ) {
+    renderVoidElement(node);
+    return;
+  }
 
-const registerAnnoFetch = async (annoAlias, node, ancestors) => {
-    
-  
-    let aliasAttributes = null
+  let api = null;
+  if (
+    node.attributes &&
+    "weather" in node.attributes &&
+    node.attributes.weather != "false"
+  ) {
+    api = weatherApi;
+  }
+  if (node.args && node.args[0]) {
+    api = node.args[0];
+  }
 
-    if (node.name !== "fetch") {
-        let isOk = false
-        for (let key in annoAlias['fetch']) {
-            if (key === node.name) {
-                isOk = true
-                aliasAttributes = annoAlias['fetch'][key]
-                break
-            }
-        }
+  const isWeatherApi = api === weatherApi;
 
-        if (!isOk) {
-            return;
-        }
-    }
+  if (!api) {
+    renderVoidElement(node);
+    return;
+  }
 
-    if (aliasAttributes) {
-        node.attributes = Object.assign(node.attributes || {}, aliasAttributes)
-    }
+  // console.log("天气接口")
+  // console.log()
 
-    if ((!node.attributes || !('weather' in node.attributes)) && (!node.args || node.args.length === 0)) {
-        renderVoidElement(node)
-        return;
-    }
+  const tableId = nanoid();
+  const loadingDivId = nanoid();
+  const tableTitleId = nanoid();
 
-    let api = null
-    if (node.attributes && 'weather' in node.attributes && (node.attributes.weather != 'false')) {
-        api = weatherApi
-    }
-    if (node.args && node.args[0]) {
-        api = node.args[0]
-    } 
+  const data = node.data || (node.data = {});
+  const hast = h(
+    `div#${loadingDivId}`,
+    { "aria-busy": "true", style: "width: 100%;min-height: 50px;" },
+    // @todo 耦合代码
+    isWeatherApi
+      ? [
+          h(`table#${tableId}`, { role: "grid" }, []),
+          h(`h6#${tableTitleId}`, { class: "text-center" }, ""),
+        ]
+      : [h(`table#${tableId}`, { role: "grid" }, [])]
+  );
 
-    const isWeatherApi = api === weatherApi
+  data.hName = hast.tagName;
+  data.hProperties = hast.properties;
+  data.hChildren = hast.children;
 
-    if (!api) {
-        renderVoidElement(node)
-        return;
-    }
+  const res = await Axios.get(api);
 
-
-    // console.log("天气接口")
-    // console.log()
-
-    const tableId = nanoid()
-    const loadingDivId = nanoid()
-    const tableTitleId = nanoid()
-  
-    const data = node.data || (node.data = {});
-    const hast = h(`div#${loadingDivId}`, { 'aria-busy': 'true', style: "width: 100%;min-height: 50px;"}, 
-        // @todo 耦合代码
-        isWeatherApi ? [h(`table#${tableId}`, {role: 'grid'}, []), h(`h6#${tableTitleId}`, {class: "text-center"}, "")]
-            : [h(`table#${tableId}`, {role: 'grid'}, [])]
-    )
-
-    data.hName = hast.tagName;
-    data.hProperties = hast.properties;
-    data.hChildren = hast.children;
-
-  
-    const res = await Axios.get(api)
-
-    let resData
-    if (res.data) {
-        if (res.data.data) {
-            debugger
-            resData = res.data.data
-        } else {
-            resData = res.data
-        }
+  let resData;
+  if (res.data) {
+    if (res.data.data) {
+      debugger;
+      resData = res.data.data;
     } else {
-        resData = res
+      resData = res.data;
     }
+  } else {
+    resData = res;
+  }
 
-    let includeKeys = node.attributes['includeKeys']
+  let includeKeys = node.attributes["includeKeys"];
 
-    // @todo 耦合代码
-    if (isWeatherApi && !includeKeys) {
-        includeKeys = ['day', 'date', 'week', 'wea']
+  // @todo 耦合代码
+  if (isWeatherApi && !includeKeys) {
+    includeKeys = ["day", "date", "week", "wea"];
+  }
+
+  const table = document.getElementById(tableId);
+  const thead = document.createElement("thead");
+  const tr = document.createElement("tr");
+  for (let key in resData[0]) {
+    if (includeKeys && !includeKeys.includes(key)) {
+      // contains是准确匹配的
+      continue;
     }
+    const th = document.createElement("th");
+    th.innerText = key;
+    tr.appendChild(th);
+  }
+  thead.appendChild(tr);
 
-    const table = document.getElementById(tableId)
-    const thead = document.createElement("thead") 
-    const tr = document.createElement("tr")
-    for (let key in resData[0]) {
-        if (includeKeys && !includeKeys.includes(key)) {  // contains是准确匹配的
-            continue
-        }
-        const th = document.createElement("th")
-        th.innerText = key
-        tr.appendChild(th)        
+  const tbody = document.createElement("tbody");
+  for (let i = 0; i < resData.length; i++) {
+    const tr = document.createElement("tr");
+    for (let key in resData[i]) {
+      if (includeKeys && !includeKeys.includes(key)) {
+        // contains是准确匹配的
+        continue;
+      }
+      const td = document.createElement("td");
+      td.innerText = JSON.stringify(resData[i][key]);
+      tr.appendChild(td);
     }
-    thead.appendChild(tr)
+    tbody.appendChild(tr);
+  }
 
-    const tbody = document.createElement("tbody") 
-    for (let i=0; i < resData.length; i++) {
-        const tr = document.createElement("tr")
-        for (let key in resData[i]) {
-            if (includeKeys && !includeKeys.includes(key)) { // contains是准确匹配的
-                continue
-            }
-            const td = document.createElement("td")
-            td.innerText = JSON.stringify(resData[i][key])
-            tr.appendChild(td)
-        }
-        tbody.appendChild(tr)
-    }
+  table.appendChild(thead);
+  table.appendChild(tbody);
 
-    table.appendChild(thead)
-    table.appendChild(tbody)
+  let loadingDiv = document.getElementById(loadingDivId);
+  loadingDiv.setAttribute("aria-busy", false);
 
-    let loadingDiv = document.getElementById(loadingDivId)
-    loadingDiv.setAttribute('aria-busy', false)
+  // @todo 耦合代码
+  if (isWeatherApi) {
+    let tableTitle = document.getElementById(tableTitleId);
+    tableTitle.innerText = `(${res.data.city}-未来一周天气表)`;
+  }
+};
 
-    // @todo 耦合代码
-    if (isWeatherApi) {
-        let tableTitle = document.getElementById(tableTitleId)
-        tableTitle.innerText = `(${res.data.city}-未来一周天气表)`
-    }
+export default registerAnnoFetch;
 
-}
-
-export default registerAnnoFetch; 
-
-export const weatherApi = "https://v0.yiketianqi.com/api?unescape=1&version=v91&appid=43656176&appsecret=I42og6Lm&ext=&cityid=&city="
+export const weatherApi =
+  "https://v0.yiketianqi.com/api?unescape=1&version=v91&appid=43656176&appsecret=I42og6Lm&ext=&cityid=&city=";

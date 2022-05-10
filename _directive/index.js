@@ -22,43 +22,75 @@ import registerAnnoFetch from "./anno/@fetch";
 import "./style.less";
 
 import { weatherApi } from "./anno/@fetch";
+import { renderVoidElement } from "./utils/utils";
 
 function myRemarkPlugin() {
   const annoAlias = {}
 
-  registerAlias(annoAlias)
+  initAliasMeta(annoAlias)
+
+  initAliasMeta(annoAlias, 'fetch', 'weather', {
+    weather: true,
+    includeKeys: ['day', 'date', 'week', 'wea']
+  })
+
+  initAliasMeta(annoAlias, 'fetch', 'fetchAliasWeather', {
+    includeKeys: ['day', 'week', 'wea']
+  })
 
   return (tree) => {
 
-    visitParents(tree, "textDirective", async (node, ancestors) => {
+    visitParents(tree, "textDirective", (node, ancestors) => {
       // 注册@abbr
-      registerAnnoAbbr(annoAlias, node);
 
-      // 判断祖先元素
-      if (!ancestors || ancestors.length === 0) {
-        return;
-      }
+          // // 判断祖先元素
+      // if (!ancestors || ancestors.length === 0) {
+      //   return;
+      // }
+
+      registerAnno(annoAlias, 'abbr', node, ancestors, registerAnnoAbbr);
 
       // 注册@nice
-      registerAnnoNice(annoAlias, node, ancestors);
+      registerAnno(annoAlias, 'nice', node, ancestors, registerAnnoNice);
 
       // 注册@fetch
-      await registerAnnoFetch(annoAlias, node, ancestors);
+      registerAnno(annoAlias, 'fetch', node, ancestors, registerAnnoFetch)
       
     });
   };
 }
 
-const registerAlias = (annoAlias) => {
-  annoAlias.fetch = {
-    weather: {
-      weather: true,
-      includeKeys: ['day', 'date', 'week', 'wea']
-    },
-    fetchAliasWeather: {
-      includeKeys: ['day', 'week', 'wea']
-    }
+const initAliasMeta = (annoAliasMeta, annoName, aliaName, config) => {
+  if (!annoAliasMeta[annoName]) {
+    annoAliasMeta[annoName] = {}
   }
+  annoAliasMeta[annoName][aliaName] = config
+}
+
+const registerAnno = (annoAlias, annoName, node, ancestors, regFn) => {
+  let aliasAttributes = null
+
+  if (node.name !== annoName) {
+      let isOk = false
+      for (let key in annoAlias[annoName]) {
+          if (node.name === key) {
+              isOk = true
+              aliasAttributes = annoAlias[annoName][key]
+              break
+          }
+      }
+
+      if (!isOk) {
+          renderVoidElement(node);
+          return;
+      }
+  }
+
+  if (aliasAttributes) {
+      node.attributes = Object.assign(aliasAttributes, node.attributes || {})
+  }
+
+  return regFn(node, ancestors)
 }
 
 const App = {
