@@ -83,15 +83,8 @@ const App = {
 
 @abbr(HTML, "HTML的全称"){.bg-blue}
 
-hello @nice
-  
-@nice hello
+@weather
 
-hello hi @nice @nice
-
-hello hi *em* @abbr(HTML, "HTML的全称"){.bg-blue} @nice @nice
-
-hello @nice @nice hi
 
 @fetch("${weatherApi}")
 
@@ -99,17 +92,27 @@ hello @nice @nice hi
 
 @fetch{weather: true}
 
-这个注解要报错 @fetch{weather: true, includeKeys: ['date']}
+数组属性没有引号包裹, 注解要报错 @fetch{weather: true, includeKeys: ['date']}
 
 @fetch{weather: true, includeKeys: "['date']"}
 
 @fetch{weather: false}
 
-@weather
+
 
 @fetchAliasWeather
 
 @fetchAliasWeather{weather}
+
+hello @nice
+  
+@nice hello
+
+hello hi @nice @nice
+
+hello hi *暂时跳过这种标签* @abbr(HTML, "HTML的全称"){.bg-blue} @nice @nice
+
+hello @nice @nice hi
 
 `);
 
