@@ -5,7 +5,18 @@ import {micromark} from 'micromark'
 import {directive, directiveHtml} from 'coolma'
 import "./index.less"
 import VueCompositionApi, {ref, computed} from '@vue/composition-api';
-import {visit} from 'unist-util-visit'
+
+import {visitParents} from "unist-util-visit-parents"
+
+import {fromMarkdown} from 'mdast-util-from-markdown'
+import {toMarkdown} from 'mdast-util-to-markdown'
+
+import {directiveFromMarkdown} from 'mdast-util-directive'
+
+import { directiveToMarkdown} from './libs/mdast-util-directive'
+
+
+
 
 Vue.use(VueCompositionApi);
 
@@ -22,25 +33,46 @@ const App = {
   `,
   setup() {
 
-    const before = ref(`# abbr测试
-- demo1
+    const initContent = `# abbr测试
+- 简单示例
 
-A lovely language know as @abbr[namespace](HTML, "HyperText Markup Language的缩写"){.red}
+A lovely language know as @abbr(HTML, "HyperText Markup Language")
     
-- demo2
+- 复杂示例
 
 A lovely language know as @abbr[namespace](HTML){
-title: "HyperText Markup Language"
+title: "HyperText Markup Language的缩写"
 , name:12
 , attr: attrxxxxx
 .bg-blue
+.red
 #id_html
-}
-`)
+}`
+
+    const before = ref(initContent)
     
+    
+    const tree = computed(() => {
+      return fromMarkdown(before.value, {
+        extensions: [directive()],
+        mdastExtensions: [directiveFromMarkdown]
+      })
+    }) 
+    // console.log(tree)
+    
+    visitParents(tree, 'textDirective', (node, ancestors) => {
+      console.log("父节点")
+      console.log(ancestors)
+    })
+    
+    
+    const out = computed(() => {
+      return toMarkdown(tree.value, {extensions: [directiveToMarkdown]})
+    }) 
+
     const after = computed(() => {
-      console.log("触发更新")
-      return micromark(before.value, {
+      // console.log("触发更新")
+      return micromark(out.value, {
         extensions: [directive()],
         htmlExtensions: [directiveHtml({abbr})]
       })
@@ -48,18 +80,18 @@ title: "HyperText Markup Language"
     
     function abbr(d) {
      
-      // if (d.type !== 'textDirective') return false
-      console.log(d)
+      if (d.type !== 'textDirective') return false
+      // console.log(d)
+
+      // visitParents(d, "textDirective", (_, parents) => {
+      //   console.log("父节点")
+      //   console.log(parents)
+      //   console.log(_)
+      // })
 
       this.tag('<abbr')
     
       if (d.attributes) {
-        if ('title' in d.attributes) {
-          this.tag(' title="' + this.encode(d.attributes.title) + '"')
-        } else {
-          this.tag(' title="' + this.encode(d.args && d.args.length > 1 ? d.args[1] : '') + '"')
-        }
-
         if ('id' in d.attributes) {
           this.tag(' id="' + this.encode(d.attributes.id) + '"')
         }
@@ -67,6 +99,13 @@ title: "HyperText Markup Language"
           this.tag(' class="' + this.encode(d.attributes.class) + '"')
         }
       }
+
+      if (d.attributes && 'title' in d.attributes) {
+        this.tag(' title="' + this.encode(d.attributes.title) + '"')
+      } else {
+        this.tag(' title="' + this.encode(d.args && d.args.length > 1 ? d.args[1] : '') + '"')
+      }
+
     
       this.tag('>')
       this.raw(d.args && d.args.length > 0 ? d.args[0] : '')
