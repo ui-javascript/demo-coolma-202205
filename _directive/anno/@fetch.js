@@ -59,6 +59,7 @@ const registerAnnoFetch = async (annoAlias, node, ancestors) => {
   
     const data = node.data || (node.data = {});
     const hast = h(`div#${loadingDivId}`, { 'aria-busy': 'true', style: "width: 100%;min-height: 50px;"}, 
+        // @todo 耦合代码
         isWeatherApi ? [h(`table#${tableId}`, {role: 'grid'}, []), h(`h6#${tableTitleId}`, {class: "text-center"}, "")]
             : [h(`table#${tableId}`, {role: 'grid'}, [])]
     )
@@ -69,9 +70,22 @@ const registerAnnoFetch = async (annoAlias, node, ancestors) => {
 
   
     const res = await Axios.get(api)
-    console.log(res.data.data)
+
+    let resData
+    if (res.data) {
+        if (res.data.data) {
+            debugger
+            resData = res.data.data
+        } else {
+            resData = res.data
+        }
+    } else {
+        resData = res
+    }
 
     let includeKeys = node.attributes['includeKeys']
+
+    // @todo 耦合代码
     if (isWeatherApi && !includeKeys) {
         includeKeys = ['day', 'date', 'week']
     }
@@ -79,7 +93,7 @@ const registerAnnoFetch = async (annoAlias, node, ancestors) => {
     const table = document.getElementById(tableId)
     const thead = document.createElement("thead") 
     const tr = document.createElement("tr")
-    for (let key in res.data.data[0]) {
+    for (let key in resData[0]) {
         if (includeKeys && !includeKeys.includes(key)) {
             continue
         }
@@ -90,14 +104,14 @@ const registerAnnoFetch = async (annoAlias, node, ancestors) => {
     thead.appendChild(tr)
 
     const tbody = document.createElement("tbody") 
-    for (let i=0; i < res.data.data.length; i++) {
+    for (let i=0; i < resData.length; i++) {
         const tr = document.createElement("tr")
-        for (let key in res.data.data[i]) {
+        for (let key in resData[i]) {
             if (includeKeys && !includeKeys.includes(key)) {
                 continue
             }
             const td = document.createElement("td")
-            td.innerText = JSON.stringify(res.data.data[i][key])
+            td.innerText = JSON.stringify(resData[i][key])
             tr.appendChild(td)
         }
         tbody.appendChild(tr)
@@ -109,10 +123,12 @@ const registerAnnoFetch = async (annoAlias, node, ancestors) => {
     let loadingDiv = document.getElementById(loadingDivId)
     loadingDiv.setAttribute('aria-busy', false)
 
+    // @todo 耦合代码
     if (isWeatherApi) {
         let tableTitle = document.getElementById(tableTitleId)
         tableTitle.innerText = `(${res.data.city}-未来一周天气表)`
     }
+
 }
 
 export default registerAnnoFetch; 
