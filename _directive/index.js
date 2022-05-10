@@ -92,7 +92,7 @@ const App = {
 
 @fetch{weather: true}
 
-数组属性没有引号包裹, 注解要报错 @fetch{weather: true, includeKeys: ['date']}
+数组属性没有引号包裹, 注解直接摆烂, 原地显示 --> @fetch{weather: true, includeKeys: ['date']}
 
 @fetch{weather: true, includeKeys: "['date']"}
 
