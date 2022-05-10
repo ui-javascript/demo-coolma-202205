@@ -261,7 +261,7 @@ function handleDirective(node, _, context, safeOptions) {
     //     after: ")",
     //   })
     // );
-    value += tracker.move(label.args.join(","))
+    value += tracker.move("'" + label.args.join("','") + "'")
     value += tracker.move(")");
     subexit();
     exit();
