@@ -254,14 +254,18 @@ function handleDirective(node, _, context, safeOptions) {
     const subexit = context.enter(node.type + "Args");
     console.log("进入");
     value += tracker.move("(");
-    // value += tracker.move(
-    //   containerPhrasing(label, context, {
-    //     ...tracker.current(),
-    //     before: value,
-    //     after: ")",
-    //   })
-    // );
-    value += tracker.move("'" + label.args.join("','") + "'")
+    if (node.type === "textDirective") { // @fix @todo
+      value += tracker.move("'" + label.args.join("','") + "'")
+    } else {
+      value += tracker.move(
+        containerPhrasing(label, context, {
+          ...tracker.current(),
+          before: value,
+          after: ")",
+        })
+      );
+    }
+ 
     value += tracker.move(")");
     subexit();
     exit();

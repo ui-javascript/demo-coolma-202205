@@ -21,6 +21,8 @@ const App = {
   template: `
     <div>
   
+    演示 @abbr + @nice
+
     <textarea style="width:100%;height: 300px;" v-model="before"></textarea>
 
     <div v-html="after"></div>
@@ -30,8 +32,8 @@ const App = {
   `,
   setup() {
 
-    const initContent = `# abbr测试 @abbr(HTML, 121212)
-
+    const initContent = `# abbr测试 @nice   @abbr("222", "2222"){.red}
+    
 - 简单示例
 
 A lovely language know as @abbr(HTML, "HyperText Markup Language")
@@ -47,7 +49,12 @@ title: "HyperText Markup Language的缩写"
 #id_html
 }
 
-原始文字 @nice
+@nice 原始文字
+
+原始文字 @nice 
+
+原始文字A @nice 原始文字B
+
 `
 
     const before = ref(initContent)
@@ -79,20 +86,19 @@ title: "HyperText Markup Language的缩写"
                     const prevNode = latestAncestors.children[idx-1]
 
                     if (nextNode && nextNode.type === "text") {
-                      // console.log("后节点")
+                      console.log("修改后节点")
                       // console.log(nextNode)
                       // nextNode.type = "em"
-                      prevNode.value = "替换后的文字"
-                      node.args = [nextNode.value]
+                      nextNode.value = nextNode.value + "(替换)"
+                      // node.args = [nextNode.value]
 
                     } else if (prevNode && prevNode.type === "text") {
-                      console.log("前节点")
-                      console.log(prevNode)
+                      console.log("修改前节点")
+                      // console.log(prevNode)
 
-                      node.args = [prevNode.value]
-
-                      prevNode.value = "替换后的文字"
+                      prevNode.value =  prevNode.value + "(替换)"
                       // ancestors[1].children[idx-1] = h("textttt", {}, ["ssss"])
+                      // node.args = [prevNode.value]
 
                     }
                 }
