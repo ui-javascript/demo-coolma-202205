@@ -24,7 +24,7 @@
         enabled. Please enable it to continue.</strong>
 </noscript>
 
-<% if (htmlWebpackPlugin.options._browserPage && NODE_ENV != 'production') { %>
+<% if (htmlWebpackPlugin.options._browserPage) { %>
 <ul>
   <% for(var i=0; i< htmlWebpackPlugin.options._browserPage.length; i++) {%>
   <li>
