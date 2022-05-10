@@ -73,7 +73,7 @@ const registerAnnoFetch = async (node, ancestors) => {
 
   // @todo 耦合代码
   if (isWeatherApi && !includeKeys) {
-    includeKeys = ["day", "date", "week", "wea"];
+    includeKeys = ["day", "date", "week", "wea", "win"];
   }
 
   const table = document.getElementById(tableId);

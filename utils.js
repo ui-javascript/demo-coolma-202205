@@ -37,7 +37,7 @@ function getEntry (globPath) {
 
         let template = `./${sections.join('/')}/${moduleName}.html`
         if (!fs.existsSync(template)) {
-            console.log(`不存在${template}`)
+            console.log(`未找到${template}, 使用默认模板`)
             template = CONFIG.template
         }
 

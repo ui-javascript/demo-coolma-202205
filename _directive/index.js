@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueCompositionApi, {
   ref,
-  watchEffect,
-  watch
+  watch,
+  watchEffect
 } from "@vue/composition-api";
 
 import { unified } from "unified";
@@ -22,19 +22,15 @@ import registerAnnoFetch from "./anno/@fetch";
 import "./style.less";
 
 import { weatherApi } from "./anno/@fetch";
-import { renderVoidElement } from "./utils/utils";
+import { registerAnno } from "./utils/utils";
+import registerAliaWeather from "./alias/@weather"
+import registerAliafetchAliasWeather from "./alias/@fetchAliasWeather"
 
 function myRemarkPlugin() {
   const annoAlias = {}
 
-  initAliasMeta(annoAlias, 'fetch', 'weather', {
-    weather: true,
-    includeKeys: ['day', 'date', 'week', 'wea']
-  })
-
-  initAliasMeta(annoAlias, 'fetch', 'fetchAliasWeather', {
-    includeKeys: ['day', 'week', 'wea']
-  })
+  registerAliaWeather(annoAlias)
+  registerAliafetchAliasWeather(annoAlias)
 
   return (tree) => {
 
@@ -59,50 +55,17 @@ function myRemarkPlugin() {
   };
 }
 
-const initAliasMeta = (annoAliasMeta, annoName, aliaName, config) => {
-  if (!annoAliasMeta[annoName]) {
-    annoAliasMeta[annoName] = {}
-  }
-  annoAliasMeta[annoName][aliaName] = config
-}
-
-const registerAnno = (annoName, annoAlias, node, ancestors, regFn) => {
-  let aliasAttributes = null
-
-  if (node.name !== annoName) {
-      let isOk = false
-      for (let key in annoAlias[annoName]) {
-          if (node.name === key) {
-              isOk = true
-              aliasAttributes = annoAlias[annoName][key]
-              break
-          }
-      }
-
-      if (!isOk) {
-          renderVoidElement(node);
-          return;
-      }
-  }
-
-  if (aliasAttributes) {
-      node.attributes = Object.assign(aliasAttributes, node.attributes || {})
-  }
-
-  regFn(node, ancestors)
-}
 
 const App = {
   template: `
     <main class="container">
 
-
     <p>演示注解:  @abbr + @nice + @fetch</p>
   
-    <div class="grid">
+    <div class="grid" style="min-height: 300px">
 
-    <textarea style="width:100%;min-height: 300px;display: inline-block;" v-model="before"></textarea>
-    <div v-html="after"></div>
+      <textarea style="display: block;" v-model="before"></textarea>
+      <div v-html="after"></div>
 
     </div>
    
@@ -149,7 +112,7 @@ hello @nice @nice hi
 
     const after = ref("");
 
-    watch(before, async () => {
+    watchEffect(async () => {
       const res = await unified()
         .use(remarkParse)
         .use(remarkDirective)
@@ -161,10 +124,6 @@ hello @nice @nice hi
 
       console.log(String(res));
       after.value = String(res);
-    }, 
-    {
-      immediate: true,
-      deep: true
     });
 
     return {
