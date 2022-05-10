@@ -7,9 +7,9 @@ export default function registerAnnoAbbr(node, ancestors) {
     node.attributes.title = node.args[1];
   }
 
-  const hast = h(node.name, node.attributes, [
+  const hast = h(node.name, node.attributes, 
     node.args && node.args.length > 0 ? node.args[0] : "",
-  ]);
+  );
 
   data.hName = hast.tagName;
   data.hProperties = hast.properties;

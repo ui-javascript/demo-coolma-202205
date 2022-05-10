@@ -61,7 +61,6 @@ const registerAnnoFetch = async (node, ancestors) => {
   let resData;
   if (res.data) {
     if (res.data.data) {
-      debugger;
       resData = res.data.data;
     } else {
       resData = res.data;

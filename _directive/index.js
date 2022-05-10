@@ -27,8 +27,6 @@ import { renderVoidElement } from "./utils/utils";
 function myRemarkPlugin() {
   const annoAlias = {}
 
-  initAliasMeta(annoAlias)
-
   initAliasMeta(annoAlias, 'fetch', 'weather', {
     weather: true,
     includeKeys: ['day', 'date', 'week', 'wea']
@@ -42,16 +40,17 @@ function myRemarkPlugin() {
 
     visitParents(tree, "textDirective", (node, ancestors) => {
       // 注册@abbr
-
-          // // 判断祖先元素
-      // if (!ancestors || ancestors.length === 0) {
-      //   return;
-      // }
-
       registerAnno('abbr', annoAlias, node, ancestors, registerAnnoAbbr);
+
+      // 判断祖先元素
+      if (!ancestors || ancestors.length === 0) {
+        return;
+      }
 
       // 注册@nice
       registerAnno('nice', annoAlias, node, ancestors, registerAnnoNice);
+
+     
 
       // 注册@fetch
       registerAnno('fetch', annoAlias, node, ancestors, registerAnnoFetch)
@@ -90,7 +89,7 @@ const registerAnno = (annoName, annoAlias, node, ancestors, regFn) => {
       node.attributes = Object.assign(aliasAttributes, node.attributes || {})
   }
 
-  return regFn(node, ancestors)
+  regFn(node, ancestors)
 }
 
 const App = {
