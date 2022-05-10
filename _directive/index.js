@@ -86,7 +86,7 @@ title: "HyperText Markup Language的缩写"
                 const item = latestAncestors.children[idx]
                 idx = parseInt(idx)
 
-                if ((item.type === 'textDirective' && item.name === "nice") 
+                if ((item.type === 'textDirective' && item.name === "nice") // @todo 准确定位标签
                   && (!item.args || item.args.length === 0)) {
                     const nextNode = latestAncestors.children[idx+1]
                     const prevNode = latestAncestors.children[idx-1]
