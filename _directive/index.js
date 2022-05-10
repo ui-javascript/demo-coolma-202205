@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueCompositionApi, {
   ref,
   watchEffect,
+  watch
 } from "@vue/composition-api";
 
 import { unified } from "unified";
@@ -17,12 +18,15 @@ import registerAnnoNice from "./anno/@nice";
 import registerAnnoAbbr from "./anno/@abbr";
 import registerAnnoFetch from "./anno/@fetch";
 
+// import "@picocss/pico/css/pico.classless.min.css"
 import "./style.less";
 
+import { weatherApi } from "./anno/@fetch";
 
 function myRemarkPlugin() {
   return (tree) => {
-    visitParents(tree, "textDirective", (node, ancestors) => {
+
+    visitParents(tree, "textDirective", async (node, ancestors) => {
       // 注册@abbr
       registerAnnoAbbr(node);
 
@@ -35,7 +39,7 @@ function myRemarkPlugin() {
       registerAnnoNice(node, ancestors);
 
       // 注册@fetch
-      registerAnnoFetch(node, ancestors);
+      await registerAnnoFetch(node, ancestors);
       
     });
   };
@@ -47,15 +51,21 @@ const App = {
 
     <p>演示注解:  @abbr + @nice + @fetch</p>
   
-    <textarea style="width:100%;height: 300px;" v-model="before"></textarea>
+    <div class="grid">
 
+    <textarea style="width:100%;min-height: 300px;display: inline-block;" v-model="before"></textarea>
     <div v-html="after"></div>
    
     </div>
+</div>
+
+ 
+
+  
     
   `,
   setup() {
-    const before = ref(`# A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red.blue #id} @nice
+    const before = ref(`# A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red #id} @nice
 
 @abbr(HTML, "HTML的全称"){.bg-blue}
 
@@ -69,12 +79,15 @@ hello hi *em* @abbr(HTML, "HTML的全称"){.bg-blue} @nice @nice
 
 hello @nice @nice hi
 
-@fetch("https://v0.yiketianqi.com/api?unescape=1&version=v91&appid=43656176&appsecret=I42og6Lm&ext=&cityid=&city=")
+@fetch("${weatherApi}")
+
+@fetch{weather}
 
 `);
 
     const after = ref("");
-    watchEffect(async () => {
+
+    watch(before, async () => {
       const res = await unified()
         .use(remarkParse)
         .use(remarkDirective)
@@ -86,11 +99,16 @@ hello @nice @nice hi
 
       console.log(String(res));
       after.value = String(res);
+    }, 
+    {
+      immediate: true,
+      deep: true
     });
 
     return {
       before,
       after,
+      weatherApi
     };
   },
 };
