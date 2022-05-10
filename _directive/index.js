@@ -99,7 +99,7 @@ hello @nice @nice hi
 
 @fetch{weather: true}
 
-@fetch{weather: true, includeKeys: ['date']}
+这个注解要报错 @fetch{weather: true, includeKeys: ['date']}
 
 @fetch{weather: true, includeKeys: "['date']"}
 
