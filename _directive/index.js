@@ -58,13 +58,13 @@ function myRemarkPlugin() {
 
 const App = {
   template: `
-    <main class="container">
+    <main class="container-fluid">
 
     <p>演示注解:  @abbr + @nice + @fetch</p>
   
-    <div class="grid" style="min-height: 300px">
+    <div class="grid">
 
-      <textarea style="display: block;" v-model="before"></textarea>
+      <textarea style="display: block;min-height: 350px" v-model="before"></textarea>
       <div v-html="after"></div>
 
     </div>

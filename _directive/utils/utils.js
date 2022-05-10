@@ -7,10 +7,11 @@ export function renderVoidElement(node) {
 }
 
 export function initAliasMeta(annoAliasMeta, annoName, aliaName, config) {
-  if (!annoAliasMeta[annoName]) {
-    annoAliasMeta[annoName] = {};
+  if (!annoAliasMeta[aliaName]) {
+    annoAliasMeta[aliaName] = {};
   }
-  annoAliasMeta[annoName][aliaName] = config;
+  annoAliasMeta[aliaName].attachAnno = annoName;
+  annoAliasMeta[aliaName].properties = config
 }
 
 export function registerAnno(annoName, annoAlias, node, ancestors, regFn) {
@@ -18,10 +19,10 @@ export function registerAnno(annoName, annoAlias, node, ancestors, regFn) {
 
   if (node.name !== annoName) {
     let isOk = false;
-    for (let key in annoAlias[annoName]) {
-      if (node.name === key) {
+    for (let key in annoAlias) {
+      if (node.name === key && annoAlias[key].attachAnno === annoName) {
         isOk = true;
-        aliasAttributes = annoAlias[annoName][key];
+        aliasAttributes = annoAlias[key]['properties'];
         break;
       }
     }
