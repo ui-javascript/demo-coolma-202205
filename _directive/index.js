@@ -30,8 +30,9 @@ const App = {
   `,
   setup() {
 
-    const initContent = `# abbr测试 
-- 简单示例 @nice
+    const initContent = `# abbr测试 @abbr(HTML, 121212)
+
+- 简单示例
 
 A lovely language know as @abbr(HTML, "HyperText Markup Language")
     
@@ -46,7 +47,7 @@ title: "HyperText Markup Language的缩写"
 #id_html
 }
 
-test
+原始文字 @nice
 `
 
     const before = ref(initContent)
@@ -59,21 +60,23 @@ test
 
       visitParents(tree, 'textDirective', (node, ancestors) => {
       
-        if (node.name == "nice" && (!node.args || node.args.length === 0)) {
+        if (ancestors && ancestors.length > 1 && node.name == "nice" && (!node.args || node.args.length === 0)) {
           console.log("父节点")
           console.log(ancestors)
 
-          if (ancestors && ancestors.length > 1 && ancestors[ancestors.length-1].children && ancestors[ancestors.length-1].children.length > 0) {
-            for (let idx in ancestors[ancestors.length-1].children) {
+          const latestAncestors = ancestors[ancestors.length-1]
+
+          if (latestAncestors.children && latestAncestors.children.length > 0) {
+            for (let idx in latestAncestors.children) {
                 // console.log("节点" + idx)
                 // console.log(item)
-                const item = ancestors[ancestors.length-1].children[idx]
+                const item = latestAncestors.children[idx]
                 idx = parseInt(idx)
 
                 if ((item.type === 'textDirective' && item.name === "nice") 
                   && (!item.args || item.args.length === 0)) {
-                    const nextNode = ancestors[ancestors.length-1].children[idx+1]
-                    const prevNode = ancestors[ancestors.length-1].children[idx-1]
+                    const nextNode = latestAncestors.children[idx+1]
+                    const prevNode = latestAncestors.children[idx-1]
 
                     if (nextNode && nextNode.type === "text") {
                       // console.log("后节点")
@@ -86,7 +89,7 @@ test
                       console.log("前节点")
                       console.log(prevNode)
 
-                      node.args = [nextNode.value]
+                      node.args = [prevNode.value]
 
                       prevNode.value = "替换后的文字"
                       // ancestors[1].children[idx-1] = h("textttt", {}, ["ssss"])
