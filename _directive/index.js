@@ -48,13 +48,13 @@ function myRemarkPlugin() {
       //   return;
       // }
 
-      registerAnno(annoAlias, 'abbr', node, ancestors, registerAnnoAbbr);
+      registerAnno('abbr', annoAlias, node, ancestors, registerAnnoAbbr);
 
       // 注册@nice
-      registerAnno(annoAlias, 'nice', node, ancestors, registerAnnoNice);
+      registerAnno('nice', annoAlias, node, ancestors, registerAnnoNice);
 
       // 注册@fetch
-      registerAnno(annoAlias, 'fetch', node, ancestors, registerAnnoFetch)
+      registerAnno('fetch', annoAlias, node, ancestors, registerAnnoFetch)
       
     });
   };
@@ -67,7 +67,7 @@ const initAliasMeta = (annoAliasMeta, annoName, aliaName, config) => {
   annoAliasMeta[annoName][aliaName] = config
 }
 
-const registerAnno = (annoAlias, annoName, node, ancestors, regFn) => {
+const registerAnno = (annoName, annoAlias, node, ancestors, regFn) => {
   let aliasAttributes = null
 
   if (node.name !== annoName) {
