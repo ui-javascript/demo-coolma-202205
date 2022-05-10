@@ -12,7 +12,7 @@ import {h} from 'hastscript'
 import {fromMarkdown} from 'mdast-util-from-markdown'
 import {toMarkdown} from 'mdast-util-to-markdown'
 
-import { directiveFromMarkdown, directiveToMarkdown} from './libs/mdast-util-directive'
+import { directiveFromMarkdown, directiveToMarkdown} from './utils/mdast-util-directive'
 
 
 Vue.use(VueCompositionApi);
@@ -21,7 +21,7 @@ const App = {
   template: `
     <div>
   
-    演示 @abbr + @nice
+    <p>演示注解: @abbr + @nice</p>
 
     <textarea style="width:100%;height: 300px;" v-model="before"></textarea>
 
