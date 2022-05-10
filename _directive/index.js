@@ -81,7 +81,7 @@ const App = {
   setup() {
     const before = ref(`# A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red #id} @nice
 
-@abbr(HTML, "HTML的全称"){.bg-blue}
+@abbr(HTML, "HTML的全称"){.border-orange-lighter.border-solid}
 
 @weather
 
