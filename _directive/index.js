@@ -67,6 +67,8 @@ title: "HyperText Markup Language的缩写"
     
     
     const out = computed(() => {
+      console.log("树")
+      console.log(tree.value)
       return toMarkdown(tree.value, {extensions: [directiveToMarkdown]})
     }) 
 

@@ -8,7 +8,7 @@ import {track} from 'mdast-util-to-markdown/lib/util/track.js'
 
 const own = {}.hasOwnProperty
 
-const shortcut = /^[^\t\n\r "#'.<=>`}]+$/
+const shortcut = /^\(^\t\n\r "#'.<=>`}]+$/
 
 handleDirective.peek = peekDirective
 
@@ -35,8 +35,10 @@ export const directiveFromMarkdown = {
     directiveContainerAttributeName: exitAttributeName,
     directiveContainerAttributeValue: exitAttributeValue,
     directiveContainerAttributes: exitAttributes,
-    directiveContainerArgs: exitContainerArgs,
+    directiveContainerArgValueData: exitArgValueData,
+    directiveContainerArgs: exitArgs,
     directiveContainerName: exitName,
+    directiveContainerNamespace: exitNamespace,
 
     directiveLeaf: exit,
     directiveLeafAttributeClassValue: exitAttributeClassValue,
@@ -44,7 +46,10 @@ export const directiveFromMarkdown = {
     directiveLeafAttributeName: exitAttributeName,
     directiveLeafAttributeValue: exitAttributeValue,
     directiveLeafAttributes: exitAttributes,
+    directiveLeafArgValueData: exitArgValueData,
+    directiveLeafArgs: exitArgs,
     directiveLeafName: exitName,
+    directiveLeafNamespace: exitNamespace,
 
     directiveText: exit,
     directiveTextAttributeClassValue: exitAttributeClassValue,
@@ -52,9 +57,10 @@ export const directiveFromMarkdown = {
     directiveTextAttributeName: exitAttributeName,
     directiveTextAttributeValue: exitAttributeValue,
     directiveTextAttributes: exitAttributes,
-    directiveTextName: exitName,
+
     directiveTextArgValueData: exitArgValueData,
     directiveTextArgs: exitArgs,
+    directiveTextName: exitName,
     directiveTextNamespace: exitNamespace,
   }
 }
@@ -106,7 +112,7 @@ function enterText(token) {
  * @param {Token} token
  */
 function enter(type, token) {
-  this.enter({type, name: '', attributes: {}, children: []}, token)
+  this.enter({type, name: '', namespace: '', attributes: {}, args: [], children: []}, token)
 }
 
 /** @type {_Handle} */
@@ -117,7 +123,7 @@ function exitArgValueData(token) {
   console.log("===")
   // console.log(this.sliceSerialize(token))
 
-  // console.log(token)
+  console.log(token)
   // console.log(this.sliceSerialize(token))
   // console.log(parseEntities(this.sliceSerialize(token)))
   args.push(this.sliceSerialize(token))
@@ -229,7 +235,8 @@ function handleDirective(node, _, context, safeOptions) {
   /** @type {Directive|Paragraph|undefined} */
   let label = node
 
-  console.log(label)
+  console.log("node")
+  console.log(node)
 
   if (node.type === 'containerDirective') {
     const head = (node.children || [])[0]
@@ -260,7 +267,10 @@ function handleDirective(node, _, context, safeOptions) {
     let shallow = node
 
     if (inlineDirectiveArgs(head)) {
-      shallow = Object.assign({}, node, {children: node.children.slice(1)})
+      shallow = Object.assign({}, node, {
+        // args: node.children.slice(1),
+        children: node.children.slice(1)
+      })
     }
 
     if (shallow && shallow.children && shallow.children.length > 0) {
@@ -369,6 +379,8 @@ function attributes(node, context) {
  * @returns {node is Paragraph & {data: {directiveArgs: boolean}}}
  */
 function inlineDirectiveArgs(node) {
+  console.log("参数指令")
+  console.log(node)
   return Boolean(
     node && node.type === 'paragraph' && node.data && node.data.directiveArgs
   )
@@ -380,33 +392,34 @@ function enterArgs() {
   this.setData('directiveArgs', [])
 }
 
-   /** @type {_Handle} */
-   function exitArgs() {
-    /** @type {Directive[]} */
-    // @ts-expect-error
-    const stack = this.getData('directiveStack')
-    /** @type {Args} */
-    // @ts-expect-error
-    const args = this.getData('directiveArgs') 
-    /** @type {string[]} */
-    const cleaned = []
-    /** @type {string} */
-    let arg 
-    let index = -1
+/** @type {_Handle} */
+function exitArgs() {
+/** @type {Directive[]} */
+// @ts-expect-error
+const stack = this.getData('directiveStack')
+/** @type {Args} */
+// @ts-expect-error
+const args = this.getData('directiveArgs') 
+/** @type {string[]} */
+const cleaned = []
+/** @type {string} */
+let arg 
+let index = -1
 
-    console.log("==>")
-    // console.log(stack)
-    console.log(args)
-    while (++index < args.length) {
-      arg = args[index]
+console.log("==>")
+// console.log(stack)
+console.log(args)
 
-      cleaned.push(arg)
-    }
+while (++index < args.length) {
+  arg = args[index]
 
-    this.resume()
-    this.setData('directiveArgs')
-    stack[stack.length - 1].args = cleaned
-  }
+  cleaned.push(arg)
+}
+
+this.resume()
+this.setData('directiveArgs')
+stack[stack.length - 1].args = cleaned
+}
 
 /** @type {_Handle} */
 function enterNamespace() {
@@ -414,12 +427,22 @@ function enterNamespace() {
 }
 
 /** @type {_Handle} */
-function exitNamespace() {
+function exitNamespace(token) {
   const data = this.resume()
+
   /** @type {Directive[]} */
   // @ts-expect-error
-  const stack = this.getData('directiveStack')
+  const stack = this.stack
+
+
+  console.log("进入命名空间")
+  console.log(token)
+  console.log(stack[stack.length - 1])
   stack[stack.length - 1].namespace = data
+
+  const node = /** @type {Directive} */ (this.stack[this.stack.length - 1])
+  console.log()
+  node.namespace = this.sliceSerialize(token)
 }
 
 /**
