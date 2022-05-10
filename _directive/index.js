@@ -4,9 +4,10 @@ import {micromark} from 'micromark'
 // import {directive, directiveHtml} from 'micromark-extension-directive'
 import {directive, directiveHtml} from 'coolma'
 import "./index.less"
-import VueCompositionApi, {ref, computed} from '@vue/composition-api';
+import VueCompositionApi, {ref, computed, watchEffect} from '@vue/composition-api';
 
 import {visitParents} from "unist-util-visit-parents"
+import {h} from 'hastscript'
 
 import {fromMarkdown} from 'mdast-util-from-markdown'
 import {toMarkdown} from 'mdast-util-to-markdown'
@@ -29,8 +30,8 @@ const App = {
   `,
   setup() {
 
-    const initContent = `# abbr测试
-- 简单示例
+    const initContent = `# abbr测试 
+- 简单示例 @nice
 
 A lovely language know as @abbr(HTML, "HyperText Markup Language")
     
@@ -43,24 +44,66 @@ title: "HyperText Markup Language的缩写"
 .bg-blue
 .red
 #id_html
-}`
+}
+
+test
+`
 
     const before = ref(initContent)
     
-    
     const tree = computed(() => {
-      return fromMarkdown(before.value, {
+      const tree = fromMarkdown(before.value, {
         extensions: [directive()],
         mdastExtensions: [directiveFromMarkdown]
       })
+
+      visitParents(tree, 'textDirective', (node, ancestors) => {
+      
+        if (node.name == "nice" && (!node.args || node.args.length === 0)) {
+          console.log("父节点")
+          console.log(ancestors)
+
+          if (ancestors && ancestors.length > 1 && ancestors[ancestors.length-1].children && ancestors[ancestors.length-1].children.length > 0) {
+            for (let idx in ancestors[ancestors.length-1].children) {
+                // console.log("节点" + idx)
+                // console.log(item)
+                const item = ancestors[ancestors.length-1].children[idx]
+                idx = parseInt(idx)
+
+                if ((item.type === 'textDirective' && item.name === "nice") 
+                  && (!item.args || item.args.length === 0)) {
+                    const nextNode = ancestors[ancestors.length-1].children[idx+1]
+                    const prevNode = ancestors[ancestors.length-1].children[idx-1]
+
+                    if (nextNode && nextNode.type === "text") {
+                      // console.log("后节点")
+                      // console.log(nextNode)
+                      // nextNode.type = "em"
+                      prevNode.value = "替换后的文字"
+                      node.args = [nextNode.value]
+
+                    } else if (prevNode && prevNode.type === "text") {
+                      console.log("前节点")
+                      console.log(prevNode)
+
+                      node.args = [nextNode.value]
+
+                      prevNode.value = "替换后的文字"
+                      // ancestors[1].children[idx-1] = h("textttt", {}, ["ssss"])
+
+                    }
+                }
+
+            }
+          }
+        }
+ 
+      })
+
+      return tree
     }) 
-    // console.log(tree)
-    
-    visitParents(tree, 'textDirective', (node, ancestors) => {
-      console.log("父节点")
-      console.log(ancestors)
-    })
-    
+ 
+
     
     const out = computed(() => {
       console.log("树")
