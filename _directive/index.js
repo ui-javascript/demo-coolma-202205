@@ -11,11 +11,7 @@ import {visitParents} from "unist-util-visit-parents"
 import {fromMarkdown} from 'mdast-util-from-markdown'
 import {toMarkdown} from 'mdast-util-to-markdown'
 
-import {directiveFromMarkdown} from 'mdast-util-directive'
-
-import { directiveToMarkdown} from './libs/mdast-util-directive'
-
-
+import { directiveFromMarkdown, directiveToMarkdown} from './libs/mdast-util-directive'
 
 
 Vue.use(VueCompositionApi);
