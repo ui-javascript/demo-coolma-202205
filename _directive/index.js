@@ -26,6 +26,7 @@ function myRemarkPlugin() {
       // 注册@abbr
       registerAnnoAbbr(node);
 
+      // 判断祖先元素
       if (!ancestors || ancestors.length === 0) {
         return;
       }
@@ -68,7 +69,7 @@ hello hi *em* @abbr(HTML, "HTML的全称"){.bg-blue} @nice @nice
 
 hello @nice @nice hi
 
-@fecth("https://v0.yiketianqi.com/api?unescape=1&version=v91&appid=43656176&appsecret=I42og6Lm&ext=&cityid=&city=")
+@fetch("https://v0.yiketianqi.com/api?unescape=1&version=v91&appid=43656176&appsecret=I42og6Lm&ext=&cityid=&city=")
 
 `);
 

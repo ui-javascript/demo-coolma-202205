@@ -1,6 +1,7 @@
+import Axios from "axios";
 import { renderVoidElement } from "../utils/utils";
 
-export default function registerAnnoFetch(node, ancestors) {
+const registerAnnoFetch = async (node, ancestors) => {
 
     if (node.name !== "fetch") {
         return;
@@ -8,14 +9,20 @@ export default function registerAnnoFetch(node, ancestors) {
 
     console.log()
 
-    if (!node.args || node.args.length === 0) {
+    if ((!node.args || node.args.length === 0) && (!node.attributes || 'weather' in node.attributes)) {
         renderVoidElement(node)
         return;
     }
 
-    debugger
 
-    console.log("天气接口")
-    console.log(node.args[0])
+    // console.log("天气接口")
+    // console.log()
+
+    const res = await Axios.get(node.args[0])
+    console.log(res)
+
+
 
 }
+
+export default registerAnnoFetch; 
