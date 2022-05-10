@@ -87,14 +87,14 @@ const registerAnnoFetch = async (annoAlias, node, ancestors) => {
 
     // @todo 耦合代码
     if (isWeatherApi && !includeKeys) {
-        includeKeys = ['day', 'date', 'week']
+        includeKeys = ['day', 'date', 'week', 'wea']
     }
 
     const table = document.getElementById(tableId)
     const thead = document.createElement("thead") 
     const tr = document.createElement("tr")
     for (let key in resData[0]) {
-        if (includeKeys && !includeKeys.includes(key)) {
+        if (includeKeys && !includeKeys.includes(key)) {  // contains是准确匹配的
             continue
         }
         const th = document.createElement("th")
@@ -107,7 +107,7 @@ const registerAnnoFetch = async (annoAlias, node, ancestors) => {
     for (let i=0; i < resData.length; i++) {
         const tr = document.createElement("tr")
         for (let key in resData[i]) {
-            if (includeKeys && !includeKeys.includes(key)) {
+            if (includeKeys && !includeKeys.includes(key)) { // contains是准确匹配的
                 continue
             }
             const td = document.createElement("td")

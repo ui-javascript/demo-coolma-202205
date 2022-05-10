@@ -53,10 +53,10 @@ const registerAlias = (annoAlias) => {
   annoAlias.fetch = {
     weather: {
       weather: true,
-      includeKeys: ['day', 'date', 'week']
+      includeKeys: ['day', 'date', 'week', 'wea']
     },
     fetchAliasWeather: {
-      includeKeys: ['day', 'week']
+      includeKeys: ['day', 'week', 'wea']
     }
   }
 }
