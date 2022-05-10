@@ -49,11 +49,17 @@ title: "HyperText Markup Language的缩写"
 #id_html
 }
 
-@nice 原始文字
+
 
 原始文字 @nice 
 
+@nice 原始文字
+
 原始文字A @nice 原始文字B
+
+原始文字A 原始文字B @nice 
+
+原始文字A 原始文字B @nice @nice
 
 `
 
@@ -101,6 +107,8 @@ title: "HyperText Markup Language的缩写"
                       // node.args = [prevNode.value]
 
                     }
+
+                    break;
                 }
 
             }
