@@ -71,11 +71,16 @@ const registerAnnoFetch = async (annoAlias, node, ancestors) => {
     const res = await Axios.get(api)
     console.log(res.data.data)
 
+    let includeKeys = node.attributes['includeKeys']
+    if (isWeatherApi && !includeKeys) {
+        includeKeys = ['day', 'date', 'week']
+    }
+
     const table = document.getElementById(tableId)
     const thead = document.createElement("thead") 
     const tr = document.createElement("tr")
     for (let key in res.data.data[0]) {
-        if (!['day', 'date', 'week'].includes(key)) {
+        if (includeKeys && !includeKeys.includes(key)) {
             continue
         }
         const th = document.createElement("th")
@@ -88,7 +93,7 @@ const registerAnnoFetch = async (annoAlias, node, ancestors) => {
     for (let i=0; i < res.data.data.length; i++) {
         const tr = document.createElement("tr")
         for (let key in res.data.data[i]) {
-            if (!['day', 'date', 'week'].includes(key)) {
+            if (includeKeys && !includeKeys.includes(key)) {
                 continue
             }
             const td = document.createElement("td")

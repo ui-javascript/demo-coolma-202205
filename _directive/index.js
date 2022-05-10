@@ -23,8 +23,6 @@ import "./style.less";
 
 import { weatherApi } from "./anno/@fetch";
 
-
-
 function myRemarkPlugin() {
   const annoAlias = {}
 
@@ -54,10 +52,11 @@ function myRemarkPlugin() {
 const registerAlias = (annoAlias) => {
   annoAlias.fetch = {
     weather: {
-      weather: true
+      weather: true,
+      includeKeys: ['day', 'date', 'week']
     },
-    fetchAliasWeatherNotOk: {
-
+    fetchAliasWeather: {
+      includeKeys: ['day', 'week']
     }
   }
 }
@@ -100,11 +99,17 @@ hello @nice @nice hi
 
 @fetch{weather: true}
 
+@fetch{weather: true, includeKeys: ['date']}
+
+@fetch{weather: true, includeKeys: "['date']"}
+
 @fetch{weather: false}
 
 @weather
 
-@fetchAliasWeatherNotOk
+@fetchAliasWeather
+
+@fetchAliasWeather{weather}
 
 `);
 
