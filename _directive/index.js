@@ -23,12 +23,18 @@ import "./style.less";
 
 import { weatherApi } from "./anno/@fetch";
 
+
+
 function myRemarkPlugin() {
+  const annoAlias = {}
+
+  registerAlias(annoAlias)
+
   return (tree) => {
 
     visitParents(tree, "textDirective", async (node, ancestors) => {
       // 注册@abbr
-      registerAnnoAbbr(node);
+      registerAnnoAbbr(annoAlias, node);
 
       // 判断祖先元素
       if (!ancestors || ancestors.length === 0) {
@@ -36,18 +42,30 @@ function myRemarkPlugin() {
       }
 
       // 注册@nice
-      registerAnnoNice(node, ancestors);
+      registerAnnoNice(annoAlias, node, ancestors);
 
       // 注册@fetch
-      await registerAnnoFetch(node, ancestors);
+      await registerAnnoFetch(annoAlias, node, ancestors);
       
     });
   };
 }
 
+const registerAlias = (annoAlias) => {
+  annoAlias.fetch = {
+    weather: {
+      weather: true
+    },
+    fetchAliasWeatherNotOk: {
+
+    }
+  }
+}
+
 const App = {
   template: `
-    <div>
+    <main class="container">
+
 
     <p>演示注解:  @abbr + @nice + @fetch</p>
   
@@ -55,14 +73,11 @@ const App = {
 
     <textarea style="width:100%;min-height: 300px;display: inline-block;" v-model="before"></textarea>
     <div v-html="after"></div>
-   
+
     </div>
-</div>
+   
+    </main>
 
- 
-
-  
-    
   `,
   setup() {
     const before = ref(`# A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red #id} @nice
@@ -82,6 +97,14 @@ hello @nice @nice hi
 @fetch("${weatherApi}")
 
 @fetch{weather}
+
+@fetch{weather: true}
+
+@fetch{weather: false}
+
+@weather
+
+@fetchAliasWeatherNotOk
 
 `);
 
