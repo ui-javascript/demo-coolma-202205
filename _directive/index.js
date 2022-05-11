@@ -26,7 +26,7 @@ import { registerAnno } from "./utils/utils";
 import registerAliaWeather from "./alias/@weather"
 import registerAliafetchAliasWeather from "./alias/@fetchAliasWeather"
 import registerAnnoDel from "./anno/@del";
-import registerAnnoImg, { emojiCatUrl, emojiXiongUrl } from "./anno/@img";
+import registerAnnoImg, { emojiUrls} from "./anno/@img";
 import registerAliaEmoji from "./alias/@emoji";
 
 function myRemarkPlugin() {
@@ -80,16 +80,11 @@ const App = {
 说点正确的废话 @del    
 
 @emoji{xiong}
-
 @emoji{cat}
-
-@img{style: "width: 150px;"} ${emojiXiongUrl}
-
-@img("${emojiCatUrl}"){style: "width: 150px;"}
-
-@emoji("${emojiXiongUrl}")
-
-@emoji{src: "${emojiCatUrl}"}
+@img ${emojiUrls.xiong}
+@img("${emojiUrls.cat}"){style: "width: 150px;"}
+@emoji("${emojiUrls.xiong}")
+@emoji{src: "${emojiUrls.cat}"}
 
 
 A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red #id} @abbr(HTML, "HTML的全称"){.bg-blue.border-orange-lighter.border-solid}
@@ -147,8 +142,7 @@ hello @nice @nice hi
       before,
       after,
       weatherApi,
-      emojiCatUrl, 
-      emojiXiongUrl
+      emojiUrls
     };
   },
 };

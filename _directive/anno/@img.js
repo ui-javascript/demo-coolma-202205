@@ -2,11 +2,6 @@ import { renderVoidElement } from "../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 
-export const emojiXiongUrl =
-  "https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif";
-export const emojiCatUrl =
-  "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg";
-
 export const emojiUrls = {
   xiong: "https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif",
   cat: "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg"
@@ -14,7 +9,6 @@ export const emojiUrls = {
 
 export default function registerAnnoImg(node, ancestors) {
   const latestAncestors = ancestors[ancestors.length - 1];
-
 
   const isEmoji = ("xiong" in node.attributes) || ("cat" in node.attributes);
   const hasArg = node.args && node.args.length > 0;
@@ -126,7 +120,7 @@ export default function registerAnnoImg(node, ancestors) {
     }
   }
 
-  if (!nextNode) {
-    renderVoidElement(node);
-  }
+
+  // 无论是否找到nextNode, 当前节点都得渲染成空节点
+  renderVoidElement(node);
 }
