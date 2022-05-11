@@ -1,12 +1,15 @@
 # README
 
-![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652201496335-dptYmfwpHjJm.png)
+![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652307562137-QXrr8bwDbEZH.png)
 
 # 演示注解
 
-- @nice
-- @abbr(abbrName, fullName)
-- @fetch(url) --> @weather
+- @nice -- 高亮
+- @del -- 删除
+- @abbr(abbrName, fullName) -- 缩略词
+- @fetch(url) -- 请求数据展示成表格
+- @weather -- 天气预报
+- @bvid -- B站视频
 
 # 常用工具
 
