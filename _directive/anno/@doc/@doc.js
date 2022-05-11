@@ -1,4 +1,4 @@
-import { renderVoidElement } from "../utils/utils";
+import { renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 

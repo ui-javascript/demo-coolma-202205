@@ -1,4 +1,4 @@
-import { initAliasMeta } from "../utils/utils";
+import { initAliasMeta } from "../../../utils/utils";
 
 export default function registerAliaWeather (annoAlias) {
   initAliasMeta(annoAlias, "fetch", "weather", {

@@ -14,22 +14,22 @@ import rehypeFormat from "rehype-format";
 import rehypeStringify from "rehype-stringify";
 import remarkDirective from "./utils/remark-directive";
 
-import registerAnnoNice from "./anno/@nice";
-import registerAnnoAbbr from "./anno/@abbr";
-import registerAnnoFetch from "./anno/@fetch";
+import registerAnnoNice from "./anno/@mark/@nice";
+import registerAnnoAbbr from "./anno/@ref/@abbr";
+import registerAnnoFetch from "./anno/@fetch/@fetch";
 
 // import "@picocss/pico/css/pico.classless.min.css"
 import "./style.less";
 
-import { weatherApi } from "./anno/@fetch";
+import { weatherApi } from "./anno/@fetch/@fetch";
 import { registerAnno } from "./utils/utils";
-import registerAliaWeather from "./alias/@weather"
-import registerAliafetchAliasWeather from "./alias/@fetchAliasWeather"
-import registerAnnoDel from "./anno/@del";
-import registerAnnoImg, { emojiUrls} from "./anno/@img";
-import registerAliaEmoji from "./alias/@emoji";
-import registerAnnoDoc from "./anno/@doc";
-import registerAliaCode from "./alias/@code";
+import registerAliaWeather from "./anno/@fetch/alias/@weather"
+import registerAliafetchAliasWeather from "./anno/@fetch/alias/@fetchAliasWeather"
+import registerAnnoDel from "./anno/@mark/@del";
+import registerAnnoImg, { emojiUrls} from "./anno/@doc/@img";
+import registerAliaEmoji from "./anno/@doc/alias/@emoji";
+import registerAnnoDoc from "./anno/@doc/@doc";
+import registerAliaCode from "./anno/@doc/alias/@code";
 
 function myRemarkPlugin() {
   const annoAlias = {}
