@@ -4,13 +4,24 @@ import { trim } from "lodash";
 
 export const emojiUrls = {
   xiong: "https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif",
-  cat: "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg"
+  cat: "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg",
+  dog: "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249579841-Yty6cpQs34pj.jpeg",
+  cool: "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249708936-SYHxj43D8Ahf.jpeg",
+  ichange: "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249747826-TWzsbJWnaWZD.jpeg",
+  tiger: "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg"
 }  
 
 export default function registerAnnoImg(node, ancestors) {
   const latestAncestors = ancestors[ancestors.length - 1];
 
-  const isEmoji = ("xiong" in node.attributes) || ("cat" in node.attributes);
+  let isEmoji = false
+  for(let key in emojiUrls) {
+    if (key in node.attributes) {
+      isEmoji = true
+      break
+    }
+  }
+
   const hasArg = node.args && node.args.length > 0;
   const hasUrlAttr = ("url" in node.attributes) || ("src" in node.attributes);
   const hasEnoughChildren =
@@ -56,7 +67,7 @@ export default function registerAnnoImg(node, ancestors) {
 
     let src
     for (let key in node.attributes) {
-      if (key !== "src" && key != "style" && key != "class" && key != "id") {
+      if (key !== "src" && key != "style" && key != "class" && key != "id") { // 暂时只排除这四个字段
         src = emojiUrls[key]
         break;
       }

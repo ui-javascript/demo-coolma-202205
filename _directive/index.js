@@ -28,6 +28,8 @@ import registerAliafetchAliasWeather from "./alias/@fetchAliasWeather"
 import registerAnnoDel from "./anno/@del";
 import registerAnnoImg, { emojiUrls} from "./anno/@img";
 import registerAliaEmoji from "./alias/@emoji";
+import registerAnnoDoc from "./anno/@doc";
+import registerAliaCode from "./alias/@code";
 
 function myRemarkPlugin() {
   const annoAlias = {}
@@ -35,6 +37,7 @@ function myRemarkPlugin() {
   registerAliaWeather(annoAlias)
   registerAliafetchAliasWeather(annoAlias)
   registerAliaEmoji(annoAlias)
+  registerAliaCode(annoAlias)
 
   return (tree) => {
 
@@ -49,6 +52,7 @@ function myRemarkPlugin() {
 
       registerAnno('nice', annoAlias, node, ancestors, registerAnnoNice);
       registerAnno('img', annoAlias, node, ancestors, registerAnnoImg);
+      registerAnno('doc', annoAlias, node, ancestors, registerAnnoDoc);
       registerAnno('del', annoAlias, node, ancestors, registerAnnoDel);
       registerAnno('fetch', annoAlias, node, ancestors, registerAnnoFetch)
       
@@ -61,8 +65,6 @@ function myRemarkPlugin() {
 const App = {
   template: `
     <main class="container-fluid">
-
-    <p>演示注解:  @abbr + @nice + @del + @fetch</p>
   
     <div class="grid">
 
@@ -76,18 +78,30 @@ const App = {
   `,
   setup() {
     const before = ref(`# 世界很大, 而我又是靓仔 @nice    
- 
+
+---
+
 说点正确的废话 @del    
 
-@emoji{xiong}
-@emoji{cat}
-@img ${emojiUrls.xiong}
-@img("${emojiUrls.cat}"){style: "width: 150px;"}
-@emoji("${emojiUrls.xiong}")
-@emoji{src: "${emojiUrls.cat}"}
+---
 
+- 相关链接 
+  - @code{docName = coolma演示} https://github.com/ui-javascript/demo-coolma-202205
+  - @doc https://procomponents.ant.design/components/editable-table
+
+---
+
+@emoji{xiong}
+@img ${emojiUrls.dog}
+@img("${emojiUrls.cat}"){style: "width: 150px;"}
+@emoji("${emojiUrls.cool}")
+@emoji{src: "${emojiUrls.tiger}"}
+
+---
 
 A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red #id} @abbr(HTML, "HTML的全称"){.bg-blue.border-orange-lighter.border-solid}
+
+---
 
 @weather
 
@@ -109,6 +123,8 @@ A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red #id} @abb
 @fetchAliasWeather
 
 @fetchAliasWeather{weather}
+
+---
 
 hello @nice
   
