@@ -26,12 +26,15 @@ import { registerAnno } from "./utils/utils";
 import registerAliaWeather from "./alias/@weather"
 import registerAliafetchAliasWeather from "./alias/@fetchAliasWeather"
 import registerAnnoDel from "./anno/@del";
+import registerAnnoImg, { emojiCatUrl, emojiXiongUrl } from "./anno/@img";
+import registerAliaEmoji from "./alias/@emoji";
 
 function myRemarkPlugin() {
   const annoAlias = {}
 
   registerAliaWeather(annoAlias)
   registerAliafetchAliasWeather(annoAlias)
+  registerAliaEmoji(annoAlias)
 
   return (tree) => {
 
@@ -44,12 +47,9 @@ function myRemarkPlugin() {
         return;
       }
 
-      // 注册@nice
       registerAnno('nice', annoAlias, node, ancestors, registerAnnoNice);
-
+      registerAnno('img', annoAlias, node, ancestors, registerAnnoImg);
       registerAnno('del', annoAlias, node, ancestors, registerAnnoDel);
-
-      // 注册@fetch
       registerAnno('fetch', annoAlias, node, ancestors, registerAnnoFetch)
       
     });
@@ -78,6 +78,19 @@ const App = {
     const before = ref(`# 世界很大, 而我又是靓仔 @nice    
  
 说点正确的废话 @del    
+
+@emoji{xiong}
+
+@emoji{cat}
+
+@img{style: "width: 150px;"} ${emojiXiongUrl}
+
+@img("${emojiCatUrl}"){style: "width: 150px;"}
+
+@emoji("${emojiXiongUrl}")
+
+@emoji{src: "${emojiCatUrl}"}
+
 
 A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red #id} @abbr(HTML, "HTML的全称"){.bg-blue.border-orange-lighter.border-solid}
 
@@ -133,7 +146,9 @@ hello @nice @nice hi
     return {
       before,
       after,
-      weatherApi
+      weatherApi,
+      emojiCatUrl, 
+      emojiXiongUrl
     };
   },
 };
