@@ -1,8 +1,8 @@
 import { initAliasMeta } from "../../../utils/utils";
 
-export default function registerAliaEmoji (annoAlias) {
+export default function registerAliaDog (annoAlias) {
   initAliasMeta(annoAlias, "img", "dog", {
     style: "width: 150px;",
-    dog
+    dog: true,
   });
 };

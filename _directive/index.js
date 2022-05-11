@@ -18,7 +18,7 @@ import rehypeFormat from "rehype-format";
 import rehypeStringify from "rehype-stringify";
 import remarkDirective from "./utils/remark-directive";
 
-import registerAnnoNice from "./anno/@mark/@nice";
+import registerAnnoMark from "./anno/@mark/@mark";
 import registerAnnoAbbr from "./anno/@ref/@abbr";
 import registerAnnoFetch from "./anno/@fetch/@fetch";
 
@@ -34,16 +34,25 @@ import registerAnnoImg, { emojiUrls} from "./anno/@doc/@img";
 import registerAliaEmoji from "./anno/@doc/alias/@emoji";
 import registerAnnoDoc from "./anno/@doc/@doc";
 import registerAliaCode from "./anno/@doc/alias/@code";
-
+import registerAliaDog from "./anno/@doc/alias/@dog";
+import registerAliaCat from "./anno/@doc/alias/@cat";
+import registerAliaTiger from "./anno/@doc/alias/@tiger";
+import registerAliaNice from "./anno/@mark/alias/@nice";
+import registerAliaBilibili from "./anno/@doc/alias/@bilibili";
+import registerAliaBili from "./anno/@doc/alias/@bili";
+import registerAnnoBvid from "./anno/@doc/@bvid";
 
 const content = `# 世界很大, 而我又是靓仔 @nice 
 
-说了句正确的废话 @del 
+虽然说了句正确的废话 @del 
 
 @dog
-@emoji{cat}
+@cat
+@emoji{tiger}
 
 @doc https://procomponents.ant.design/components/editable-table
+
+@bvid BV1YT4y1Q7xx
 
 @abbr(HTML, "Hyper Text Markup Language")
 
@@ -77,7 +86,6 @@ A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red #id} @abb
 ---
 
 @weather
-
 
 @fetch("${weatherApi}"){includeKeys: '[*]'}
 
@@ -117,23 +125,27 @@ function myRemarkPlugin() {
   registerAliaWeather(annoAlias)
   registerAliafetchAliasWeather(annoAlias)
   registerAliaEmoji(annoAlias)
+  registerAliaBilibili(annoAlias)
+  registerAliaBili(annoAlias)
+  registerAliaDog(annoAlias)
+  registerAliaCat(annoAlias)
+  registerAliaTiger(annoAlias)
   registerAliaCode(annoAlias)
+  registerAliaNice(annoAlias)
 
   return (tree) => {
 
     visitParents(tree, "textDirective", (node, ancestors) => {
-      // 注册@abbr
+
       registerAnno('abbr', annoAlias, node, ancestors, registerAnnoAbbr);
-
-      // 判断祖先元素
-      if (!ancestors || ancestors.length === 0) {
-        return;
-      }
-
-      registerAnno('nice', annoAlias, node, ancestors, registerAnnoNice);
+      
+      registerAnno('mark', annoAlias, node, ancestors, registerAnnoMark);
+      registerAnno('del', annoAlias, node, ancestors, registerAnnoDel);
+      
       registerAnno('img', annoAlias, node, ancestors, registerAnnoImg);
       registerAnno('doc', annoAlias, node, ancestors, registerAnnoDoc);
-      registerAnno('del', annoAlias, node, ancestors, registerAnnoDel);
+      registerAnno('bvid', annoAlias, node, ancestors, registerAnnoBvid);
+
       registerAnno('fetch', annoAlias, node, ancestors, registerAnnoFetch)
       
     });

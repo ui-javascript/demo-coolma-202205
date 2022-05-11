@@ -2,7 +2,7 @@ import { renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 
-export default function registerAnnoDoc(node, ancestors) {
+export default function registerAnnoBvid(node, ancestors) {
   const latestAncestors = ancestors[ancestors.length - 1];
 
   const hasEnoughChildren =
@@ -37,15 +37,17 @@ export default function registerAnnoDoc(node, ancestors) {
       }
 
       if (nextNode) {
-        const linkSplitArr = nextNode.value.split("/")
-        const linkSplitName = linkSplitArr.length > 0 ? linkSplitArr[linkSplitArr.length - 1] : nextNode.value
 
         const data = nextNode.data || (nextNode.data = {});
-        const hast = h(node.attributes.tagName || 'a', {
+        const hast = h('iframe', {
           ...node.attributes,
-          [node.attributes.srcName || "href"]: trim(nextNode.value),
-          target: "_blank",
-        }, [node.attributes.docName || linkSplitName]);
+          src: `https://player.bilibili.com/player.html?bvid=${trim(nextNode.value)}`,
+          scrolling: "no", 
+          border: "0",
+          frameborder: "no",
+          framespacing: "0",
+          allowfullscreen: "true"
+        });
 
         data.hName = hast.tagName;
         data.hProperties = hast.properties;
