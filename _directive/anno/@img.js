@@ -12,29 +12,16 @@ export default function registerAnnoImg(node, ancestors) {
 
   const hasEnoughChildren =
     latestAncestors.children && latestAncestors.children.length > 1;
-  const isEmoji = "xiong" in node.attributes || "cat" in node.attributes;
+  const isEmoji = ("xiong" in node.attributes) || ("cat" in node.attributes);
   const hasArg = node.args && node.args.length > 0;
-  const hasUrlAttr = "url" in node.attributes || "src" in node.attributes;
+  const hasUrlAttr = ("url" in node.attributes) || ("src" in node.attributes);
 
   if (!isEmoji && !hasUrlAttr && !hasArg && !hasEnoughChildren) {
     renderVoidElement(node);
     return;
   }
 
-  // @todo 冗余代码
-  if (isEmoji) {
-    const data = node.data || (node.data = {});
-    const hast = h("img", {
-      ...node.attributes,
-      src: "xiong" in node.attributes ? emojiXiongUrl : emojiCatUrl,
-    });
 
-    data.hName = hast.tagName;
-    data.hProperties = hast.properties;
-    data.hChildren = hast.children;
-
-    return;
-  }
 
   if (hasUrlAttr) {
     const data = node.data || (node.data = {});
@@ -55,6 +42,21 @@ export default function registerAnnoImg(node, ancestors) {
     const hast = h("img", {
       ...node.attributes,
       src: node.args[0],
+    });
+
+    data.hName = hast.tagName;
+    data.hProperties = hast.properties;
+    data.hChildren = hast.children;
+
+    return;
+  }
+
+  // @todo 冗余代码
+  if (isEmoji) {
+    const data = node.data || (node.data = {});
+    const hast = h("img", {
+      ...node.attributes,
+      src: ("xiong" in node.attributes) ? emojiXiongUrl : emojiCatUrl,
     });
 
     data.hName = hast.tagName;
@@ -105,7 +107,6 @@ export default function registerAnnoImg(node, ancestors) {
     }
   }
 
-  debugger
   if (!nextNode) {
     renderVoidElement(node);
   }
