@@ -44,12 +44,14 @@ const registerAnnoFetch = async (node, ancestors) => {
     `div#${loadingDivId}`,
     { "aria-busy": "true", style: "width: 100%;min-height: 50px;" },
     // @todo 耦合代码
-    isWeatherApi
+    [h('figure', {}, [
+    isWeatherApi 
       ? [
-          h(`table#${tableId}`, { role: "grid" }, []),
-          h(`h6#${tableTitleId}`, { class: "text-center" }, ""),
-        ]
+        h(`table#${tableId}`, { role: "grid" }, []),
+        h(`h6#${tableTitleId}`, { class: "text-center" }, ""),
+      ] 
       : [h(`table#${tableId}`, { role: "grid" }, [])]
+    ])]
   );
 
   data.hName = hast.tagName;
@@ -80,8 +82,7 @@ const registerAnnoFetch = async (node, ancestors) => {
   const thead = document.createElement("thead");
   const tr = document.createElement("tr");
   for (let key in resData[0]) {
-    if (includeKeys && !includeKeys.includes(key)) {
-      // contains是准确匹配的
+    if (includeKeys && !includeKeys.includes("*") && !includeKeys.includes(key)) {
       continue;
     }
     const th = document.createElement("th");
@@ -94,8 +95,7 @@ const registerAnnoFetch = async (node, ancestors) => {
   for (let i = 0; i < resData.length; i++) {
     const tr = document.createElement("tr");
     for (let key in resData[i]) {
-      if (includeKeys && !includeKeys.includes(key)) {
-        // contains是准确匹配的
+      if (includeKeys && !includeKeys.includes("*") && !includeKeys.includes(key)) {
         continue;
       }
       const td = document.createElement("td");

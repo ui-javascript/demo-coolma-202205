@@ -1,3 +1,4 @@
+import { normalizeClass } from "@vue/shared";
 import { h } from "hastscript";
 
 export default function registerAnnoAbbr(node, ancestors) {
@@ -7,7 +8,11 @@ export default function registerAnnoAbbr(node, ancestors) {
     node.attributes.title = node.args[1];
   }
 
-  const hast = h(node.name, node.attributes, 
+  const hast = h(node.name, {
+      ...node.attributes,
+      title: null,
+      'data-tooltip': node.attributes.title
+    }, 
     node.args && node.args.length > 0 ? node.args[0] : "",
   );
 

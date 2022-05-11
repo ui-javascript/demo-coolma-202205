@@ -25,6 +25,7 @@ import { weatherApi } from "./anno/@fetch";
 import { registerAnno } from "./utils/utils";
 import registerAliaWeather from "./alias/@weather"
 import registerAliafetchAliasWeather from "./alias/@fetchAliasWeather"
+import registerAnnoDel from "./anno/@del";
 
 function myRemarkPlugin() {
   const annoAlias = {}
@@ -46,12 +47,13 @@ function myRemarkPlugin() {
       // 注册@nice
       registerAnno('nice', annoAlias, node, ancestors, registerAnnoNice);
 
-     
+      registerAnno('del', annoAlias, node, ancestors, registerAnnoDel);
 
       // 注册@fetch
       registerAnno('fetch', annoAlias, node, ancestors, registerAnnoFetch)
       
     });
+
   };
 }
 
@@ -60,7 +62,7 @@ const App = {
   template: `
     <main class="container-fluid">
 
-    <p>演示注解:  @abbr + @nice + @fetch</p>
+    <p>演示注解:  @abbr + @nice + @del + @fetch</p>
   
     <div class="grid">
 
@@ -73,14 +75,16 @@ const App = {
 
   `,
   setup() {
-    const before = ref(`# A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red #id} @nice
+    const before = ref(`# 世界很大, 而我又是靓仔 @nice    
+ 
+说点正确的废话 @del    
 
-@abbr(HTML, "HTML的全称"){.border-orange-lighter.border-solid}
+A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red #id} @abbr(HTML, "HTML的全称"){.bg-blue.border-orange-lighter.border-solid}
 
 @weather
 
 
-@fetch("${weatherApi}")
+@fetch("${weatherApi}"){includeKeys: '[*]'}
 
 @fetch{weather}
 
