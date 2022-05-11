@@ -33,7 +33,8 @@ export function registerAnno(annoName, annoAlias, node, ancestors, regFn) {
   }
 
   if (aliasAttributes) {
-    node.attributes = Object.assign(aliasAttributes, node.attributes || {});
+    // @fix 小心aliasAttributes被覆盖
+    node.attributes = Object.assign({}, aliasAttributes, node.attributes || {});
   }
 
   regFn(node, ancestors);

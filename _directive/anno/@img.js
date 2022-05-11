@@ -7,20 +7,25 @@ export const emojiXiongUrl =
 export const emojiCatUrl =
   "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg";
 
+export const emojiUrls = {
+  xiong: "https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif",
+  cat: "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg"
+}  
+
 export default function registerAnnoImg(node, ancestors) {
   const latestAncestors = ancestors[ancestors.length - 1];
 
-  const hasEnoughChildren =
-    latestAncestors.children && latestAncestors.children.length > 1;
+
   const isEmoji = ("xiong" in node.attributes) || ("cat" in node.attributes);
   const hasArg = node.args && node.args.length > 0;
   const hasUrlAttr = ("url" in node.attributes) || ("src" in node.attributes);
+  const hasEnoughChildren =
+    latestAncestors.children && latestAncestors.children.length > 1;
 
   if (!isEmoji && !hasUrlAttr && !hasArg && !hasEnoughChildren) {
     renderVoidElement(node);
     return;
   }
-
 
 
   if (hasUrlAttr) {
@@ -54,9 +59,23 @@ export default function registerAnnoImg(node, ancestors) {
   // @todo 冗余代码
   if (isEmoji) {
     const data = node.data || (node.data = {});
+
+    let src
+    for (let key in node.attributes) {
+      if (key !== "src" && key != "style" && key != "class" && key != "id") {
+        src = emojiUrls[key]
+        break;
+      }
+    }
+
+    if (!src) {
+      renderVoidElement(node);
+      return;
+    }
+    
     const hast = h("img", {
       ...node.attributes,
-      src: ("xiong" in node.attributes) ? emojiXiongUrl : emojiCatUrl,
+      src,
     });
 
     data.hName = hast.tagName;
