@@ -1,9 +1,13 @@
 import Vue from "vue";
 import VueCompositionApi, {
+  onMounted,
   ref,
   watch,
   watchEffect
 } from "@vue/composition-api";
+import { watchDebounced, watchThrottled } from '@vueuse/core'
+
+
 
 import { unified } from "unified";
 import { visitParents } from "unist-util-visit-parents";
@@ -31,53 +35,22 @@ import registerAliaEmoji from "./anno/@doc/alias/@emoji";
 import registerAnnoDoc from "./anno/@doc/@doc";
 import registerAliaCode from "./anno/@doc/alias/@code";
 
-function myRemarkPlugin() {
-  const annoAlias = {}
 
-  registerAliaWeather(annoAlias)
-  registerAliafetchAliasWeather(annoAlias)
-  registerAliaEmoji(annoAlias)
-  registerAliaCode(annoAlias)
+const content = `# 世界很大, 而我又是靓仔 @nice 
 
-  return (tree) => {
+说了句正确的废话 @del 
 
-    visitParents(tree, "textDirective", (node, ancestors) => {
-      // 注册@abbr
-      registerAnno('abbr', annoAlias, node, ancestors, registerAnnoAbbr);
+@dog
+@emoji{cat}
 
-      // 判断祖先元素
-      if (!ancestors || ancestors.length === 0) {
-        return;
-      }
+@doc https://procomponents.ant.design/components/editable-table
 
-      registerAnno('nice', annoAlias, node, ancestors, registerAnnoNice);
-      registerAnno('img', annoAlias, node, ancestors, registerAnnoImg);
-      registerAnno('doc', annoAlias, node, ancestors, registerAnnoDoc);
-      registerAnno('del', annoAlias, node, ancestors, registerAnnoDel);
-      registerAnno('fetch', annoAlias, node, ancestors, registerAnnoFetch)
-      
-    });
+@abbr(HTML, "Hyper Text Markup Language")
 
-  };
-}
+@weather
+`
 
-
-const App = {
-  template: `
-    <main class="container-fluid">
-  
-    <div class="grid">
-
-      <textarea style="display: block;min-height: 350px" v-model="before"></textarea>
-      <div v-html="after"></div>
-
-    </div>
-   
-    </main>
-
-  `,
-  setup() {
-    const before = ref(`# 世界很大, 而我又是靓仔 @nice    
+const content2 = `# 世界很大, 而我又是靓仔 @nice    
 
 ---
 
@@ -136,12 +109,60 @@ hello hi *暂时跳过这种标签* @abbr(HTML, "HTML的全称"){.bg-blue} @nice
 
 hello @nice @nice hi
 
-`);
+`
 
+function myRemarkPlugin() {
+  const annoAlias = {}
+
+  registerAliaWeather(annoAlias)
+  registerAliafetchAliasWeather(annoAlias)
+  registerAliaEmoji(annoAlias)
+  registerAliaCode(annoAlias)
+
+  return (tree) => {
+
+    visitParents(tree, "textDirective", (node, ancestors) => {
+      // 注册@abbr
+      registerAnno('abbr', annoAlias, node, ancestors, registerAnnoAbbr);
+
+      // 判断祖先元素
+      if (!ancestors || ancestors.length === 0) {
+        return;
+      }
+
+      registerAnno('nice', annoAlias, node, ancestors, registerAnnoNice);
+      registerAnno('img', annoAlias, node, ancestors, registerAnnoImg);
+      registerAnno('doc', annoAlias, node, ancestors, registerAnnoDoc);
+      registerAnno('del', annoAlias, node, ancestors, registerAnnoDel);
+      registerAnno('fetch', annoAlias, node, ancestors, registerAnnoFetch)
+      
+    });
+
+  };
+}
+
+
+const App = {
+  template: `
+    <main class="container-fluid">
+  
+    <div class="grid">
+
+      <textarea style="display: block;min-height: 350px" v-model="before"></textarea>
+      <div v-html="after"></div>
+
+    </div>
+   
+    </main>
+
+  `,
+  setup() {
+
+    const before = ref("");
     const after = ref("");
 
-    watchEffect(async () => {
-      const res = await unified()
+    watchDebounced(before, async () => {
+        const res = await unified()
         .use(remarkParse)
         .use(remarkDirective)
         .use(myRemarkPlugin)
@@ -150,9 +171,17 @@ hello @nice @nice hi
         .use(rehypeStringify)
         .process(before.value);
 
-      console.log(String(res));
-      after.value = String(res);
+        console.log(String(res));
+        after.value = String(res);
+    }, { 
+      debounce: 200, 
+      maxWait: 1000
     });
+
+    onMounted(() => {
+      before.value = content
+    })
+
 
     return {
       before,
