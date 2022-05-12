@@ -8,6 +8,8 @@ export const api = {
   weather: "https://v0.yiketianqi.com/api?unescape=1&version=v91&appid=43656176&appsecret=I42og6Lm&ext=&cityid=&city="
 }
 
+export const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/
+
 export default {
   namespace: "fetch",
   
@@ -19,10 +21,18 @@ export default {
   beforeRender: {
     args2Attr: (node, ancestors) => {},
 
+    // 不要用后置节点
     nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
-        node.attributes[realAnnoExpectedArgNames[0]] = trim(nextNode.value)
+        // 判断后置节点内容是否为URL
+        let nextVal = trim(nextNode.value)
+        if (!urlRegex.test(nextVal)) {
+            return
+        }
+        
+        node.attributes[realAnnoExpectedArgNames[0]] = nextVal
         renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
     }
+
   },
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成

@@ -2,6 +2,8 @@ import { getNextNodeByLatestAncestor, renderVoidElement } from "../../utils/util
 import { h } from "hastscript";
 import { trim } from "lodash";
 
+export const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/
+
 export default {
   namespace: "link",
   
@@ -14,7 +16,13 @@ export default {
     args2Attr: (node, ancestors) => {},
 
     nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
-      node.attributes[realAnnoExpectedArgNames[0]] = trim(nextNode.value)
+      // 判断后置节点内容是否为URL
+      let nextVal = trim(nextNode.value)
+      if (!urlRegex.test(nextVal)) {
+          return
+      }
+
+      node.attributes[realAnnoExpectedArgNames[0]] = nextVal
       renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
     }
   },
