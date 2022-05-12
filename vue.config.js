@@ -137,8 +137,8 @@ module.exports = {
       .use('webpack-glob-loader')
       .loader('webpack-glob-loader')
       .tap(options => {
-        // 修改它的选项...
-        return options
+        // @fix 必须配置预加载, 否则会打包
+        return {enforce: "pre"}
       })
 
     // 开发环境 cheap-source-map

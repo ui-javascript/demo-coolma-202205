@@ -121,15 +121,15 @@ hello @nice @nice hi
 
 import alias from "./alias.json"
 
-import modules from "./anno/**/alias/@*js";
+import aliasModules from "./anno/**/alias/@*js";
 import annoModules from "./anno/@*/@*js";
 
 function myRemarkPlugin() {
   const annoAlias = {}
 
   // 获取
-  Object.keys(modules).forEach((key) => {
-    modules[key].default(annoAlias)
+  Object.keys(aliasModules).forEach((key) => {
+    aliasModules[key].default(annoAlias)
   });
 
   // 获取JSON配置文件
@@ -142,9 +142,9 @@ function myRemarkPlugin() {
 
     visitParents(tree, "textDirective", (node, ancestors) => {
 
-    Object.keys(annoModules).forEach((key) => {
-      registerAnno(annoModules[key].default.name, annoAlias, node, ancestors, annoModules[key].default)
-    });
+      Object.keys(annoModules).forEach((key) => {
+        registerAnno(annoModules[key].default.name, annoAlias, node, ancestors, annoModules[key].default)
+      });
       
     });
 
