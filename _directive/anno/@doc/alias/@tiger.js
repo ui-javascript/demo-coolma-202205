@@ -1,8 +1,8 @@
-import { initAliasMeta } from "../../../utils/utils";
-
-export default function registerAliaTiger (annoAlias) {
-  initAliasMeta(annoAlias, "img", "tiger", {
+export default {
+  namespace: 'tiger',
+  attachAnno: 'img',
+  properties: {
     style: "width: 150px;",
     tiger: true,
-  });
-};
+  }
+}

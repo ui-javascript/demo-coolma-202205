@@ -1,7 +1,7 @@
-import { initAliasMeta } from "../../../utils/utils";
-
-export default function registerAliaBilibili (annoAlias) {
-  initAliasMeta(annoAlias, "doc", "bilibili", {
+export default {
+  namespace: 'bilibili',
+  attachAnno: 'doc',
+  properties: {
     srcName: 'src',
     tagName: 'iframe',
     scrolling: "no", 
@@ -9,5 +9,5 @@ export default function registerAliaBilibili (annoAlias) {
     frameborder: "no",
     framespacing: "0",
     allowfullscreen: "true"
-  });
-};
+  }
+}

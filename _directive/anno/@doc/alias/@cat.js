@@ -1,8 +1,9 @@
-import { initAliasMeta } from "../../../utils/utils";
 
-export default function registerAliaCat (annoAlias) {
-  initAliasMeta(annoAlias, "img", "cat", {
+export default {
+  namespace: 'cat',
+  attachAnno: 'img',
+  properties: {
     style: "width: 150px;",
     cat: true,
-  });
-};
+  }
+}

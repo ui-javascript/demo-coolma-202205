@@ -93,10 +93,10 @@ module.exports = {
       //   path.resolve(__dirname, 'src/styles/_mixins.scss')
       // ]
     },
-    'webpack-glob-loader': {
-      // @fix 这里配置第三方插件的额外参数, 否则会打包失败
-      enforce: 'pre',
-    },
+    // 'webpack-glob-loader': {
+    //   // @fix 这里配置第三方插件的额外参数, 否则会打包失败
+    //   enforce: 'pre',
+    // },
   },
   // vue-cli 多页面
   pages: entries,
@@ -135,10 +135,13 @@ module.exports = {
     config.module
       .rule('webpack-glob-loader')
       .test(/\.js$/)
-      .exclude
-      .add(path.resolve("node_modules"))
+      .include
+      .add(resolve("_directive", "anno"))
       .end()
-      // .pre()
+      .exclude
+      .add(resolve("node_modules"))
+      .end()
+      .pre()
       // .enforce('pre')
       .use('webpack-glob-loader')
       .loader('webpack-glob-loader')

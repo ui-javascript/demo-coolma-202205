@@ -1,7 +1,7 @@
-import { initAliasMeta } from "../../../utils/utils";
-
-export default function registerAliaEmoji (annoAlias) {
-  initAliasMeta(annoAlias, "img", "emoji", {
+export default {
+  namespace: 'emoji',
+  attachAnno: 'img',
+  properties: {
     style: "width: 150px;"
-  });
-};
+  }
+}

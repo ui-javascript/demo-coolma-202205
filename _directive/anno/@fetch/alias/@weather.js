@@ -1,8 +1,8 @@
-import { initAliasMeta } from "../../../utils/utils";
-
-export default function registerAliaWeather (annoAlias) {
-  initAliasMeta(annoAlias, "fetch", "weather", {
+export default {
+  namespace: 'weather',
+  attachAnno: 'fetch',
+  properties: {
     weather: true,
     includeKeys: ["day", "date", "week", "wea", "win"],
-  });
-};
+  }
+}

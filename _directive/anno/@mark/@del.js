@@ -2,7 +2,9 @@ import { renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 
-export default function del(node, ancestors) {
+export default {
+  namespace: 'del',
+  exec: (node, ancestors) => {
   
     const latestAncestors = ancestors[ancestors.length - 1];
   
@@ -75,4 +77,4 @@ export default function del(node, ancestors) {
 
 
   }
-  
+}
