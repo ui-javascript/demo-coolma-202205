@@ -33,8 +33,8 @@ export default {
   const linkSplitArr =  node.attributes[realAnnoExpectedArgNames[0]].split("/");
   const linkSplitName =
     linkSplitArr.length > 0
-      ? linkSplitArr[linkSplitArr.length - 1]
-      : realAnnoExpectedArgNames[0];
+      ? linkSplitArr[linkSplitArr.length - 1] || node.attributes[realAnnoExpectedArgNames[0]]
+      : node.attributes[realAnnoExpectedArgNames[0]];
 
     const data = node.data || (node.data = {});
     const hast = h(
