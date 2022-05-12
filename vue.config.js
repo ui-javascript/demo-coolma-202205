@@ -130,11 +130,12 @@ module.exports = {
             return options;
         });
 
+    // https://github.com/danh20051995/webpack-glob-loader
     config.module
       .rule('glob')
-      .test(/\.(js|jsx)$/)
-      .use('webpack-import-glob-loader')
-      .loader('webpack-import-glob-loader')
+      .test(/\.js$/)
+      .use('webpack-glob-loader')
+      .loader('webpack-glob-loader')
       .tap(options => {
         // 修改它的选项...
         return options
