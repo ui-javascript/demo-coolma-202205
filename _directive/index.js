@@ -127,7 +127,7 @@ import annoModules from "./anno/@*/@*js";
 function myRemarkPlugin() {
   const annoAlias = {}
 
-  // 获取
+  // 获取别名注册文件
   Object.keys(aliasModules).forEach((key) => {
     aliasModules[key].default(annoAlias)
   });

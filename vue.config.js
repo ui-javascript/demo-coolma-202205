@@ -91,7 +91,13 @@ module.exports = {
       //   path.resolve(__dirname, 'src/styles/_variables.scss'),
       //   path.resolve(__dirname, 'src/styles/_mixins.scss')
       // ]
-    }
+    },
+    // 'webpack-glob-loader': {
+    //   test: /\.js$/,
+    //   exclude: /node_modules/,
+    //   enforce: 'pre',
+    //   loader: 'webpack-glob-loader'
+    // },
   },
   // vue-cli 多页面
   pages: entries,
@@ -132,14 +138,23 @@ module.exports = {
 
     // https://github.com/danh20051995/webpack-glob-loader
     config.module
-      .rule('glob')
+      .rule('webpack-glob-loader')
       .test(/\.js$/)
+      .exclude
+      .add(path.resolve("node_modules", 'src/icons'))
+      .end()
+      .pre()
+        // @fix 必须配置预加载, 否则会打包失败
+      .enforce('pre')
       .use('webpack-glob-loader')
       .loader('webpack-glob-loader')
       .tap(options => {
-        // @fix 必须配置预加载, 否则会打包
-        return {enforce: "pre"}
+        return options
       })
+
+
+    
+  
 
     // 开发环境 cheap-source-map
     config
