@@ -23,9 +23,9 @@ import { weatherApi } from "./anno/@fetch";
 import { emojiUrls } from "./anno/@img";
 import myRemarkPlugin from "./utils/myRemarkPlugin";
 
-const content = `@fetch https://proapi.azurewebsites.net/github/issues`;
+// const content = `@fetch https://proapi.azurewebsites.net/github/issues`;
 
-const content2 = `# 世界很大, 而我又是靓仔 @nice 
+const content = `# 世界很大, 而我又是靓仔 @nice 
 
 虽然说了句正确的废话 @del 
 
@@ -52,7 +52,7 @@ const content3 = `# 世界很大, 而我又是靓仔 @nice
 ---
 
 - 相关链接 
-  - @code{docName = coolma演示} https://github.com/ui-javascript/demo-coolma-202205
+  - @code{title = coolma演示} https://github.com/ui-javascript/demo-coolma-202205
   - @doc https://procomponents.ant.design/components/editable-table
 
 ---

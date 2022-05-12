@@ -38,7 +38,7 @@ export default {
           [node.attributes.srcName || "href"]: trim(nextNode.value),
           target: "_blank",
         },
-        [node.attributes.docName || linkSplitName]
+        [node.attributes.title || linkSplitName]
       );
 
       data.hName = hast.tagName;
