@@ -19,144 +19,90 @@ export const emojiUrls = {
     "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652331256059-YZrGi3WX2BFS.jpeg",
 
   help:
-    "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332602412-By7AEtwwyKe4.jpeg",  
-  java: "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png"  
+    "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332602412-By7AEtwwyKe4.jpeg",
+  java:
+    "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png",
 };
-
 
 export default {
   namespace: "img",
-  
-  realAnnoExpectedArgNames: ['src'],
+
+  realAnnoExpectedArgNames: ["src"],
   autoConvertArg2Attr: true,
   beforeRender: {
     args2Attr: (node, ancestors) => {},
+
+    nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
+      debugger
+      let nextVal = trim(nextNode.value)
+
+      // 处理类似情况 @img(https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif)
+      nextVal = nextVal
+        .replace(/^\(/, "")
+        .replace(/\)$/, "")
+
+      node.attributes[realAnnoExpectedArgNames[0]] = nextVal;
+      renderVoidElement(nextNode); // 取值结束不再需要渲染后置节点
+    },
   },
 
   realAnnoShortcutAttrs: Object.keys(emojiUrls),
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
-  render: (node, ancestors, realAnnoExpectedArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
-    const latestAncestors = ancestors[ancestors.length - 1];
+  render: (
+    node,
+    ancestors,
+    realAnnoExpectedArgNames,
+    realAnnoShortcutAttrs,
+    loseAttrs
+  ) => {
 
-    let isEmoji = false;
-    for (let key in emojiUrls) {
-      if (key in node.attributes) {
-        isEmoji = true;
-        break;
-      }
-    }
-    
-    const hasArg = node.args && node.args.length > 0;
-    const hasUrlAttr = "src" in node.attributes;
-    const hasEnoughChildren =
-      latestAncestors.children && latestAncestors.children.length > 1;
+    // 没有快捷属性匹配
+    // const shortcutAttrMatch = intersection(realAnnoShortcutAttrs, node.attributes)
+    if (
+      loseAttrs &&
+      loseAttrs.length > 0 &&
+      realAnnoShortcutAttrs &&
+      realAnnoShortcutAttrs.length > 0
+    ) {
+      // 需要补全缺失的属性
 
-    if (!isEmoji && !hasUrlAttr && !hasArg && !hasEnoughChildren) {
-      renderVoidElement(node);
-      return;
-    }
-
-    if (hasUrlAttr) {
-      const data = node.data || (node.data = {});
-      const hast = h("img", {
-        ...node.attributes,
-        src: node.attributes.src,
-      });
-
-      data.hName = hast.tagName;
-      data.hProperties = hast.properties;
-      data.hChildren = hast.children;
-
-      return;
-    }
-
-    if (hasArg) {
-      const data = node.data || (node.data = {});
-      const hast = h("img", {
-        ...node.attributes,
-        src: node.args[0],
-      });
-
-      data.hName = hast.tagName;
-      data.hProperties = hast.properties;
-      data.hChildren = hast.children;
-
-      return;
-    }
-
-    // @todo 冗余代码
-    if (isEmoji) {
-      const data = node.data || (node.data = {});
-
-      let src;
-      for (let key in node.attributes) {
-        if (Object.keys(emojiUrls).includes(key)) {
-          // 暂时只排除这四个字段
-          src = emojiUrls[key];
+      for (let idx in realAnnoShortcutAttrs) {
+        const shortcutAttr = realAnnoShortcutAttrs[idx];
+        if (node.attributes[shortcutAttr] && emojiUrls[shortcutAttr]) {
+          node.attributes[realAnnoExpectedArgNames[0]] =
+            emojiUrls[shortcutAttr];
           break;
         }
       }
 
-      if (!src) {
-        renderVoidElement(node);
+      // 仍然没有矫正属性则提前结束
+      if (!node.attributes[realAnnoExpectedArgNames[0]]) {
         return;
       }
+    }
 
-      const hast = h("img", {
-        ...node.attributes,
-        src,
-      });
 
-      data.hName = hast.tagName;
-      data.hProperties = hast.properties;
-      data.hChildren = hast.children;
 
+    const imgSrc = node.attributes[realAnnoExpectedArgNames[0]]
+    if (!imgSrc) {
+      renderVoidElement(node);
       return;
     }
 
-    let nextNode = null;
-    for (let idx in latestAncestors.children) {
-      // console.log("节点" + idx)
-      // console.log(item)
-      const item = latestAncestors.children[idx];
-      idx = parseInt(idx);
+    // 正常渲染
+    const data = node.data || (node.data = {});
 
-      if (
-        item.type === "textDirective" &&
-        item.name === node.name // @todo 准确定位标签
-      ) {
-        let nextIdx = idx;
+    const hast = h("img", {
+      ...node.attributes,
+      src: imgSrc,
+    });
 
-        while (++nextIdx < latestAncestors.children.length) {
-          const tempNode = latestAncestors.children[nextIdx];
+    data.hName = hast.tagName;
+    data.hProperties = hast.properties;
+    data.hChildren = hast.children;
 
-          if (tempNode && tempNode.type === "text" && trim(tempNode.value)) {
-            nextNode = tempNode;
-            break;
-          }
-        }
-
-        if (nextNode) {
-          console.log("修改后节点");
-          console.log(nextNode);
-
-          const data = nextNode.data || (nextNode.data = {});
-          const hast = h("img", {
-            ...node.attributes,
-            src: nextNode.value,
-          });
-
-          data.hName = hast.tagName;
-          data.hProperties = hast.properties;
-          data.hChildren = hast.children;
-        }
-
-        break;
-      }
-    }
-
-    // 无论是否找到nextNode, 当前节点都得渲染成空节点
-    renderVoidElement(node);
   },
+
+
 };

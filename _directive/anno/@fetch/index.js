@@ -21,7 +21,7 @@ export default {
 
     nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
         node.attributes[realAnnoExpectedArgNames[0]] = trim(nextNode.value)
-        renderVoidElement(nextNode) // 取值结束不再需要渲染的情况
+        renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
     }
   },
 

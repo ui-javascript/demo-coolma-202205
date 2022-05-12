@@ -1,7 +1,7 @@
 import { h } from "hastscript";
 import { trim, intersection, difference, before } from "lodash";
 
-// @todo 暂时先伪装成块内元素
+// @todo 先伪装成块内元素
 export function renderVoidElement(node) {
   const nodeData = node.data || (node.data = {});
   nodeData.hName = h("span", {}).tagName;
@@ -31,34 +31,9 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
     // debugger
   }
 
-  // 参数自动转换
-  const realAnnoExpectedArgNames = realRenderAnno.realAnnoExpectedArgNames
-  
-  // const autoPrevNode2Attr = getAutoConfig(annoAlias[node.name], realRenderAnno, 'autoPrevNode2Attr')
-  // if (autoPrevNode2Attr != false) {
-  //   const prevNode2AttrFunc = getObjConvert(annoAlias[node.name], realRenderAnno, "beforeRender", "prevNode2Attr")
-  //   if (prevNode2AttrFunc) {
-  //     prevNode2AttrFunc(node, ancestors, realAnnoExpectedArgNames, nextNode)
-  //   }
-  // }
-
-
-  // 处理后节点的属性
-  const autoNextNode2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'autoNextNode2Attr')
-  if (autoNextNode2Attr != false && realAnnoExpectedArgNames && realAnnoExpectedArgNames.length > 0) {
-    const nextNode = getNextNodeByAncestors(node, ancestors)
-
-    // 通过节点读取值暂时只处理一个参数
-    if (!(realAnnoExpectedArgNames[0] in node.attributes)) { // 不能覆盖node.attributes的配置
-      const nextNode2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "nextNode2Attr")
-      if (nextNode && nextNode2AttrFunc) {
-        nextNode2AttrFunc(node, ancestors, realAnnoExpectedArgNames, nextNode)
-      }
-    }
-  }
- 
-
   // 参数转属性
+  debugger
+  const realAnnoExpectedArgNames = realRenderAnno.realAnnoExpectedArgNames  
   const autoConvertArg2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'autoConvertArg2Attr')
   if (autoConvertArg2Attr != false 
     && realAnnoExpectedArgNames && realAnnoExpectedArgNames.length > 0
@@ -75,6 +50,23 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
       args2AttrFunc(node, ancestors)
     }
   }
+
+  // 处理后节点的属性
+  const autoNextNode2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'autoNextNode2Attr')
+  if (autoNextNode2Attr != false && realAnnoExpectedArgNames && realAnnoExpectedArgNames.length > 0) {
+    debugger
+    if (!(realAnnoExpectedArgNames[0] in node.attributes)) { // 不能覆盖node.attributes的配置
+
+      const nextNode = getNextNodeByAncestors(node, ancestors)
+
+      // 通过节点读取值暂时只处理一个参数
+      const nextNode2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "nextNode2Attr")
+      if (nextNode && nextNode2AttrFunc) {
+        nextNode2AttrFunc(node, ancestors, realAnnoExpectedArgNames, nextNode)
+      }
+    }
+  }
+ 
 
   // @fix 按优先级覆盖配置
   // 配置属性优先级: node.attributes > (args > nextNode > prevNode) > annoAlias[node.name]['properties'] > 默认属性 
@@ -142,7 +134,7 @@ export function getNextNodeByLatestAncestor(node, latestAncestors) {
       while (++nextIdx < latestAncestors.children.length) {
         const tempNode = latestAncestors.children[nextIdx];
 
-        if (tempNode && tempNode.type === "text" && trim(tempNode.value)) {
+        if (tempNode && tempNode.type === "text" && trim(tempNode.value)) { // 空字符串不认为是后置结点
           nextNode = tempNode;
           break;
         }
