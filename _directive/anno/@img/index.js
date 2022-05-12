@@ -91,7 +91,6 @@ export default {
       return;
     }
 
-    debugger
 
     // 正常渲染
     const data = node.data || (node.data = {});

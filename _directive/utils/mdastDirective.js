@@ -241,7 +241,7 @@ function handleDirective(node, _, context, safeOptions) {
   // console.log("node");
   // console.log(node);
 
-  // debugger
+  
 
   if (node.type === "containerDirective") {
     const head = (node.children || [])[0];
@@ -432,7 +432,7 @@ function exitArgs() {
 
   this.resume();
   this.setData("directiveArgs");
-  // debugger
+  
   this.stack[this.stack.length - 1].args = cleaned;
 }
 
@@ -444,13 +444,13 @@ function enterNamespace() {
 /** @type {_Handle} */
 function exitNamespace() {
   const data = this.resume();
-  // debugger
+  
   // console.log("进入命名空间");
   // console.log(token);
   console.log(this.stack[this.stack.length - 1]);
   this.stack[this.stack.length - 1].namespace = data;
 
-  // debugger
+  
   // const node = /** @type {Directive} */ (this.stack[this.stack.length - 1]);
   // // console.log();
   // node.namespace = this.sliceSerialize(token);

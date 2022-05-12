@@ -31,11 +31,11 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
   }
 
   if (node.name === "fetch") {
-    // debugger
+    
   }
 
   // 参数转属性
-  // debugger
+  
   const realAnnoExpectedArgNames = realRenderAnno.realAnnoExpectedArgNames  
   const autoConvertArg2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'autoConvertArg2Attr')
   if (autoConvertArg2Attr != false 
@@ -57,7 +57,7 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
   // 处理后节点的属性
   const autoNextNode2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'autoNextNode2Attr')
   if (autoNextNode2Attr != false && realAnnoExpectedArgNames && realAnnoExpectedArgNames.length > 0) {
-    // debugger
+    
     if (!(realAnnoExpectedArgNames[0] in node.attributes)) { // 不能覆盖node.attributes的配置
 
       const nextNode = getNextNodeByAncestors(node, ancestors)
@@ -182,9 +182,9 @@ export function getPrevNodeByLatestAncestor(node, latestAncestors) {
       while (--prevIdx > -1) {
         const tempNode = latestAncestors.children[prevIdx];
 
-        // debugger
+        
         if (tempNode && tempNode.type === "text" && trim(tempNode.value)) {
-          // debugger;
+          ;
           prevNode = tempNode;
           break;
         }
