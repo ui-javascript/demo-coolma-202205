@@ -18,9 +18,8 @@ const weatherApi = api.weather
 
 // const content = `
 
-// @img(https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif) 
+// @img(https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif) @nice
 // @img https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif
-
 
 // `;
 

@@ -4,8 +4,10 @@ import { trim, intersection, difference, before } from "lodash";
 // @todo 先伪装成块内元素
 export function renderVoidElement(node) {
   const nodeData = node.data || (node.data = {});
-  nodeData.hName = h("span", {}).tagName;
-  node.hValue = null
+  const hast = h("span", {})
+  nodeData.hName = hast.tagName;
+  nodeData.hProperties = hast.properties;
+  nodeData.hChildren = hast.children;
 }
 
 export function initAliasMeta(annoAliasMeta, annoName, aliaName, config) {

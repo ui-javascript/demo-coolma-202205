@@ -35,26 +35,15 @@ export default {
     args2Attr: (node, ancestors) => {},
 
     nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
-      // debugger
       let nextVal = trim(nextNode.value)
-
-      // @todo 处理类似情况 @img(https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif)
-//       if (/^\(/.test(nextVal) && /\)$/.test(nextVal)) {
-//         nextVal = nextVal
-//         .replace(/^\(/, "")
-//         .replace(/\)$/, "")
-//       }
 
       // 判断后置节点内容是否为URL
       if (!urlRegex.test(nextVal)) {
           return
       }
 
-      // debugger
-
       node.attributes[realAnnoExpectedArgNames[0]] = nextVal;
       renderVoidElement(nextNode); // 取值结束不再需要渲染后置节点
-
     },
   },
 
@@ -98,13 +87,14 @@ export default {
 
     const imgSrc = node.attributes[realAnnoExpectedArgNames[0]]
     if (!imgSrc) {
-      renderVoidElement(node);
+      // renderVoidElement(node);
       return;
     }
 
+    debugger
+
     // 正常渲染
     const data = node.data || (node.data = {});
-
     const hast = h("img", {
       ...node.attributes,
       src: imgSrc,
