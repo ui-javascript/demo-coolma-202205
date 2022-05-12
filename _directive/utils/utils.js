@@ -1,5 +1,5 @@
 import { h } from "hastscript";
-import { trim, intersection } from "lodash";
+import { trim, intersection, difference } from "lodash";
 
 // @todo 暂时先伪装成块内元素
 export function renderVoidElement(node) {
@@ -55,17 +55,18 @@ export function registerAnno(realAnno, annoAlias, node, ancestors) {
     node.attributes = Object.assign({}, annoAlias[node.name]['properties'], node.attributes);
   }
 
-  // 开始渲染合法的标签, 渲染仅根据属性attributes来
-  realAnno.render(node, ancestors);
-
-  // 如果最终属性
+  // 检测属性是否有缺失
   const expectedArgNames = node.expectedArgNames || realAnno.expectedArgNames
   if (expectedArgNames && expectedArgNames.length > 0) {
-    if (intersection(expectedArgNames, Object.keys(node.attributes)).length < expectedArgNames.length) {
-      console.log(`${node.name} 存在属性缺失!!`)
+    const diffAttrs = difference(expectedArgNames, Object.keys(node.attributes))
+    if (diffAttrs && diffAttrs.length > 0) {
+      console.log(`${node.name} 存在属性 ${diffAttrs.join(",")} 缺失!!`)
+      // return
     }
   }
 
+  // 开始渲染合法的标签, 渲染仅根据属性node.attributes来
+  realAnno.render(node, ancestors);
 }
 
 
