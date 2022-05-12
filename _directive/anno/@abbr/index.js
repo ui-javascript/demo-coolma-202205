@@ -2,8 +2,8 @@ import { h } from "hastscript";
 
 export default {
   namespace: 'abbr',
-  expectedArgNames: ['abbrName', 'fullName'],
-  render: (node, ancestors) => {
+  realAnnoArgNames: ['abbrName', 'fullName'],
+  render: (node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     const data = node.data || (node.data = {});
     if (!("title" in node.attributes) && node.args && node.args.length > 1) {
       node.attributes.title = node.args[1];

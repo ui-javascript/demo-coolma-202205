@@ -5,29 +5,26 @@ import VueCompositionApi, {
 } from "@vue/composition-api";
 import { watchDebounced, watchThrottled } from '@vueuse/core'
 
-
-
-
-
 // import "@picocss/pico/css/pico.classless.min.css"
 import "./style.less";
 
-import { weatherApi } from "./anno/@fetch";
-
+import { api } from "./anno/@fetch";
 import { emojiUrls } from "./anno/@img";
-import myRemarkPlugin from "./utils/myRemarkPlugin";
+
 import unifiedParser from "./utils/unifiedParserUtil";
 
-// const content = `@fetch https://proapi.azurewebsites.net/github/issues`;
+const weatherApi = api.weather
 
-const content = `# 世界很大, 而我又是靓仔 @nice 
+
+const content = `
+@fetch https://proapi.azurewebsites.net/github/issues
+`;
+
+const content2 = `#### 世界很大, 而我又是靓仔 @nice 
 
 虽然说了句正确的废话 @del 
 
 @dog @cat @tiger
-
-@emoji{help} @emoji{java}
-@emoji{safe} @emoji{ichange} 
 
 @doc https://procomponents.ant.design/components/editable-table
 
@@ -36,6 +33,12 @@ const content = `# 世界很大, 而我又是靓仔 @nice
 @abbr(HTML, "Hyper Text Markup Language")
 
 @weather
+
+@emoji{help} @emoji{java}
+
+\`\`\`
+@emoji{safe} @emoji{ichange} 
+\`\`\`
 `
 
 const content3 = `# 世界很大, 而我又是靓仔 @nice    

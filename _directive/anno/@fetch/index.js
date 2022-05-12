@@ -2,49 +2,50 @@ import Axios from "axios";
 import { renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { nanoid } from "nanoid";
+import { difference, intersection, trim } from "lodash";
 
-export const weatherApi =
-  "https://v0.yiketianqi.com/api?unescape=1&version=v91&appid=43656176&appsecret=I42og6Lm&ext=&cityid=&city=";
+export const api = {
+  weather: "https://v0.yiketianqi.com/api?unescape=1&version=v91&appid=43656176&appsecret=I42og6Lm&ext=&cityid=&city="
+}
 
 export default {
   namespace: "fetch",
-  expectedArgNames: ['url'],
+  
+  realAnnoArgNames: ['url'],
+  realAnnoShortcutAttrs: Object.keys(api),
+
   beforeRender: {
-    nextNode2Attr: (node, ancestors) => {
-      debugger
-      console.log("fetch注解 将 nextNode 转换成属性")
+    nextNode2Attr: (node, ancestors, realAnnoArgNames, nextNode) => {
+        node.attributes[realAnnoArgNames[0]] = trim(nextNode.value)
+        renderVoidElement(nextNode) // 取值结束不再需要渲染的情况
     }
   },
-  render: async (node, ancestors) => {
-    if (
-      (!node.attributes || !("weather" in node.attributes)) &&
-      (!node.args || node.args.length === 0)
-    ) {
-      renderVoidElement(node);
-      return;
+  render: async (node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs) => {
+    let isWeatherApi = false;
+
+    // 没有快捷属性匹配
+    // const shortcutAttrMatch = intersection(realAnnoShortcutAttrs, node.attributes)
+    if (loseAttrs && loseAttrs.length > 0 
+      && realAnnoShortcutAttrs && realAnnoShortcutAttrs.length > 0) { // 需要补全缺失的属性
+
+      for (let idx in realAnnoShortcutAttrs) {
+        const shortcutAttr = realAnnoShortcutAttrs[idx]
+        if (node.attributes[shortcutAttr] && api[shortcutAttr]) {
+          debugger
+          node.attributes[realAnnoArgNames[0]] = api[shortcutAttr];
+          isWeatherApi =  shortcutAttr === "weather"
+          break
+        }
+      }
+   
+      // 仍然没有矫正属性则提前结束
+      if (!node.attributes[realAnnoArgNames[0]]) {
+        return 
+      }
     }
 
-    let api = null;
-    if (
-      node.attributes &&
-      "weather" in node.attributes &&
-      node.attributes.weather != "false"
-    ) {
-      api = weatherApi;
-    }
-    if (node.args && node.args[0]) {
-      api = node.args[0];
-    }
 
-    const isWeatherApi = api === weatherApi;
-
-    if (!api) {
-      renderVoidElement(node);
-      return;
-    }
-
-    // console.log("天气接口")
-    // console.log()
+    
 
     const tableId = nanoid();
     const loadingDivId = nanoid();
@@ -71,7 +72,7 @@ export default {
     data.hProperties = hast.properties;
     data.hChildren = hast.children;
 
-    const res = await Axios.get(api);
+    const res = await Axios.get(node.attributes[realAnnoArgNames[0]]);
 
     let resData;
     if (res.data) {

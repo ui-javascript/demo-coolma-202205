@@ -4,8 +4,8 @@ import { trim } from "lodash";
 
 export default {
   namespace: 'bvid',
-  expectedArgNames: ['vid'],
-  render: (node, ancestors) => {
+  realAnnoArgNames: ['vid'],
+  render: (node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     const latestAncestors = ancestors[ancestors.length - 1];
 
     const hasEnoughChildren =

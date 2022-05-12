@@ -1,5 +1,5 @@
 import { h } from "hastscript";
-import { trim, intersection, difference } from "lodash";
+import { trim, intersection, difference, before } from "lodash";
 
 // @todo 暂时先伪装成块内元素
 export function renderVoidElement(node) {
@@ -15,58 +15,87 @@ export function initAliasMeta(annoAliasMeta, annoName, aliaName, config) {
   annoAliasMeta[aliaName].properties = config
 }
 
-export function registerAnno(realAnno, annoAlias, node, ancestors) {
+export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
  
   // 判断当前注解是否合法
   // 这个节点是否有注册别名
-  let isRegisteredAliasAnno = false
-  if (node.name !== realAnno.namespace) {
-    isRegisteredAliasAnno = Object.keys(annoAlias).includes(node.name) && annoAlias[node.name].attachAnno === realAnno.namespace
-    if (!isRegisteredAliasAnno) {
+  let isAliasAnno = false
+  if (node.name !== realRenderAnno.namespace) {
+    isAliasAnno = Object.keys(annoAlias).includes(node.name) && annoAlias[node.name].attachAnno === realRenderAnno.namespace
+    if (!isAliasAnno) {
       return;
     }
   }
 
-  if (realAnno.beforeRender && realAnno.beforeRender.prevNode2Attr) {
-    realAnno.beforeRender.prevNode2Attr(node, ancestors)
-  }
-
   if (node.name === "fetch") {
-    debugger
+    // debugger
   }
 
-  if (realAnno.beforeRender && realAnno.beforeRender.nextNode2Attr) {
+  // 参数自动转换
+  const realAnnoArgNames = realRenderAnno.realAnnoArgNames
+  
+  // const autoPrevNode2Attr = getAutoConfig(annoAlias[node.name], realRenderAnno, 'autoPrevNode2Attr')
+  // if (autoPrevNode2Attr != false) {
+  //   const prevNode2AttrFunc = getObjConvert(annoAlias[node.name], realRenderAnno, "beforeRender", "prevNode2Attr")
+  //   if (prevNode2AttrFunc) {
+  //     prevNode2AttrFunc(node, ancestors, realAnnoArgNames, nextNode)
+  //   }
+  // }
+
+
+  // 处理后节点的属性
+  const autoNextNode2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'autoNextNode2Attr')
+  if (autoNextNode2Attr != false && realAnnoArgNames && realAnnoArgNames.length > 0) {
     const nextNode = getNextNodeByAncestors(node, ancestors)
-    if (nextNode) {
-      realAnno.beforeRender.nextNode2Attr(node, ancestors, nextNode)
+
+    if (!(realAnnoArgNames[0] in node.attributes)) { // 不存在url时才覆盖
+      const nextNode2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "nextNode2Attr")
+      if (nextNode && nextNode2AttrFunc) {
+        nextNode2AttrFunc(node, ancestors, realAnnoArgNames, nextNode)
+      }
+    }
+  }
+ 
+
+  const autoArg2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'autoArg2Attr')
+  if (autoArg2Attr != false && realAnnoArgNames && realAnnoArgNames.length > 0) { // 默认自动转换参数
+    const args2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "args2Attr")
+    if (args2AttrFunc) {
+      args2AttrFunc(node, ancestors)
     }
   }
 
-  if (realAnno.beforeRender && realAnno.beforeRender.args2Attr) {
-    if (!isRegisteredAliasAnno && !realAnno.expectedArgNames && realAnno.expectedArgNames.length > 0 && this.autoArg2Attr != false) { // 默认自动转换参数
-
-    }
-    realAnno.beforeRender.args2Attr(node, ancestors)
-  }
-
-  if (isRegisteredAliasAnno && annoAlias[node.name]['properties']) {
-    // @fix 按优先级覆盖配置
-    // 配置属性优先级: (args2Attr > nextNode2Attr > prevNode2Attr) > node.attributes > aliasAttributes > 默认属性    
+  // @fix 按优先级覆盖配置
+  // 配置属性优先级: node.attributes > (args > nextNode > prevNode) > annoAlias[node.name]['properties'] > 默认属性 
+  node.attributes = node.attributes || {}
+  if (isAliasAnno && annoAlias[node.name]['properties']) {   
     node.attributes = Object.assign({}, annoAlias[node.name]['properties'], node.attributes);
   }
 
+  // 快捷键的属性进行矫正
+  const realAnnoShortcutAttrs = realRenderAnno.realAnnoShortcutAttrs; // 真实注解专有, 别名注解使用无效
+  if (realAnnoShortcutAttrs && realAnnoShortcutAttrs.length > 0) {
+    realAnnoShortcutAttrs.forEach(shortcutAttr => {
+      if (shortcutAttr in node.attributes && node.attributes.shortcutAttr != false) {
+        node.attributes[shortcutAttr] = true
+      }       
+    });
+  }
+
   // 检测属性是否有缺失
-  const expectedArgNames = node.expectedArgNames || realAnno.expectedArgNames
-  if (expectedArgNames && expectedArgNames.length > 0) {
-    const diffAttrs = difference(expectedArgNames, Object.keys(node.attributes))
-    if (diffAttrs && diffAttrs.length > 0) {
-      console.log(`${node.name} 存在属性 ${diffAttrs.join(",")} 缺失!!`)
-      // return
+  let loseAttrs = [] 
+  if (realAnnoArgNames && realAnnoArgNames.length > 0) {
+    loseAttrs = difference(realAnnoArgNames, Object.keys(node.attributes))
+    if (loseAttrs && loseAttrs.length > 0) {
+      console.log(`${node.name} 存在属性 ${loseAttrs.join(",")} 缺失!!`)
+      if (!realAnnoShortcutAttrs || realAnnoShortcutAttrs.length === 0) { // 没有快捷属性的情况下存在属性缺失则不渲染
+        return
+      }
     }
   }
 
-  // 开始渲染合法的标签, 渲染仅根据属性node.attributes来
-  realAnno.render(node, ancestors);
+  // 开始渲染合法的标签, 实现已转换其他参数, 渲染仅根据属性node.attributes
+  realRenderAnno.render(node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs);
 }
 
 
@@ -74,7 +103,7 @@ export function getNextNodeByAncestors(node, ancestors) {
   let nextNode = null;
 
   const latestAncestors = ancestors[ancestors.length - 1];
-  const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令至少还有一个元素
+  const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令外至少还有一个元素
 
   if (!hasEnoughChildren) {
     return nextNode;
@@ -111,4 +140,31 @@ export function getNextNodeByLatestAncestor(node, latestAncestors) {
   
   return nextNode;
 }
+
+
+
+export function getObjConvertFunc(aliasAnno, realRenderAnno, convertKey, convertFuncKey) {
+  if (aliasAnno && aliasAnno[convertKey] && aliasAnno[convertKey][convertFuncKey]) {
+    return aliasAnno[convertKey][convertFuncKey]
+  }
+
+  if (realRenderAnno[convertKey] && realRenderAnno[convertKey][convertFuncKey]) {
+    return realRenderAnno[convertKey][convertFuncKey]
+  }
+
+  return null
+}
+
+export function getAutoConvertConfig(aliasAnno, realRenderAnno, key) {
+  if (aliasAnno && aliasAnno[key] != null) {
+    return annoAlias[key]
+  }
+
+  if (realRenderAnno[key] != null) {
+    return realRenderAnno[key]
+  }
+
+  return true
+}
+
 

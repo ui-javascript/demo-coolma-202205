@@ -4,13 +4,13 @@ import { trim } from "lodash";
 
 export default {
   namespace: "link",
-  expectedArgNames: ['href'],
+  realAnnoArgNames: ['href'],
   beforeRender: {
-    nextNode2Attr: (node, ancestors) => {
+    nextNode2Attr: (node, ancestors, realAnnoArgNames, nextNode) => {
       
     }
   },
-  render: (node, ancestors) => {
+  render: (node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     const latestAncestors = ancestors[ancestors.length - 1];
     const hasEnoughChildren =
       latestAncestors.children && latestAncestors.children.length > 1;

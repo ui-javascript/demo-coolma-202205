@@ -27,9 +27,11 @@ export const emojiUrls = {
 export default {
   namespace: "img",
   
-  expectedArgNames: ['src'],
+  realAnnoArgNames: ['src'],
 
-  render: (node, ancestors) => {
+  realAnnoShortcutAttrs: Object.keys(emojiUrls),
+
+  render: (node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     const latestAncestors = ancestors[ancestors.length - 1];
 
     let isEmoji = false;

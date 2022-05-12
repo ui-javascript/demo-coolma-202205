@@ -4,8 +4,8 @@ import { trim } from "lodash";
 
 export default {
   namespace: "mark",
-  expectedArgNames: null,
-  render: (node, ancestors) => {
+  realAnnoArgNames: null,
+  render: (node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     const latestAncestors = ancestors[ancestors.length - 1];
 
     if (!latestAncestors.children || latestAncestors.children.length === 0) {
