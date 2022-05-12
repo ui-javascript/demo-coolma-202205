@@ -8,6 +8,7 @@ export function renderVoidElement(node) {
   nodeData.hName = hast.tagName;
   nodeData.hProperties = hast.properties;
   nodeData.hChildren = hast.children;
+  node.value = null
 }
 
 export function initAliasMeta(annoAliasMeta, annoName, aliaName, config) {
