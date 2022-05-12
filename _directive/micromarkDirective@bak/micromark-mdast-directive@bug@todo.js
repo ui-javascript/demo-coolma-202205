@@ -12,7 +12,7 @@ import {h} from 'hastscript'
 import {fromMarkdown} from 'mdast-util-from-markdown'
 import {toMarkdown} from 'mdast-util-to-markdown'
 
-import { directiveFromMarkdown, directiveToMarkdown} from '../utils/mdast-util-directive'
+import { directiveFromMarkdown, directiveToMarkdown} from '../utils/mdastDdirective'
 // import "@picocss/pico/css/pico.classless.min.css"
 
 Vue.use(VueCompositionApi);

@@ -3,7 +3,7 @@ import { directive } from "coolma";
 import {
   directiveToMarkdown,
   directiveFromMarkdown,
-} from "./mdast-util-directive";
+} from "./mdastDirective";
 
 export default function remarkDirective() {
     const data = this.data();

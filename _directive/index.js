@@ -12,7 +12,7 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeFormat from "rehype-format";
 import rehypeStringify from "rehype-stringify";
-import remarkDirective from "./utils/remark-directive";
+import remarkDirective from "./utils/remarkDirective";
 
 
 // import "@picocss/pico/css/pico.classless.min.css"
@@ -23,13 +23,14 @@ import { weatherApi } from "./anno/@fetch";
 import { emojiUrls } from "./anno/@img";
 import myRemarkPlugin from "./utils/myRemarkPlugin";
 
+// const content = `虽然说了句正确的废话 @del `;
+
 const content = `# 世界很大, 而我又是靓仔 @nice 
 
 虽然说了句正确的废话 @del 
 
-@dog
-@cat
-@emoji{tiger}
+@dog @cat
+@emoji{tiger} @emoji{safe}
 
 @doc https://procomponents.ant.design/components/editable-table
 
@@ -40,7 +41,7 @@ const content = `# 世界很大, 而我又是靓仔 @nice
 @weather
 `
 
-const content2 = `# 世界很大, 而我又是靓仔 @nice    
+const content3 = `# 世界很大, 而我又是靓仔 @nice    
 
 ---
 

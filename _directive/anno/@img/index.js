@@ -15,12 +15,16 @@ export const emojiUrls = {
     "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249747826-TWzsbJWnaWZD.jpeg",
   tiger:
     "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg",
+  safe:
+    "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652331256059-YZrGi3WX2BFS.jpeg" 
 };
 
 
 export default {
   namespace: "img",
+  
   expectArgsName: ['src'],
+
   render: (node, ancestors) => {
     const latestAncestors = ancestors[ancestors.length - 1];
 
@@ -31,7 +35,7 @@ export default {
         break;
       }
     }
-
+    
     const hasArg = node.args && node.args.length > 0;
     const hasUrlAttr = "src" in node.attributes;
     const hasEnoughChildren =
