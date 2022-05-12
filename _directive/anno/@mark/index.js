@@ -27,13 +27,16 @@ export default {
     // 优先渲染后置节点
     renderNode = getNextNodeByLatestAncestor(node, latestAncestors)
 
+    debugger
+    
     if (!renderNode) {
       renderNode = getPrevNodeByLatestAncestor(node, latestAncestors)
+      debugger
     }
 
     if (renderNode) {
       const data = renderNode.data || (renderNode.data = {});
-      const hast = h(node.attributes.tagName || "mark", {...node.attributes}, renderNode.value);
+      const hast = h(node.attributes.tagName || "mark", node.attributes, renderNode.value);
       data.hName = hast.tagName;
       data.hProperties = hast.properties;
       data.hChildren = hast.children;
