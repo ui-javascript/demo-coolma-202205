@@ -19,10 +19,10 @@ export function registerAnno(realAnno, annoAlias, node, ancestors) {
  
   // 判断当前注解是否合法
   // 这个节点是否有注册别名
-  let hasRegisterAlias = false
+  let isRegisteredAliasAnno = false
   if (node.name !== realAnno.namespace) {
-    hasRegisterAlias = Object.keys(annoAlias).includes(node.name) && annoAlias[node.name].attachAnno === realAnno.namespace
-    if (!hasRegisterAlias) {
+    isRegisteredAliasAnno = Object.keys(annoAlias).includes(node.name) && annoAlias[node.name].attachAnno === realAnno.namespace
+    if (!isRegisteredAliasAnno) {
       return;
     }
   }
@@ -31,15 +31,25 @@ export function registerAnno(realAnno, annoAlias, node, ancestors) {
     realAnno.beforeRender.prevNode2Attr(node, ancestors)
   }
 
+  if (node.name === "fetch") {
+    debugger
+  }
+
   if (realAnno.beforeRender && realAnno.beforeRender.nextNode2Attr) {
-    realAnno.beforeRender.nextNode2Attr(node, ancestors)
+    const nextNode = getNextNodeByAncestors(node, ancestors)
+    if (nextNode) {
+      realAnno.beforeRender.nextNode2Attr(node, ancestors, nextNode)
+    }
   }
 
   if (realAnno.beforeRender && realAnno.beforeRender.args2Attr) {
+    if (!isRegisteredAliasAnno && !realAnno.expecteArgNames && realAnno.expecteArgNames.length > 0 && this.autoArg2Attr != false) { // 默认自动转换参数
+
+    }
     realAnno.beforeRender.args2Attr(node, ancestors)
   }
 
-  if (hasRegisterAlias && annoAlias[node.name]['properties']) {
+  if (isRegisteredAliasAnno && annoAlias[node.name]['properties']) {
     // @fix 按优先级覆盖配置
     // 配置属性优先级: (args2Attr > nextNode2Attr > prevNode2Attr) > node.attributes > aliasAttributes > 默认属性    
     node.attributes = Object.assign({}, annoAlias[node.name]['properties'], node.attributes);
@@ -47,8 +57,31 @@ export function registerAnno(realAnno, annoAlias, node, ancestors) {
 
   // 开始渲染合法的标签, 渲染仅根据属性attributes来
   realAnno.render(node, ancestors);
+
+  // 如果最终属性
+  const expecteArgNames = node.expecteArgNames || realAnno.expecteArgNames
+  if (expecteArgNames && expecteArgNames.length > 0) {
+    if (intersection(expecteArgNames, Object.keys(node.attributes)).length !== expecteArgNames) {
+      console.log(`${node.name}存在属性缺失!!`)
+    }
+  }
+
 }
 
+
+export function getNextNodeByAncestors(node, ancestors) {
+  let nextNode = null;
+
+  const latestAncestors = ancestors[ancestors.length - 1];
+  const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令至少还有一个元素
+
+  if (!hasEnoughChildren) {
+    return nextNode;
+  }
+
+  nextNode = getNextNodeByLatestAncestor(node, latestAncestors)
+  return nextNode;
+}
 
 export function getNextNodeByLatestAncestor(node, latestAncestors) {
   let nextNode = null;

@@ -23,14 +23,16 @@ import { weatherApi } from "./anno/@fetch";
 import { emojiUrls } from "./anno/@img";
 import myRemarkPlugin from "./utils/myRemarkPlugin";
 
-// const content = `虽然说了句正确的废话 @del `;
+const content = `@fetch https://proapi.azurewebsites.net/github/issues`;
 
-const content = `# 世界很大, 而我又是靓仔 @nice 
+const content2 = `# 世界很大, 而我又是靓仔 @nice 
 
 虽然说了句正确的废话 @del 
 
-@dog @cat
-@emoji{tiger} @emoji{safe}
+@dog @cat @tiger
+
+@emoji{help} @emoji{java}
+@emoji{safe} @emoji{ichange} 
 
 @doc https://procomponents.ant.design/components/editable-table
 

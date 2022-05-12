@@ -11,7 +11,8 @@ export default {
   expectArgsName: ['url'],
   beforeRender: {
     nextNode2Attr: (node, ancestors) => {
-      
+      debugger
+      console.log("fetch注解 将 nextNode 转换成属性")
     }
   },
   render: async (node, ancestors) => {
