@@ -38,13 +38,12 @@ export default {
       // debugger
       let nextVal = trim(nextNode.value)
 
-      // 处理类似情况 @img(https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif)
-      
-      if (/^\(/.test(nextVal) && /\)$/.test(nextVal)) {
-        nextVal = nextVal
-        .replace(/^\(/, "")
-        .replace(/\)$/, "")
-      }
+      // @todo 处理类似情况 @img(https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif)
+//       if (/^\(/.test(nextVal) && /\)$/.test(nextVal)) {
+//         nextVal = nextVal
+//         .replace(/^\(/, "")
+//         .replace(/\)$/, "")
+//       }
 
       // 判断后置节点内容是否为URL
       if (!urlRegex.test(nextVal)) {
