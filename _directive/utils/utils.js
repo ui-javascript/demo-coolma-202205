@@ -1,4 +1,5 @@
 import { h } from "hastscript";
+import { trim } from "lodash";
 
 // @todo 暂时先伪装成块内元素
 export function renderVoidElement(node) {
@@ -49,3 +50,34 @@ export function registerAnno(anno, annoAlias, node, ancestors) {
   // 开始渲染合法标签
   anno.render(node, ancestors);
 }
+
+
+export function getNextNodeByLatestAncestor(node, latestAncestors) {
+  let nextNode = null;
+
+  for (let idx in latestAncestors.children) {
+    // console.log("节点" + idx)
+    // console.log(item)
+    const item = latestAncestors.children[idx];
+    idx = parseInt(idx);
+
+    if (
+      item.type === "textDirective" &&
+      item.name === node.name // @todo 准确定位标签
+    ) {
+      let nextIdx = idx;
+
+      while (++nextIdx < latestAncestors.children.length) {
+        const tempNode = latestAncestors.children[nextIdx];
+
+        if (tempNode && tempNode.type === "text" && trim(tempNode.value)) {
+          nextNode = tempNode;
+          break;
+        }
+      }
+    }
+  }
+  
+  return nextNode;
+}
+

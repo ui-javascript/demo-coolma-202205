@@ -8,6 +8,11 @@ export const weatherApi =
 
 export default {
   namespace: "fetch",
+  beforeRender: {
+    nextNode2Attr: (node, ancestors) => {
+      
+    }
+  },
   render: async (node, ancestors) => {
     if (
       (!node.attributes || !("weather" in node.attributes)) &&
