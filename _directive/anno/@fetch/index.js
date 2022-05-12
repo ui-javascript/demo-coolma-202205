@@ -8,6 +8,7 @@ export const weatherApi =
 
 export default {
   namespace: "fetch",
+  expectArgsName: ['url'],
   beforeRender: {
     nextNode2Attr: (node, ancestors) => {
       

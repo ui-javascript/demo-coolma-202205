@@ -7,7 +7,6 @@ import { watchDebounced, watchThrottled } from '@vueuse/core'
 
 
 import { unified } from "unified";
-import { visitParents } from "unist-util-visit-parents";
 
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
@@ -19,13 +18,10 @@ import remarkDirective from "./utils/remark-directive";
 // import "@picocss/pico/css/pico.classless.min.css"
 import "./style.less";
 
-import { weatherApi } from "./anno/@fetch/@fetch";
-import { initAliasMeta, registerAnno } from "./utils/utils";
-import aliasJsonConfigModules from "./annoAlias.config.json"
+import { weatherApi } from "./anno/@fetch";
 
-import aliasModules from "./anno/**/alias/@*.js";
-import annoModules from "./anno/@*/@*.js";
-import { emojiUrls } from "./anno/@doc/@img";
+import { emojiUrls } from "./anno/@img";
+import myRemarkPlugin from "./utils/myRemarkPlugin";
 
 const content = `# 世界很大, 而我又是靓仔 @nice 
 
@@ -105,33 +101,6 @@ hello @nice @nice hi
 `
 
 
-
-function myRemarkPlugin() {
-  const annoAlias = {}
-
-  // 获取别名注册文件
-  Object.keys(aliasModules).forEach((key) => {
-    initAliasMeta(annoAlias, aliasModules[key].default.attachAnno, aliasModules[key].default.namespace, aliasModules[key].default.properties)
-  });
-
-  // 获取JSON配置文件
-  Object.keys(aliasJsonConfigModules).forEach((key) => {
-    initAliasMeta(annoAlias, aliasJsonConfigModules[key].attachAnno, key, aliasJsonConfigModules[key].properties)
-  });
-
-
-  return (tree) => {
-
-    visitParents(tree, "textDirective", (node, ancestors) => {
-
-      Object.keys(annoModules).forEach((key) => {
-        registerAnno(annoModules[key].default, annoAlias, node, ancestors)
-      });
-      
-    });
-
-  };
-}
 
 
 const App = {

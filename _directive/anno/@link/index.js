@@ -3,7 +3,8 @@ import { h } from "hastscript";
 import { trim } from "lodash";
 
 export default {
-  namespace: "doc",
+  namespace: "link",
+  expectArgsName: ['href'],
   beforeRender: {
     nextNode2Attr: (node, ancestors) => {
       

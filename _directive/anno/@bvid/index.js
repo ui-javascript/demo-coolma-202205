@@ -3,14 +3,20 @@ import { h } from "hastscript";
 import { trim } from "lodash";
 
 export default {
-  namespace: "mark",
+  namespace: 'bvid',
+  expectArgsName: ['vid'],
   render: (node, ancestors) => {
     const latestAncestors = ancestors[ancestors.length - 1];
 
-    if (!latestAncestors.children || latestAncestors.children.length === 0) {
+    const hasEnoughChildren =
+      latestAncestors.children && latestAncestors.children.length > 1;
+
+    if (!hasEnoughChildren) {
+      renderVoidElement(node);
       return;
     }
 
+    let nextNode = null;
     for (let idx in latestAncestors.children) {
       // console.log("节点" + idx)
       // console.log(item)
@@ -22,9 +28,6 @@ export default {
         item.name === node.name // @todo 准确定位标签
       ) {
         let nextIdx = idx;
-        let prevIdx = idx;
-        let nextNode = null;
-        let prevNode = null;
 
         while (++nextIdx < latestAncestors.children.length) {
           const tempNode = latestAncestors.children[nextIdx];
@@ -35,43 +38,30 @@ export default {
           }
         }
 
-        if (!nextNode) {
-          // debugger;
-          while (--prevIdx > -1) {
-            const tempNode = latestAncestors.children[prevIdx];
-
-            if (tempNode && tempNode.type === "text" && trim(tempNode.value)) {
-              // debugger;
-              prevNode = tempNode;
-              break;
-            }
-          }
-        }
-
         if (nextNode) {
-          console.log("修改后节点");
-          console.log(nextNode);
-
           const data = nextNode.data || (nextNode.data = {});
-          const hast = h("mark", nextNode.value);
-          data.hName = hast.tagName;
-          data.hProperties = hast.properties;
-          data.hChildren = hast.children;
-        } else if (prevNode) {
-          console.log("修改前节点");
-          console.log(prevNode);
+          const hast = h("iframe", {
+            ...node.attributes,
+            src: `https://player.bilibili.com/player.html?bvid=${trim(
+              nextNode.value
+            )}`,
+            scrolling: "no",
+            border: "0",
+            frameborder: "no",
+            framespacing: "0",
+            allowfullscreen: "true",
+          });
 
-          const data = prevNode.data || (prevNode.data = {});
-          const hast = h("mark", prevNode.value);
           data.hName = hast.tagName;
           data.hProperties = hast.properties;
           data.hChildren = hast.children;
         }
-
-        renderVoidElement(node);
 
         break;
       }
     }
+
+    // 无论是否找到nextNode, 当前节点都得渲染成空节点
+    renderVoidElement(node);
   },
 };

@@ -17,8 +17,10 @@ export const emojiUrls = {
     "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg",
 };
 
+
 export default {
   namespace: "img",
+  expectArgsName: ['src'],
   render: (node, ancestors) => {
     const latestAncestors = ancestors[ancestors.length - 1];
 
@@ -31,7 +33,7 @@ export default {
     }
 
     const hasArg = node.args && node.args.length > 0;
-    const hasUrlAttr = "url" in node.attributes || "src" in node.attributes;
+    const hasUrlAttr = "src" in node.attributes;
     const hasEnoughChildren =
       latestAncestors.children && latestAncestors.children.length > 1;
 
@@ -44,7 +46,7 @@ export default {
       const data = node.data || (node.data = {});
       const hast = h("img", {
         ...node.attributes,
-        src: node.attributes.url || node.attributes.src,
+        src: node.attributes.src,
       });
 
       data.hName = hast.tagName;
@@ -74,7 +76,7 @@ export default {
 
       let src;
       for (let key in node.attributes) {
-        if (key !== "src" && key != "style" && key != "class" && key != "id") {
+        if (Object.keys(emojiUrls).includes(key)) {
           // 暂时只排除这四个字段
           src = emojiUrls[key];
           break;

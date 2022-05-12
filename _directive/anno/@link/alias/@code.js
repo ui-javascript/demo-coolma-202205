@@ -1,6 +1,6 @@
 export default {
   namespace: 'code',
-  attachAnno: 'doc',
+  attachAnno: 'link',
   properties: {
   
   }

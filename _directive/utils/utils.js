@@ -56,14 +56,13 @@ export function getNextNodeByLatestAncestor(node, latestAncestors) {
   let nextNode = null;
 
   for (let idx in latestAncestors.children) {
-    // console.log("节点" + idx)
-    // console.log(item)
     const item = latestAncestors.children[idx];
     idx = parseInt(idx);
 
+    // @todo 准确定位标签
     if (
       item.type === "textDirective" &&
-      item.name === node.name // @todo 准确定位标签
+      item.name === node.name 
     ) {
       let nextIdx = idx;
 

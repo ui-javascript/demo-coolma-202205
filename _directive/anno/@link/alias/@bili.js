@@ -1,6 +1,6 @@
 export default {
-  namespace: 'bilibili',
-  attachAnno: 'doc',
+  namespace: 'bili',
+  attachAnno: 'link',
   properties: {
     srcName: 'src',
     tagName: 'iframe',
