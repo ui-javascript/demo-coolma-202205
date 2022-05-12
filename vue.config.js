@@ -1,4 +1,5 @@
 const path = require("path")
+// const webpackGlobLoaderPlugin  = require('webpack-glob-loader')
 
 // 构建工具类
 const utils = require("./utils")
@@ -92,17 +93,17 @@ module.exports = {
       //   path.resolve(__dirname, 'src/styles/_mixins.scss')
       // ]
     },
-    // 'webpack-glob-loader': {
-    //   test: /\.js$/,
-    //   exclude: /node_modules/,
-    //   enforce: 'pre',
-    //   loader: 'webpack-glob-loader'
-    // },
+    'webpack-glob-loader': {
+      // @fix 这里配置第三方插件的额外参数, 否则会打包失败
+      enforce: 'pre',
+    },
   },
   // vue-cli 多页面
   pages: entries,
   configureWebpack: {
-    // plugins: [],
+    // plugins: [
+    //   new webpackGlobLoaderPlugin()
+    // ],
     resolve: {
       alias: {
         '@': resolve('src'),
@@ -118,14 +119,8 @@ module.exports = {
   },
   chainWebpack: config => {
 
-    // TODO: need test
     config.plugins.delete('preload')
-    // TODO: need test
     config.plugins.delete('prefetch')
-
-    // set svg-sprite-loader
-
-
 
     config.module
         .rule('vue')
@@ -141,20 +136,15 @@ module.exports = {
       .rule('webpack-glob-loader')
       .test(/\.js$/)
       .exclude
-      .add(path.resolve("node_modules", 'src/icons'))
+      .add(path.resolve("node_modules"))
       .end()
-      .pre()
-        // @fix 必须配置预加载, 否则会打包失败
-      .enforce('pre')
+      // .pre()
+      // .enforce('pre')
       .use('webpack-glob-loader')
       .loader('webpack-glob-loader')
       .tap(options => {
         return options
       })
-
-
-    
-  
 
     // 开发环境 cheap-source-map
     config

@@ -124,6 +124,8 @@ import alias from "./alias.json"
 import aliasModules from "./anno/**/alias/@*js";
 import annoModules from "./anno/@*/@*js";
 
+console.log(annoModules)
+
 function myRemarkPlugin() {
   const annoAlias = {}
 
