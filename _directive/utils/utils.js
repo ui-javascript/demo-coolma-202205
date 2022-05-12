@@ -124,10 +124,9 @@ export function getNextNodeByLatestAncestor(node, latestAncestors) {
     const item = latestAncestors.children[idx];
     idx = parseInt(idx);
 
-    // @todo 需要准确定位到对应标签, 子元素中可能存在同类型的
     if (
       item.type === "textDirective" &&
-      item.name === node.name 
+      item === node 
     ) {
       let nextIdx = idx;
 
@@ -171,10 +170,9 @@ export function getPrevNodeByLatestAncestor(node, latestAncestors) {
     const item = latestAncestors.children[idx];
     idx = parseInt(idx);
 
-    // @todo 需要准确定位到对应标签, 子元素中可能存在同类型的
     if (
       item.type === "textDirective" &&
-      item.name === node.name 
+      item === node
     ) {
       let prevIdx = idx;
       

@@ -98,6 +98,7 @@ hello hi *暂时跳过这种标签* @abbr(HTML, "HTML的全称"){.bg-blue} @nice
 
 hello @nice @nice hi
 
+hello @nice test *em* @nice ssss *em* sss @nice xxx
 `
 
 

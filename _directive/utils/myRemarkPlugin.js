@@ -22,7 +22,10 @@ export default function myRemarkPlugin() {
     return (tree) => {
   
       visitParents(tree, "textDirective", (node, ancestors) => {
-  
+        
+        console.log("树节点")
+        console.log(tree)
+
         Object.keys(annoModules).forEach((key) => {
           registerAnno(annoModules[key].default, annoAlias, node, ancestors)
         });
