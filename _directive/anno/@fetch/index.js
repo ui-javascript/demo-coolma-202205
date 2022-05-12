@@ -12,6 +12,7 @@ export default {
   namespace: "fetch",
   
   realAnnoExpectedArgNames: ['url'],
+  autoConvertArg2Attr: true,
   realAnnoShortcutAttrs: Object.keys(api),
 
   beforeRender: {

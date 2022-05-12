@@ -48,7 +48,8 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
   if (autoNextNode2Attr != false && realAnnoExpectedArgNames && realAnnoExpectedArgNames.length > 0) {
     const nextNode = getNextNodeByAncestors(node, ancestors)
 
-    if (!(realAnnoExpectedArgNames[0] in node.attributes)) { // 不存在url时才覆盖
+    // 通过节点读取值暂时只处理一个参数
+    if (!(realAnnoExpectedArgNames[0] in node.attributes)) { // 不能覆盖node.attributes的配置
       const nextNode2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "nextNode2Attr")
       if (nextNode && nextNode2AttrFunc) {
         nextNode2AttrFunc(node, ancestors, realAnnoExpectedArgNames, nextNode)
@@ -57,12 +58,23 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
   }
  
 
-  const autoArg2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'autoArg2Attr')
-  if (autoArg2Attr != false && realAnnoExpectedArgNames && realAnnoExpectedArgNames.length > 0) { // 默认自动转换参数
-    const args2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "args2Attr")
-    if (args2AttrFunc) {
-      args2AttrFunc(node, ancestors)
-    }
+  // 参数转属性
+  const autoConvertArg2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'autoConvertArg2Attr')
+  if (autoConvertArg2Attr != false 
+    && realAnnoExpectedArgNames && realAnnoExpectedArgNames.length > 0
+    && node.args && node.args.length > 0) { // 默认自动转换参数
+
+    for (let idx in node.args) {
+      if (idx < realAnnoExpectedArgNames.length && !(realAnnoExpectedArgNames[idx] in node.attributes)) { // 不能覆盖node.attributes的配置
+        node.attributes[realAnnoExpectedArgNames[idx]] = node.args[idx]
+      }
+    }  
+    
+    // const args2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "args2Attr")
+    // if (args2AttrFunc) {
+    //   args2AttrFunc(node, ancestors)
+    // }
+
   }
 
   // @fix 按优先级覆盖配置

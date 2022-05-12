@@ -4,7 +4,11 @@ import { trim } from "lodash";
 
 export default {
   namespace: "link",
+  
   realAnnoExpectedArgNames: ['href'],
+  autoConvertArg2Attr: true,
+
+
   beforeRender: {
     nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
       node.attributes[realAnnoExpectedArgNames[0]] = trim(nextNode.value)
@@ -20,8 +24,6 @@ export default {
     linkSplitArr.length > 0
       ? linkSplitArr[linkSplitArr.length - 1]
       : realAnnoExpectedArgNames[0];
-
-    debugger
 
     const data = node.data || (node.data = {});
     const hast = h(

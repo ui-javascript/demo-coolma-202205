@@ -6,7 +6,8 @@ export default {
   namespace: 'bvid',
 
   realAnnoExpectedArgNames: ['vid'],
-
+  autoConvertArg2Attr: true,
+  
   beforeRender: {
     nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
         node.attributes[realAnnoExpectedArgNames[0]] = trim(nextNode.value)

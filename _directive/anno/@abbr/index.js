@@ -2,7 +2,9 @@ import { h } from "hastscript";
 
 export default {
   namespace: 'abbr',
+  
   realAnnoExpectedArgNames: ['abbrName', 'fullName'],
+  autoConvertArg2Attr: true,
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoExpectedArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
