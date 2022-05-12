@@ -6,13 +6,7 @@ import VueCompositionApi, {
 import { watchDebounced, watchThrottled } from '@vueuse/core'
 
 
-import { unified } from "unified";
 
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
-import rehypeFormat from "rehype-format";
-import rehypeStringify from "rehype-stringify";
-import remarkDirective from "./utils/remarkDirective";
 
 
 // import "@picocss/pico/css/pico.classless.min.css"
@@ -22,6 +16,7 @@ import { weatherApi } from "./anno/@fetch";
 
 import { emojiUrls } from "./anno/@img";
 import myRemarkPlugin from "./utils/myRemarkPlugin";
+import unifiedParser from "./utils/unifiedParserUtil";
 
 // const content = `@fetch https://proapi.azurewebsites.net/github/issues`;
 
@@ -126,14 +121,7 @@ const App = {
     const after = ref("");
 
     watchDebounced(before, async () => {
-        const res = await unified()
-        .use(remarkParse)
-        .use(remarkDirective)
-        .use(myRemarkPlugin)
-        .use(remarkRehype)
-        .use(rehypeFormat)
-        .use(rehypeStringify)
-        .process(before.value);
+        const res = await unifiedParser(before.value);
 
         console.log(String(res));
         after.value = String(res);
