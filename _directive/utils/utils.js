@@ -87,9 +87,10 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
   if (realAnnoArgNames && realAnnoArgNames.length > 0) {
     loseAttrs = difference(realAnnoArgNames, Object.keys(node.attributes))
     if (loseAttrs && loseAttrs.length > 0) {
-      console.log(`${node.name} 存在属性 ${loseAttrs.join(",")} 缺失!!`)
       if (!realAnnoShortcutAttrs || realAnnoShortcutAttrs.length === 0) { // 没有快捷属性的情况下存在属性缺失则不渲染
-        return
+        console.log(`${node.name} 存在属性 ${loseAttrs.join(",")} 缺失!!`)
+       
+        // return
       }
     }
   }
@@ -142,6 +143,9 @@ export function getNextNodeByLatestAncestor(node, latestAncestors) {
 }
 
 
+export function getPrevNodeByLatestAncestor() {
+
+}
 
 export function getObjConvertFunc(aliasAnno, realRenderAnno, convertKey, convertFuncKey) {
   if (aliasAnno && aliasAnno[convertKey] && aliasAnno[convertKey][convertFuncKey]) {

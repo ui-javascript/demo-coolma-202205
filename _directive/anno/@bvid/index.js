@@ -5,6 +5,8 @@ import { trim } from "lodash";
 export default {
   namespace: 'bvid',
   realAnnoArgNames: ['vid'],
+
+  // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     const latestAncestors = ancestors[ancestors.length - 1];
 

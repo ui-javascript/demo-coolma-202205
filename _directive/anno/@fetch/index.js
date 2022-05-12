@@ -20,6 +20,8 @@ export default {
         renderVoidElement(nextNode) // 取值结束不再需要渲染的情况
     }
   },
+
+  // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: async (node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs) => {
     let isWeatherApi = false;
 
@@ -31,7 +33,6 @@ export default {
       for (let idx in realAnnoShortcutAttrs) {
         const shortcutAttr = realAnnoShortcutAttrs[idx]
         if (node.attributes[shortcutAttr] && api[shortcutAttr]) {
-          debugger
           node.attributes[realAnnoArgNames[0]] = api[shortcutAttr];
           isWeatherApi =  shortcutAttr === "weather"
           break

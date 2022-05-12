@@ -3,6 +3,8 @@ import { h } from "hastscript";
 export default {
   namespace: 'abbr',
   realAnnoArgNames: ['abbrName', 'fullName'],
+
+  // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     const data = node.data || (node.data = {});
     if (!("title" in node.attributes) && node.args && node.args.length > 1) {
