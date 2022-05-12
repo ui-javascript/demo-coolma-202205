@@ -7,7 +7,10 @@ export default {
   
   realAnnoExpectedArgNames: null, // 不需要参数
   autoConvertArg2Attr: true,
-  args2Attr: (node, ancestors) => {}, 
+  beforeRender: {
+    args2Attr: (node, ancestors) => {},
+  },
+  
   realAnnoShortcutAttrs: null,
 
 

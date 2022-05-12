@@ -5,7 +5,10 @@ export default {
   
   realAnnoExpectedArgNames: ['abbrName', 'fullName'],
   autoConvertArg2Attr: true,
-  args2Attr: (node, ancestors) => {},
+  beforeRender: {
+    args2Attr: (node, ancestors) => {},
+  },
+  
   realAnnoShortcutAttrs: null,
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成

@@ -29,7 +29,9 @@ export default {
   
   realAnnoExpectedArgNames: ['src'],
   autoConvertArg2Attr: true,
-  args2Attr: (node, ancestors) => {},
+  beforeRender: {
+    args2Attr: (node, ancestors) => {},
+  },
 
   realAnnoShortcutAttrs: Object.keys(emojiUrls),
 
