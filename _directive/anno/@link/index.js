@@ -4,15 +4,15 @@ import { trim } from "lodash";
 
 export default {
   namespace: "link",
-  realAnnoArgNames: ['href'],
+  realAnnoExpectedArgNames: ['href'],
   beforeRender: {
-    nextNode2Attr: (node, ancestors, realAnnoArgNames, nextNode) => {
+    nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
       
     }
   },
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
-  render: (node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
+  render: (node, ancestors, realAnnoExpectedArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     const latestAncestors = ancestors[ancestors.length - 1];
     const hasEnoughChildren =
       latestAncestors.children && latestAncestors.children.length > 1;

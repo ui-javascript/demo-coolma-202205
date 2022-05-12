@@ -32,33 +32,33 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
   }
 
   // 参数自动转换
-  const realAnnoArgNames = realRenderAnno.realAnnoArgNames
+  const realAnnoExpectedArgNames = realRenderAnno.realAnnoExpectedArgNames
   
   // const autoPrevNode2Attr = getAutoConfig(annoAlias[node.name], realRenderAnno, 'autoPrevNode2Attr')
   // if (autoPrevNode2Attr != false) {
   //   const prevNode2AttrFunc = getObjConvert(annoAlias[node.name], realRenderAnno, "beforeRender", "prevNode2Attr")
   //   if (prevNode2AttrFunc) {
-  //     prevNode2AttrFunc(node, ancestors, realAnnoArgNames, nextNode)
+  //     prevNode2AttrFunc(node, ancestors, realAnnoExpectedArgNames, nextNode)
   //   }
   // }
 
 
   // 处理后节点的属性
   const autoNextNode2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'autoNextNode2Attr')
-  if (autoNextNode2Attr != false && realAnnoArgNames && realAnnoArgNames.length > 0) {
+  if (autoNextNode2Attr != false && realAnnoExpectedArgNames && realAnnoExpectedArgNames.length > 0) {
     const nextNode = getNextNodeByAncestors(node, ancestors)
 
-    if (!(realAnnoArgNames[0] in node.attributes)) { // 不存在url时才覆盖
+    if (!(realAnnoExpectedArgNames[0] in node.attributes)) { // 不存在url时才覆盖
       const nextNode2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "nextNode2Attr")
       if (nextNode && nextNode2AttrFunc) {
-        nextNode2AttrFunc(node, ancestors, realAnnoArgNames, nextNode)
+        nextNode2AttrFunc(node, ancestors, realAnnoExpectedArgNames, nextNode)
       }
     }
   }
  
 
   const autoArg2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'autoArg2Attr')
-  if (autoArg2Attr != false && realAnnoArgNames && realAnnoArgNames.length > 0) { // 默认自动转换参数
+  if (autoArg2Attr != false && realAnnoExpectedArgNames && realAnnoExpectedArgNames.length > 0) { // 默认自动转换参数
     const args2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "args2Attr")
     if (args2AttrFunc) {
       args2AttrFunc(node, ancestors)
@@ -84,8 +84,8 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
 
   // 检测属性是否有缺失
   let loseAttrs = [] 
-  if (realAnnoArgNames && realAnnoArgNames.length > 0) {
-    loseAttrs = difference(realAnnoArgNames, Object.keys(node.attributes))
+  if (realAnnoExpectedArgNames && realAnnoExpectedArgNames.length > 0) {
+    loseAttrs = difference(realAnnoExpectedArgNames, Object.keys(node.attributes))
     if (loseAttrs && loseAttrs.length > 0) {
       if (!realAnnoShortcutAttrs || realAnnoShortcutAttrs.length === 0) { // 没有快捷属性的情况下存在属性缺失则不渲染
         console.log(`${node.name} 存在属性 ${loseAttrs.join(",")} 缺失!!`)
@@ -96,7 +96,7 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
   }
 
   // 开始渲染合法的标签, 实现已转换其他参数, 渲染仅根据属性node.attributes
-  realRenderAnno.render(node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs);
+  realRenderAnno.render(node, ancestors, realAnnoExpectedArgNames, realAnnoShortcutAttrs, loseAttrs);
 }
 
 

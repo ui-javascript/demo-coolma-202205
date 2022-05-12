@@ -27,12 +27,12 @@ export const emojiUrls = {
 export default {
   namespace: "img",
   
-  realAnnoArgNames: ['src'],
+  realAnnoExpectedArgNames: ['src'],
 
   realAnnoShortcutAttrs: Object.keys(emojiUrls),
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
-  render: (node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
+  render: (node, ancestors, realAnnoExpectedArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     const latestAncestors = ancestors[ancestors.length - 1];
 
     let isEmoji = false;

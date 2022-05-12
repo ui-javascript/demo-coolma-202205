@@ -11,18 +11,18 @@ export const api = {
 export default {
   namespace: "fetch",
   
-  realAnnoArgNames: ['url'],
+  realAnnoExpectedArgNames: ['url'],
   realAnnoShortcutAttrs: Object.keys(api),
 
   beforeRender: {
-    nextNode2Attr: (node, ancestors, realAnnoArgNames, nextNode) => {
-        node.attributes[realAnnoArgNames[0]] = trim(nextNode.value)
+    nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
+        node.attributes[realAnnoExpectedArgNames[0]] = trim(nextNode.value)
         renderVoidElement(nextNode) // 取值结束不再需要渲染的情况
     }
   },
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
-  render: async (node, ancestors, realAnnoArgNames, realAnnoShortcutAttrs, loseAttrs) => {
+  render: async (node, ancestors, realAnnoExpectedArgNames, realAnnoShortcutAttrs, loseAttrs) => {
     let isWeatherApi = false;
 
     // 没有快捷属性匹配
@@ -33,14 +33,14 @@ export default {
       for (let idx in realAnnoShortcutAttrs) {
         const shortcutAttr = realAnnoShortcutAttrs[idx]
         if (node.attributes[shortcutAttr] && api[shortcutAttr]) {
-          node.attributes[realAnnoArgNames[0]] = api[shortcutAttr];
+          node.attributes[realAnnoExpectedArgNames[0]] = api[shortcutAttr];
           isWeatherApi =  shortcutAttr === "weather"
           break
         }
       }
    
       // 仍然没有矫正属性则提前结束
-      if (!node.attributes[realAnnoArgNames[0]]) {
+      if (!node.attributes[realAnnoExpectedArgNames[0]]) {
         return 
       }
     }
@@ -73,7 +73,7 @@ export default {
     data.hProperties = hast.properties;
     data.hChildren = hast.children;
 
-    const res = await Axios.get(node.attributes[realAnnoArgNames[0]]);
+    const res = await Axios.get(node.attributes[realAnnoExpectedArgNames[0]]);
 
     let resData;
     if (res.data) {
