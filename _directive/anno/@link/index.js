@@ -7,49 +7,37 @@ export default {
   realAnnoExpectedArgNames: ['href'],
   beforeRender: {
     nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
-      
+      node.attributes[realAnnoExpectedArgNames[0]] = trim(nextNode.value)
+      renderVoidElement(nextNode) // 取值结束不再需要渲染的情况
     }
   },
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoExpectedArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
-    const latestAncestors = ancestors[ancestors.length - 1];
-    const hasEnoughChildren =
-      latestAncestors.children && latestAncestors.children.length > 1;
 
-    if (!hasEnoughChildren) {
-      renderVoidElement(node);
-      return;
-    }
+  const linkSplitArr =  node.attributes[realAnnoExpectedArgNames[0]].split("/");
+  const linkSplitName =
+    linkSplitArr.length > 0
+      ? linkSplitArr[linkSplitArr.length - 1]
+      : realAnnoExpectedArgNames[0];
 
+    debugger
 
-    let nextNode = getNextNodeByLatestAncestor(node, latestAncestors);
+    const data = node.data || (node.data = {});
+    const hast = h(
+      node.attributes.tagName || "a",
+      {
+        ...node.attributes,
+        [node.attributes.srcName || realAnnoExpectedArgNames[0]]: node.attributes[realAnnoExpectedArgNames[0]],
+        target: "_blank",
+      },
+      [node.attributes.title || linkSplitName]
+    );
 
-    if (nextNode) {
-      const linkSplitArr = nextNode.value.split("/");
-      const linkSplitName =
-        linkSplitArr.length > 0
-          ? linkSplitArr[linkSplitArr.length - 1]
-          : nextNode.value;
+    data.hName = hast.tagName;
+    data.hProperties = hast.properties;
+    data.hChildren = hast.children;
 
-      const data = nextNode.data || (nextNode.data = {});
-      const hast = h(
-        node.attributes.tagName || "a",
-        {
-          ...node.attributes,
-          [node.attributes.srcName || "href"]: trim(nextNode.value),
-          target: "_blank",
-        },
-        [node.attributes.title || linkSplitName]
-      );
-
-      data.hName = hast.tagName;
-      data.hProperties = hast.properties;
-      data.hChildren = hast.children;
-    }
-
-    // 无论是否找到nextNode, 当前节点都得渲染成空节点
-    renderVoidElement(node);
 
 
   },

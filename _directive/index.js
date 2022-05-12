@@ -37,7 +37,8 @@ const content = `#### 世界很大, 而我又是靓仔 @nice
 @emoji{help} @emoji{java}
 
 \`\`\`
-@emoji{safe} @emoji{ichange} 
+@emoji{safe} 
+@emoji{ichange} 
 \`\`\`
 `
 
@@ -80,12 +81,6 @@ A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red #id} @abb
 @fetch{weather: true, includeKeys: "['date']"}
 
 @fetch{weather: false}
-
-
-
-@fetchAliasWeather
-
-@fetchAliasWeather{weather}
 
 ---
 

@@ -90,7 +90,7 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
       if (!realAnnoShortcutAttrs || realAnnoShortcutAttrs.length === 0) { // 没有快捷属性的情况下存在属性缺失则不渲染
         console.log(`${node.name} 存在属性 ${loseAttrs.join(",")} 缺失!!`)
        
-        // return
+        return
       }
     }
   }
@@ -121,7 +121,7 @@ export function getNextNodeByLatestAncestor(node, latestAncestors) {
     const item = latestAncestors.children[idx];
     idx = parseInt(idx);
 
-    // @todo 准确定位标签
+    // @todo 需要准确定位到对应标签, 子元素中可能存在同类型的
     if (
       item.type === "textDirective" &&
       item.name === node.name 
