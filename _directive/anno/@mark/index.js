@@ -7,13 +7,12 @@ export default {
   
   realAnnoExpectedArgNames: null, // 不需要参数
   autoConvertArg2Attr: true,
+  realAnnoShortcutAttrs: null,
+
   beforeRender: {
     args2Attr: (node, ancestors) => {},
   },
   
-  realAnnoShortcutAttrs: null,
-
-
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoExpectedArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     

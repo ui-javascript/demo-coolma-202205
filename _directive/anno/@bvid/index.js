@@ -7,13 +7,12 @@ export default {
 
   realAnnoExpectedArgNames: ['vid'],
   autoConvertArg2Attr: true,
-  beforeRender: {
-    args2Attr: (node, ancestors) => {},
-  },
   
   realAnnoShortcutAttrs: null,
   
   beforeRender: {
+    args2Attr: (node, ancestors) => {},
+
     nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
         node.attributes[realAnnoExpectedArgNames[0]] = trim(nextNode.value)
         renderVoidElement(nextNode) // 取值结束不再需要渲染的情况
