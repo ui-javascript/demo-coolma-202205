@@ -51,7 +51,7 @@ export default {
           return
       }
 
-      debugger
+      // debugger
 
       node.attributes[realAnnoExpectedArgNames[0]] = nextVal;
       renderVoidElement(nextNode); // 取值结束不再需要渲染后置节点
