@@ -2,7 +2,7 @@
 
 ![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652367174757-jHcRW5JCSfAz.png)
 
-# 演示注解
+# 常用注解
 
 - @nice -- 高亮
 - @del -- 删除
@@ -10,6 +10,11 @@
 - @fetch(url) -- 请求数据展示成表格
 - @weather -- 天气预报
 - @bvid -- B站视频
+
+# 演示地址
+
+- https://ui-javascript.github.io/demo-coolma-202205/
+- https://marketplace.visualstudio.com/items?itemName=luo0412.vscode-coolma
 
 # 常用工具
 
