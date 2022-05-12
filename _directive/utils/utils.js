@@ -18,23 +18,21 @@ export function registerAnno(anno, annoAlias, node, ancestors) {
   let aliasAttributes = null;
 
   if (node.name !== anno.namespace) {
-    let isOk = false;
-    for (let key in annoAlias) {
-      if (node.name === key && annoAlias[key].attachAnno === anno.namespace) {
-        isOk = true;
-        aliasAttributes = annoAlias[key]['properties'];
-        break;
-      }
-    }
 
-    if (!isOk) {
+    // 这个节点是否有注册别名
+    if (Object.keys(annoAlias).includes(node.name) && annoAlias[node.name].attachAnno === anno.namespace) {
+      aliasAttributes = annoAlias[node.name]['properties'];
+    } else { // 都不符合要求
+      renderVoidElement(node)
       return;
     }
+
   }
 
   if (aliasAttributes) {
     // @fix 小心aliasAttributes被覆盖
-    node.attributes = Object.assign({}, aliasAttributes, node.attributes || {});
+    // 当前节点的属性优先级最高
+    node.attributes = Object.assign({}, aliasAttributes, node.attributes);
   }
 
   anno.render(node, ancestors);

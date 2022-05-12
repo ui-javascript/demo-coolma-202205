@@ -21,7 +21,7 @@ import "./style.less";
 
 import { weatherApi } from "./anno/@fetch/@fetch";
 import { initAliasMeta, registerAnno } from "./utils/utils";
-import aliasJsonConfigModules from "./alias.config.json"
+import aliasJsonConfigModules from "./annoAlias.config.json"
 
 import aliasModules from "./anno/**/alias/@*.js";
 import annoModules from "./anno/@*/@*.js";
