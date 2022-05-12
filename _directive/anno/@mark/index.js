@@ -1,82 +1,43 @@
-import { renderVoidElement } from "../../utils/utils";
+import { getNextNodeByLatestAncestor, getNextNodeByAncestor, renderVoidElement, getPrevNodeByAncestors, getPrevNodeByLatestAncestor } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 
 export default {
   namespace: "mark",
   
-  realAnnoExpectedArgNames: null,
+  realAnnoExpectedArgNames: null, // 不需要参数
   autoConvertArg2Attr: true,
+  realAnnoShortcutAttrs: null,
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoExpectedArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
+    
     const latestAncestors = ancestors[ancestors.length - 1];
-
-    if (!latestAncestors.children || latestAncestors.children.length === 0) {
-      return;
+    const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令外至少还有一个元素
+    if (!hasEnoughChildren) {
+      return
     }
 
-    for (let idx in latestAncestors.children) {
-      // console.log("节点" + idx)
-      // console.log(item)
-      const item = latestAncestors.children[idx];
-      idx = parseInt(idx);
+    debugger
 
-      if (
-        item.type === "textDirective" &&
-        item.name === node.name // @todo 准确定位标签
-      ) {
-        let nextIdx = idx;
-        let prevIdx = idx;
-        let nextNode = null;
-        let prevNode = null;
+    let renderNode = null
 
-        while (++nextIdx < latestAncestors.children.length) {
-          const tempNode = latestAncestors.children[nextIdx];
+    // 优先渲染后置节点
+    renderNode = getNextNodeByLatestAncestor(node, latestAncestors)
 
-          if (tempNode && tempNode.type === "text" && trim(tempNode.value)) {
-            nextNode = tempNode;
-            break;
-          }
-        }
-
-        if (!nextNode) {
-          // debugger;
-          while (--prevIdx > -1) {
-            const tempNode = latestAncestors.children[prevIdx];
-
-            if (tempNode && tempNode.type === "text" && trim(tempNode.value)) {
-              // debugger;
-              prevNode = tempNode;
-              break;
-            }
-          }
-        }
-
-        if (nextNode) {
-          console.log("修改后节点");
-          console.log(nextNode);
-
-          const data = nextNode.data || (nextNode.data = {});
-          const hast = h(node.attributes.tagName || "mark", {...node.attributes}, nextNode.value);
-          data.hName = hast.tagName;
-          data.hProperties = hast.properties;
-          data.hChildren = hast.children;
-        } else if (prevNode) {
-          console.log("修改前节点");
-          console.log(prevNode);
-
-          const data = prevNode.data || (prevNode.data = {});
-          const hast = h(node.attributes.tagName || "mark", {...node.attributes}, prevNode.value);
-          data.hName = hast.tagName;
-          data.hProperties = hast.properties;
-          data.hChildren = hast.children;
-        }
-
-        renderVoidElement(node);
-
-        break;
-      }
+    if (!renderNode) {
+      renderNode = getPrevNodeByLatestAncestor(node, latestAncestors)
     }
+
+    if (renderNode) {
+
+      const data = renderNodeprevNode.data || (renderNode.data = {});
+      const hast = h(node.attributes.tagName || "mark", {...node.attributes}, renderNode.value);
+      data.hName = hast.tagName;
+      data.hProperties = hast.properties;
+      data.hChildren = hast.children;
+    }
+
+
   },
 };

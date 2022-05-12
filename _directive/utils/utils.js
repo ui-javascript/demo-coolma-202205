@@ -155,8 +155,54 @@ export function getNextNodeByLatestAncestor(node, latestAncestors) {
 }
 
 
-export function getPrevNodeByLatestAncestor() {
+export function getPrevNodeByAncestors(node, ancestors) {
+  let prevNode = null;
 
+  const latestAncestors = ancestors[ancestors.length - 1];
+  const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令外至少还有一个元素
+  if (!hasEnoughChildren) {
+    return prevNode;
+  }
+
+  prevNode = getPrevNodeByLatestAncestor(node, latestAncestors)
+  return prevNode;
+}
+
+export function getPrevNodeByLatestAncestor(node, latestAncestors) {
+  let prevNode = null;
+
+  const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令外至少还有一个元素
+  if (!hasEnoughChildren) {
+    return nextNode;
+  }
+
+  
+  for (let idx in latestAncestors.children) {
+    const item = latestAncestors.children[idx];
+    idx = parseInt(idx);
+
+    // @todo 需要准确定位到对应标签, 子元素中可能存在同类型的
+    if (
+      item.type === "textDirective" &&
+      item.name === node.name 
+    ) {
+      let prevIdx = idx;
+      let prevNode = null;
+      
+      while (--prevIdx > -1) {
+        const tempNode = latestAncestors.children[prevIdx];
+
+        if (tempNode && tempNode.type === "text" && trim(tempNode.value)) {
+          // debugger;
+          prevNode = tempNode;
+          break;
+        }
+      }
+
+    }
+  }
+
+  return prevNode;
 }
 
 export function getObjConvertFunc(aliasAnno, realRenderAnno, convertKey, convertFuncKey) {

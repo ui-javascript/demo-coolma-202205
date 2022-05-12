@@ -7,7 +7,7 @@ export default {
   
   realAnnoExpectedArgNames: ['href'],
   autoConvertArg2Attr: true,
-
+  realAnnoShortcutAttrs: null,
 
   beforeRender: {
     nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
