@@ -4,7 +4,7 @@ import { trim } from "lodash";
 
 export default {
   namespace: 'bvid',
-  exec: (node, ancestors) => {
+  render: (node, ancestors) => {
     const latestAncestors = ancestors[ancestors.length - 1];
 
     const hasEnoughChildren =

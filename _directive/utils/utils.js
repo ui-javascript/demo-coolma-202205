@@ -14,13 +14,13 @@ export function initAliasMeta(annoAliasMeta, annoName, aliaName, config) {
   annoAliasMeta[aliaName].properties = config
 }
 
-export function registerAnno(annoName, annoAlias, node, ancestors, regFn) {
+export function registerAnno(anno, annoAlias, node, ancestors) {
   let aliasAttributes = null;
 
-  if (node.name !== annoName) {
+  if (node.name !== anno.namespace) {
     let isOk = false;
     for (let key in annoAlias) {
-      if (node.name === key && annoAlias[key].attachAnno === annoName) {
+      if (node.name === key && annoAlias[key].attachAnno === anno.namespace) {
         isOk = true;
         aliasAttributes = annoAlias[key]['properties'];
         break;
@@ -37,5 +37,5 @@ export function registerAnno(annoName, annoAlias, node, ancestors, regFn) {
     node.attributes = Object.assign({}, aliasAttributes, node.attributes || {});
   }
 
-  regFn(node, ancestors);
+  anno.render(node, ancestors);
 }

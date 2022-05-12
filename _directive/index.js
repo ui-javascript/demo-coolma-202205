@@ -124,9 +124,8 @@ function myRemarkPlugin() {
 
     visitParents(tree, "textDirective", (node, ancestors) => {
 
-      debugger
       Object.keys(annoModules).forEach((key) => {
-        registerAnno(annoModules[key].default.namespace, annoAlias, node, ancestors, annoModules[key].default.exec)
+        registerAnno(annoModules[key].default, annoAlias, node, ancestors)
       });
       
     });

@@ -8,7 +8,7 @@ export const weatherApi =
 
 export default {
   namespace: "fetch",
-  exec: async (node, ancestors) => {
+  render: async (node, ancestors) => {
     if (
       (!node.attributes || !("weather" in node.attributes)) &&
       (!node.args || node.args.length === 0)

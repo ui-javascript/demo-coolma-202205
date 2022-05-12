@@ -4,7 +4,7 @@ import { trim } from "lodash";
 
 export default {
   namespace: "mark",
-  exec: (node, ancestors) => {
+  render: (node, ancestors) => {
     const latestAncestors = ancestors[ancestors.length - 1];
 
     if (!latestAncestors.children || latestAncestors.children.length === 0) {

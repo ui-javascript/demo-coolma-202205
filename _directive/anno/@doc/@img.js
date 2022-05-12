@@ -19,7 +19,7 @@ export const emojiUrls = {
 
 export default {
   namespace: "img",
-  exec: (node, ancestors) => {
+  render: (node, ancestors) => {
     const latestAncestors = ancestors[ancestors.length - 1];
 
     let isEmoji = false;

@@ -2,7 +2,7 @@ import { h } from "hastscript";
 
 export default {
   namespace: 'abbr',
-  exec: (node, ancestors) => {
+  render: (node, ancestors) => {
     const data = node.data || (node.data = {});
     if (!("title" in node.attributes) && node.args && node.args.length > 1) {
       node.attributes.title = node.args[1];
