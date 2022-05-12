@@ -2,7 +2,7 @@ import { renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 
-export default function registerAnnoMark(node, ancestors) {
+export default function mark(node, ancestors) {
   const latestAncestors = ancestors[ancestors.length - 1];
 
   if (!latestAncestors.children || latestAncestors.children.length === 0) {

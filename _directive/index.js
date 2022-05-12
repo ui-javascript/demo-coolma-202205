@@ -26,7 +26,7 @@ import registerAnnoFetch from "./anno/@fetch/@fetch";
 import "./style.less";
 
 import { weatherApi } from "./anno/@fetch/@fetch";
-import { registerAnno } from "./utils/utils";
+import { initAliasMeta, registerAnno } from "./utils/utils";
 import registerAliaWeather from "./anno/@fetch/alias/@weather"
 import registerAliafetchAliasWeather from "./anno/@fetch/alias/@fetchAliasWeather"
 import registerAnnoDel from "./anno/@mark/@del";
@@ -119,34 +119,32 @@ hello @nice @nice hi
 
 `
 
+import alias from "./alias.json"
+
+import modules from "./anno/**/alias/@*js";
+import annoModules from "./anno/@*/@*js";
+
 function myRemarkPlugin() {
   const annoAlias = {}
 
-  registerAliaWeather(annoAlias)
-  registerAliafetchAliasWeather(annoAlias)
-  registerAliaEmoji(annoAlias)
-  registerAliaBilibili(annoAlias)
-  registerAliaBili(annoAlias)
-  registerAliaDog(annoAlias)
-  registerAliaCat(annoAlias)
-  registerAliaTiger(annoAlias)
-  registerAliaCode(annoAlias)
-  registerAliaNice(annoAlias)
+  // 获取
+  Object.keys(modules).forEach((key) => {
+    modules[key].default(annoAlias)
+  });
+
+  // 获取JSON配置文件
+  Object.keys(alias).forEach((key) => {
+    initAliasMeta(annoAlias, alias[key].attachAnno, key, alias[key].properties)
+  });
+
 
   return (tree) => {
 
     visitParents(tree, "textDirective", (node, ancestors) => {
 
-      registerAnno('abbr', annoAlias, node, ancestors, registerAnnoAbbr);
-      
-      registerAnno('mark', annoAlias, node, ancestors, registerAnnoMark);
-      registerAnno('del', annoAlias, node, ancestors, registerAnnoDel);
-      
-      registerAnno('img', annoAlias, node, ancestors, registerAnnoImg);
-      registerAnno('doc', annoAlias, node, ancestors, registerAnnoDoc);
-      registerAnno('bvid', annoAlias, node, ancestors, registerAnnoBvid);
-
-      registerAnno('fetch', annoAlias, node, ancestors, registerAnnoFetch)
+    Object.keys(annoModules).forEach((key) => {
+      registerAnno(annoModules[key].default.name, annoAlias, node, ancestors, annoModules[key].default)
+    });
       
     });
 

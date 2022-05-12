@@ -130,6 +130,16 @@ module.exports = {
             return options;
         });
 
+    config.module
+      .rule('glob')
+      .test(/\.(js|jsx)$/)
+      .use('webpack-import-glob-loader')
+      .loader('webpack-import-glob-loader')
+      .tap(options => {
+        // 修改它的选项...
+        return options
+      })
+
     // 开发环境 cheap-source-map
     config
       .when(isEnvDev,

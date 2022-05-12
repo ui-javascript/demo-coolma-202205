@@ -3,7 +3,11 @@ import { renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { nanoid } from "nanoid";
 
-const registerAnnoFetch = async (node, ancestors) => {
+
+export const weatherApi =
+  "https://v0.yiketianqi.com/api?unescape=1&version=v91&appid=43656176&appsecret=I42og6Lm&ext=&cityid=&city=";
+
+const fetch = async (node, ancestors) => {
 
   if (
     (!node.attributes || !("weather" in node.attributes)) &&
@@ -118,7 +122,5 @@ const registerAnnoFetch = async (node, ancestors) => {
   }
 };
 
-export default registerAnnoFetch;
 
-export const weatherApi =
-  "https://v0.yiketianqi.com/api?unescape=1&version=v91&appid=43656176&appsecret=I42og6Lm&ext=&cityid=&city=";
+export default fetch;

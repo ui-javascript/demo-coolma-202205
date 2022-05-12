@@ -1,7 +1,7 @@
 import { normalizeClass } from "@vue/shared";
 import { h } from "hastscript";
 
-export default function registerAnnoAbbr(node, ancestors) {
+export default function abbr(node, ancestors) {
 
   const data = node.data || (node.data = {});
   if (!("title" in node.attributes) && node.args && node.args.length > 1) {

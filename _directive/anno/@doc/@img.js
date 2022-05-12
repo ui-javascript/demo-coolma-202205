@@ -11,7 +11,7 @@ export const emojiUrls = {
   tiger: "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg"
 }  
 
-export default function registerAnnoImg(node, ancestors) {
+export default function img(node, ancestors) {
   const latestAncestors = ancestors[ancestors.length - 1];
 
   let isEmoji = false

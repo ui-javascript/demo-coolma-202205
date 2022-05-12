@@ -2,7 +2,7 @@ import { renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 
-export default function registerAnnoDel(node, ancestors) {
+export default function del(node, ancestors) {
   
     const latestAncestors = ancestors[ancestors.length - 1];
   

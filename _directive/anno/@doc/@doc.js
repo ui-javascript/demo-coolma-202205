@@ -2,7 +2,7 @@ import { renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 
-export default function registerAnnoDoc(node, ancestors) {
+export default function doc(node, ancestors) {
   const latestAncestors = ancestors[ancestors.length - 1];
 
   const hasEnoughChildren =
