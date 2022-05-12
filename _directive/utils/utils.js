@@ -69,12 +69,11 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
         node.attributes[realAnnoExpectedArgNames[idx]] = node.args[idx]
       }
     }  
-    
-    // const args2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "args2Attr")
-    // if (args2AttrFunc) {
-    //   args2AttrFunc(node, ancestors)
-    // }
-
+  } else {
+    const args2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "args2Attr")
+    if (args2AttrFunc) {
+      args2AttrFunc(node, ancestors)
+    }
   }
 
   // @fix 按优先级覆盖配置
@@ -173,9 +172,8 @@ export function getPrevNodeByLatestAncestor(node, latestAncestors) {
 
   const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令外至少还有一个元素
   if (!hasEnoughChildren) {
-    return nextNode;
+    return prevNode;
   }
-
   
   for (let idx in latestAncestors.children) {
     const item = latestAncestors.children[idx];
@@ -187,11 +185,11 @@ export function getPrevNodeByLatestAncestor(node, latestAncestors) {
       item.name === node.name 
     ) {
       let prevIdx = idx;
-      let prevNode = null;
       
       while (--prevIdx > -1) {
         const tempNode = latestAncestors.children[prevIdx];
 
+        // debugger
         if (tempNode && tempNode.type === "text" && trim(tempNode.value)) {
           // debugger;
           prevNode = tempNode;

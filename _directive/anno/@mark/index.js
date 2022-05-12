@@ -7,7 +7,9 @@ export default {
   
   realAnnoExpectedArgNames: null, // 不需要参数
   autoConvertArg2Attr: true,
+  args2Attr: (node, ancestors) => {}, 
   realAnnoShortcutAttrs: null,
+
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoExpectedArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
@@ -17,8 +19,6 @@ export default {
     if (!hasEnoughChildren) {
       return
     }
-
-    debugger
 
     let renderNode = null
 
@@ -30,14 +30,15 @@ export default {
     }
 
     if (renderNode) {
-
-      const data = renderNodeprevNode.data || (renderNode.data = {});
+      const data = renderNode.data || (renderNode.data = {});
       const hast = h(node.attributes.tagName || "mark", {...node.attributes}, renderNode.value);
       data.hName = hast.tagName;
       data.hProperties = hast.properties;
       data.hChildren = hast.children;
     }
 
+
+    renderVoidElement(node)
 
   },
 };

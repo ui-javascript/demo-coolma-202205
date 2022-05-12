@@ -7,6 +7,7 @@ export default {
 
   realAnnoExpectedArgNames: ['vid'],
   autoConvertArg2Attr: true,
+  args2Attr: (node, ancestors) => {},
   realAnnoShortcutAttrs: null,
   
   beforeRender: {

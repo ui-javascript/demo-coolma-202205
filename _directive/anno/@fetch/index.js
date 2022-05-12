@@ -13,6 +13,8 @@ export default {
   
   realAnnoExpectedArgNames: ['url'],
   autoConvertArg2Attr: true,
+  args2Attr: (node, ancestors) => {},
+  
   realAnnoShortcutAttrs: Object.keys(api),
 
   beforeRender: {

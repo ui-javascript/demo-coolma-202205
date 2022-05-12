@@ -29,6 +29,8 @@ export default {
   
   realAnnoExpectedArgNames: ['src'],
   autoConvertArg2Attr: true,
+  args2Attr: (node, ancestors) => {},
+
   realAnnoShortcutAttrs: Object.keys(emojiUrls),
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
