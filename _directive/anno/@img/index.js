@@ -24,6 +24,8 @@ export const emojiUrls = {
     "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png",
 };
 
+export const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/
+
 export default {
   namespace: "img",
 
@@ -33,16 +35,27 @@ export default {
     args2Attr: (node, ancestors) => {},
 
     nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
-      debugger
+      // debugger
       let nextVal = trim(nextNode.value)
 
       // 处理类似情况 @img(https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif)
-      nextVal = nextVal
+      
+      if (/^\(/.test(nextVal) && /\)$/.test(nextVal)) {
+        nextVal = nextVal
         .replace(/^\(/, "")
         .replace(/\)$/, "")
+      }
+
+      // 判断后置节点内容是否为URL
+      if (!urlRegex.test(nextVal)) {
+          return
+      }
+
+      debugger
 
       node.attributes[realAnnoExpectedArgNames[0]] = nextVal;
       renderVoidElement(nextNode); // 取值结束不再需要渲染后置节点
+
     },
   },
 

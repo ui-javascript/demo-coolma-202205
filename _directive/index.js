@@ -16,15 +16,15 @@ import unifiedParser from "./utils/unifiedParserUtil";
 const weatherApi = api.weather
 
 
-// const content = `
+const content = `
 
-// @img(https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif) 
-// @img https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif
+@img(https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif) 
+@img https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif
 
 
-// `;
+`;
 
-const content = `#### 世界很大, 而我又是靓仔 @nice 
+const content2 = `#### 世界很大, 而我又是靓仔 @nice 
 
 虽然说了句正确的废话 @del 
 
