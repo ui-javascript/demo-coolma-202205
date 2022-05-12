@@ -4,7 +4,7 @@ import { trim } from "lodash";
 
 export default {
   namespace: "link",
-  expectArgsName: ['href'],
+  expectedArgNames: ['href'],
   beforeRender: {
     nextNode2Attr: (node, ancestors) => {
       

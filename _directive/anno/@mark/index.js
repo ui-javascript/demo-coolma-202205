@@ -4,7 +4,7 @@ import { trim } from "lodash";
 
 export default {
   namespace: "mark",
-  expectArgsName: null,
+  expectedArgNames: null,
   render: (node, ancestors) => {
     const latestAncestors = ancestors[ancestors.length - 1];
 

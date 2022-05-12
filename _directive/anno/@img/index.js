@@ -27,7 +27,7 @@ export const emojiUrls = {
 export default {
   namespace: "img",
   
-  expectArgsName: ['src'],
+  expectedArgNames: ['src'],
 
   render: (node, ancestors) => {
     const latestAncestors = ancestors[ancestors.length - 1];

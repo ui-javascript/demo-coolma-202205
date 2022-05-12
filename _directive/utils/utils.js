@@ -1,5 +1,5 @@
 import { h } from "hastscript";
-import { trim } from "lodash";
+import { trim, intersection } from "lodash";
 
 // @todo 暂时先伪装成块内元素
 export function renderVoidElement(node) {
@@ -43,7 +43,7 @@ export function registerAnno(realAnno, annoAlias, node, ancestors) {
   }
 
   if (realAnno.beforeRender && realAnno.beforeRender.args2Attr) {
-    if (!isRegisteredAliasAnno && !realAnno.expecteArgNames && realAnno.expecteArgNames.length > 0 && this.autoArg2Attr != false) { // 默认自动转换参数
+    if (!isRegisteredAliasAnno && !realAnno.expectedArgNames && realAnno.expectedArgNames.length > 0 && this.autoArg2Attr != false) { // 默认自动转换参数
 
     }
     realAnno.beforeRender.args2Attr(node, ancestors)
@@ -59,10 +59,10 @@ export function registerAnno(realAnno, annoAlias, node, ancestors) {
   realAnno.render(node, ancestors);
 
   // 如果最终属性
-  const expecteArgNames = node.expecteArgNames || realAnno.expecteArgNames
-  if (expecteArgNames && expecteArgNames.length > 0) {
-    if (intersection(expecteArgNames, Object.keys(node.attributes)).length !== expecteArgNames) {
-      console.log(`${node.name}存在属性缺失!!`)
+  const expectedArgNames = node.expectedArgNames || realAnno.expectedArgNames
+  if (expectedArgNames && expectedArgNames.length > 0) {
+    if (intersection(expectedArgNames, Object.keys(node.attributes)).length < expectedArgNames.length) {
+      console.log(`${node.name} 存在属性缺失!!`)
     }
   }
 

@@ -2,7 +2,7 @@ import { h } from "hastscript";
 
 export default {
   namespace: 'abbr',
-  expectArgsName: ['abbrName', 'fullName'],
+  expectedArgNames: ['abbrName', 'fullName'],
   render: (node, ancestors) => {
     const data = node.data || (node.data = {});
     if (!("title" in node.attributes) && node.args && node.args.length > 1) {
