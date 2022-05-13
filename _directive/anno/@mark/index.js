@@ -27,12 +27,9 @@ export default {
 
     // 优先渲染后置节点
     renderNode = getNextNodeByLatestAncestor(node, latestAncestors)
-
-    debugger
     
     if (!renderNode) {
       renderNode = getPrevNodeByLatestAncestor(node, latestAncestors)
-      debugger
     }
 
     if (renderNode) {

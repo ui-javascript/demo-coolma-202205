@@ -22,16 +22,16 @@ export default {
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
         
     const date = moment(node.attributes.deadline)
-    
-    debugger
-    
+
     // 是否合法
     if (!date.isValid()) {
+      renderVoidElement(node)
       return 
     }
 
     // 已过期
     if (date.isBefore(new Date())) {
+      renderVoidElement(node)
       return
     }
 

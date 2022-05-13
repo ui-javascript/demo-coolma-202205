@@ -21,6 +21,7 @@ export function initAliasMeta(annoAliasMeta, annoName, aliaName, config) {
 
 export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
  
+
   // 判断当前注解是否合法
   // 这个节点是否有注册别名
   let isAliasAnno = false
@@ -31,8 +32,8 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
     }
   }
 
-  if (node.name === "fetch") {
-    
+  if (node.name === "util") {
+    debugger
   }
 
   // 参数转属性
