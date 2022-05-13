@@ -1,8 +1,10 @@
 import { h } from "hastscript";
+import { trim } from "lodash";
 import moment from "moment";
+import { renderVoidElement } from "../../utils/utils";
 
 export default {
-  namespace: 'util',
+  namespace: 'until',
   
   realAnnoRequiredArgNames: ['deadline'], // 必填字段
   realAnnoExtArgNames: ['tipText', 'createDate'], // 补充字段, 非必填
@@ -13,8 +15,12 @@ export default {
     args2Attr: (node, ancestors) => {},
 
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
-      node.attributes[realAnnoRequiredArgNames[0]] = trim(nextNode.value)
-      renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
+      const nextVal = moment(trim(nextNode.value))
+      if (nextVal.isValid()) {
+        node.attributes[realAnnoRequiredArgNames[0]] = trim(nextNode.value)
+        renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
+      }
+    
     }
   },
 
@@ -46,7 +52,7 @@ export default {
       {
         ...node.attributes,
       },
-      (node.attributes.tipText ||  '📌新文章欸') + (timeTip ? `(${timeTip})`: '')
+      (node.attributes.tipText ||  '🎉热门') + (timeTip ? `(${timeTip})`: '')
     );
 
 
