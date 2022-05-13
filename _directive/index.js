@@ -25,7 +25,7 @@ const weatherApi = api.weather
 
 // `;
 
-const content = `#### 世界很大, 而我又是靓仔 @nice 
+const content = `#### 世界很大, 而我又是靓仔 @nice @rate 3.3
 
 虽然说了句正确的废话 @del 
 
@@ -109,7 +109,11 @@ hello @nice test *em* @nice ssss *em* sss @nice xxx
 
 const App = {
   template: `
+    <div>
+
     <main class="container-fluid">
+
+    <el-rate class="text-center mb-5" star="4.7" disabled="" show-score="" text-color="#ff9900" value="4.7" score-template="{value}"></el-rate>
   
     <div class="grid">
 
@@ -117,8 +121,10 @@ const App = {
       <div v-html="after"></div>
 
     </div>
+
    
     </main>
+    </div>
 
   `,
   setup() {

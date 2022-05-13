@@ -26,7 +26,7 @@ export default {
     const data = node.data || (node.data = {});
     const hast = h("el-rate", {
       ...node.attributes,
-      disabled,
+      disabled: true,
       'show-score': true,
       'text-color': "#ff9900",
       value: node.attributes.star,
