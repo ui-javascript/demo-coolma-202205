@@ -31,7 +31,9 @@ const content = `#### 世界很大, 而我又是靓仔 @nice
 
 @dog @cat @tiger
 
-@doc https://procomponents.ant.design/components/editable-table @hot 20241223 @until(20123){tipText: '📣新发布', createDate: '20211212'}
+@doc https://procomponents.ant.design/components/editable-table @hot 20221223 
+
+@until(22120309){tipText: '📣新发布', createDate: '20211212'}
 
 @bvid BV1YT4y1Q7xx
 
