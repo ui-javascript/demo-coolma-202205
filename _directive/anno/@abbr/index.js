@@ -3,7 +3,8 @@ import { h } from "hastscript";
 export default {
   namespace: 'abbr',
   
-  realAnnoExpectedArgNames: ['abbrName', 'fullName'],
+  realAnnoRequiredArgNames: ['abbrName', 'fullName'],
+  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
   autoConvertArg2Attr: true,
   realAnnoShortcutAttrs: null,
 
@@ -11,23 +12,20 @@ export default {
   beforeRender: {
     args2Attr: (node, ancestors) => {},
   },
-  
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
-  render: (node, ancestors, realAnnoExpectedArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
+  render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
+        
     const data = node.data || (node.data = {});
-    if (!("title" in node.attributes) && node.args && node.args.length > 1) {
-      node.attributes.title = node.args[1];
-    }
 
     const hast = h(
       node.name,
       {
         ...node.attributes,
         title: null,
-        "data-tooltip": node.attributes.title,
+        "data-tooltip": node.attributes.fullName,
       },
-      node.args && node.args.length > 0 ? node.args[0] : ""
+      node.attributes.abbrName
     );
 
     data.hName = hast.tagName;

@@ -29,12 +29,13 @@ export const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[
 export default {
   namespace: "img",
 
-  realAnnoExpectedArgNames: ["src"],
+  realAnnoRequiredArgNames: ["src"],
+  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
   autoConvertArg2Attr: true,
   beforeRender: {
     args2Attr: (node, ancestors) => {},
 
-    nextNode2Attr: (node, ancestors, realAnnoExpectedArgNames, nextNode) => {
+    nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
       let nextVal = trim(nextNode.value)
 
       // 判断后置节点内容是否为URL
@@ -42,7 +43,7 @@ export default {
           return
       }
 
-      node.attributes[realAnnoExpectedArgNames[0]] = nextVal;
+      node.attributes[realAnnoRequiredArgNames[0]] = nextVal;
       renderVoidElement(nextNode); // 取值结束不再需要渲染后置节点
     },
   },
@@ -53,7 +54,7 @@ export default {
   render: (
     node,
     ancestors,
-    realAnnoExpectedArgNames,
+    realAnnoRequiredArgNames,
     realAnnoShortcutAttrs,
     loseAttrs
   ) => {
@@ -71,21 +72,21 @@ export default {
       for (let idx in realAnnoShortcutAttrs) {
         const shortcutAttr = realAnnoShortcutAttrs[idx];
         if (node.attributes[shortcutAttr] && emojiUrls[shortcutAttr]) {
-          node.attributes[realAnnoExpectedArgNames[0]] =
+          node.attributes[realAnnoRequiredArgNames[0]] =
             emojiUrls[shortcutAttr];
           break;
         }
       }
 
       // 仍然没有矫正属性则提前结束
-      if (!node.attributes[realAnnoExpectedArgNames[0]]) {
+      if (!node.attributes[realAnnoRequiredArgNames[0]]) {
         return;
       }
     }
 
 
 
-    const imgSrc = node.attributes[realAnnoExpectedArgNames[0]]
+    const imgSrc = node.attributes[realAnnoRequiredArgNames[0]]
     if (!imgSrc) {
       // renderVoidElement(node);
       return;

@@ -5,7 +5,8 @@ import { trim } from "lodash";
 export default {
   namespace: "mark",
   
-  realAnnoExpectedArgNames: null, // 不需要参数
+  realAnnoRequiredArgNames: null, // 不需要参数
+  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
   autoConvertArg2Attr: true,
   realAnnoShortcutAttrs: null,
 
@@ -14,7 +15,7 @@ export default {
   },
   
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
-  render: (node, ancestors, realAnnoExpectedArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
+  render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     
     const latestAncestors = ancestors[ancestors.length - 1];
     const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令外至少还有一个元素
