@@ -101,6 +101,10 @@ module.exports = {
   // vue-cli 多页面
   pages: entries,
   configureWebpack: {
+    externals: {
+      'vue': 'Vue',
+      'element-ui':'ElementUI'
+   },
     // plugins: [
     //   new webpackGlobLoaderPlugin()
     // ],
@@ -154,6 +158,8 @@ module.exports = {
       .when(isEnvDev,
         config => config.devtool('cheap-source-map')
       )
+
+    
 
   },
 
