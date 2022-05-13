@@ -52,7 +52,7 @@ export default {
       {
         ...node.attributes,
       },
-      (node.attributes.tipText ||  '🎉热门') + (timeTip ? `(${timeTip})`: '')
+      (node.attributes.tipText ||  '📌热门') + (timeTip ? `(${timeTip})`: '')
     );
 
 
