@@ -102,8 +102,8 @@ module.exports = {
   pages: entries,
   configureWebpack: {
     externals: {
-      // 'vue': 'Vue',
-      // 'element-ui':'ElementUI'
+      'vue': 'Vue',
+      'element-ui':'ElementUI'
    },
     // plugins: [
     //   new webpackGlobLoaderPlugin()
