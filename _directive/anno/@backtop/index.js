@@ -15,27 +15,39 @@ export default {
   
   beforeRender: {
     args2Attr: (node, ancestors) => {},
-
-    nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
-        node.attributes[realAnnoRequiredArgNames[0]] = trim(nextNode.value)
-        renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
-    }
   },
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
    
+    debugger
+
     const backtopId = nanoid();
     const data = node.data || (node.data = {});
-    const hast = 
-      h(`span#${backtopId}`, {});
+    const hast = h(`div`, {}, [
+      h(`div#${backtopId}`, {})
+    ]);
 
     data.hName = hast.tagName;
     data.hProperties = hast.properties;
     data.hChildren = hast.children;
 
     var Backtop = Vue.extend({
-      template: `<el-backtop target=".page-component__scroll .el-scrollbar__wrap"></el-backtop>`,
+      template: ` <el-backtop target=".container-fluid" :bottom="200">
+      <div
+        style="{
+          height: 100%;
+          width: 100%;
+          background-color: #f2f5f6;
+          box-shadow: 0 0 6px rgba(0,0,0, .12);
+          text-align: center;
+          line-height: 40px;
+          color: #1989fa;
+        }"
+      >
+        返回顶部
+      </div>
+    </el-backtop>`,
       data: function () {
         return {
           // value: node.attributes[realAnnoRequiredArgNames[0]],
@@ -45,8 +57,9 @@ export default {
 
     // @todo 待优化 div好像没有onload方法
     const timer = setTimeout(() => {
-      const rate = document.getElementById(backtopId)
-      if (rate) {
+      const backtop = document.getElementById(backtopId)
+      if (backtop) {
+        console.log('backtop '+backtopId)
         // 创建 Profile 实例，并挂载到一个元素上。
         new Backtop().$mount(`#${backtopId}`)
       } else {
