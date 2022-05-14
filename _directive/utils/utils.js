@@ -33,7 +33,7 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
     }
   }
 
-  if (node.name === "alert") {
+  if (node.name === "section") {
     debugger
   }
 
@@ -239,4 +239,44 @@ export function getAutoConvertConfig(aliasAnno, realRenderAnno, key) {
 
 export function getNanoId() {
   return customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 8)()
+}
+
+export function containNextNode2Section(node, parentNodes, grandNodes) {
+  let beginIdx = null
+  let endIdx = null
+
+  if (parentNodes.type !== "heading") { // 只作用于heading类型
+    return 
+  }
+
+  for (let idx in grandNodes.children) {
+
+    const item = grandNodes.children[idx];
+    idx = parseInt(idx);
+
+    if (item === parentNodes) {
+      beginIdx = idx;
+    }
+
+  }
+
+  if (!beginIdx || beginIdx >= grandNodes.children.length - 1) { // 没有后续元素, 直接结束
+    return
+  }
+
+  for (let idx = beginIdx+1; beginIdx < grandNodes.children.length - 1; idx++) {
+    const item = grandNodes.children[idx]
+    endIdx = idx
+    if (item.type === "heading") {
+      break
+    }
+  }
+
+  if (endIdx - beginIdx === 1) { // 后续元素也是heading类型, 直接结束
+    return
+  }
+
+  console.log("begin: " + beginIdx)
+  console.log("end: " + endIdx)
+
 }

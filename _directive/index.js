@@ -17,15 +17,20 @@ import unifiedParser from "./utils/unifiedParserUtil";
 
 // const content = `@until('20220513')`
 
-// const content1 = `
+const content = `
+# heading @section
 
-// @img(https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif) @nice
-// @img https://luo0412.oss-cn-hangzhou.aliyuncs.com/static/images/index/xiong.gif
+- test1
 
-// `;
+\`\`\`
+sth
+\`\`\`
+
+- test2
+`;
 
 
-const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7 
+const content1 = `## 世界很大, 而我又是靓仔 @nice @rate 4.7 
 
 恭喜, 颜值认证成功! @success
 
@@ -113,7 +118,7 @@ const App = {
   
     <div class="grid">
 
-      <textarea style="display: block;min-height: 350px" v-model="before"></textarea>
+      <textarea style="display: block;height: 700px" v-model="before"></textarea>
 
       <div v-html="after" />  
   
