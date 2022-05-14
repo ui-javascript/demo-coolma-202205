@@ -7,7 +7,7 @@ export default {
   namespace: "section",
   
   realAnnoRequiredArgNames: null, // 不需要参数
-  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
+  realAnnoExtArgNames: ['tagName'], // 补充字段, 数组形式, 非必填
   realAnnoShortcutAttrs: null,
 
   // 参数转换配置
@@ -55,7 +55,7 @@ export default {
     // }, {allowDangerousHtml: true})
 
     const data = grandNode.children[spliceIdxs.beginIdx+1].data || (grandNode.children[spliceIdxs.beginIdx+1].data = {})
-    data.hName = 'article'; // 卡片
+    data.hName = node.attributes.tagName || 'article'; // 卡片
     // data.hProperties = hast.properties;
     // data.hChildren = hast.children;
     grandNode.children[spliceIdxs.beginIdx+1].children = spliceChildren

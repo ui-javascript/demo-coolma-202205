@@ -3,7 +3,7 @@ import Vue from 'vue'
 import {micromark} from 'micromark'
 // import {directive, directiveHtml} from 'micromark-extension-directive'
 import {directive, directiveHtml} from 'coolma'
-import "./style.less"
+import "../style.less"
 import VueCompositionApi, {ref, computed, watchEffect} from '@vue/composition-api';
 
 import {visitParents} from "unist-util-visit-parents"
@@ -12,7 +12,7 @@ import {h} from 'hastscript'
 import {fromMarkdown} from 'mdast-util-from-markdown'
 import {toMarkdown} from 'mdast-util-to-markdown'
 
-import { directiveFromMarkdown, directiveToMarkdown} from '../utils/mdastDdirective'
+import { directiveFromMarkdown, directiveToMarkdown} from './mdastDdirective'
 // import "@picocss/pico/css/pico.classless.min.css"
 
 Vue.use(VueCompositionApi);
