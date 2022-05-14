@@ -56,7 +56,7 @@ export default {
     data.hChildren = hast.children;
     // data.value = null
 
-    // @todo 待优化 div好像没有onload方法
+    //  div好像没有onload方法
     function renderTimer() {
 
       const alert = document.getElementById(alertId)

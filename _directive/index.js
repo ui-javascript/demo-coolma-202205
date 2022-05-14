@@ -51,6 +51,7 @@ const content = `#### 世界很大, 而我又是靓仔 @nice @rate(4.7)
 \`\`\`
 
 
+@hr
 @divider{title: 我是一条分割线}
 
 @backtop

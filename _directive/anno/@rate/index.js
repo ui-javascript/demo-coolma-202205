@@ -59,11 +59,7 @@ export default {
     })
 
 
-    // @todo 待优化 div好像没有onload方法
-    const timer = setTimeout(() => {
-   
-    }, 250)
-
+    //  div好像没有onload方法
     function renderTimer() {
       const rate = document.getElementById(rateId)
       if (rate) {

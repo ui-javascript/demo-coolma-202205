@@ -58,7 +58,7 @@ export default {
       }
     })
 
-    // @todo 待优化 div好像没有onload方法
+    //  div好像没有onload方法
     function renderTimer() {
 
       const backtop = document.getElementById(backtopId)
