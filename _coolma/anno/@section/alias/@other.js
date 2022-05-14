@@ -3,6 +3,7 @@ export default {
   attachAnno: 'section',
   properties: {
     tagName: 'details',
-    open: false
+    open: false,
+    class: "secondary"
   }
 }

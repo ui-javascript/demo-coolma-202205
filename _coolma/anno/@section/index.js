@@ -16,7 +16,12 @@ export default {
   needConvertNextNode2Attr: false, 
 
   beforeRender: {
-    
+    // prevNode2Attr: (node, ancestors, realAnnoRequiredArgNames, prevNode) => {
+    //   node.attributes[realAnnoRequiredArgNames[0]] = trim(prevNode.value)
+    //   if (node.name === "sub" || node.name === "other") {
+    //     renderVoidElement(node) // 取值结束不再需要渲染后置节点
+    //   }
+    // },
   },
   
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
@@ -40,13 +45,20 @@ export default {
       return 
     }
 
+    // if (node.name === 'sub' || node.name === 'other') {
+    //   spliceIdxs.beginIdx--
+    // }
+
+
     // console.log("切割下来的块")
+ 
     const spliceChildren = grandNode.children.splice(spliceIdxs.beginIdx+1, spliceIdxs.endIdx-spliceIdxs.beginIdx)
-    // console.log(spliceChildren)
     grandNode.children.splice(spliceIdxs.beginIdx+1, 0, {
       children: [],
       type: "paragraph"
     })
+
+    // console.log(spliceChildren)
     // console.log(grandNode.children)
 
     
@@ -58,23 +70,28 @@ export default {
     const data = grandNode.children[spliceIdxs.beginIdx+1].data || (grandNode.children[spliceIdxs.beginIdx+1].data = {})
     data.hName = node.attributes.tagName || 'article'; // 卡片
     data.hProperties = {
-      ...data.hProperties,
       ...node.attributes
     };
     // data.hChildren = hast.children;
+    grandNode.children[spliceIdxs.beginIdx+1].children = spliceChildren
 
-    // const prevNode = getPrevNodeByAncestors(ancestors);
+    if (node.name === "sub" || node.name === "other") {
+      const summaryHast = h(`summary`, {
+        // role:"button",
+        ...node.attributes
+      }, "详情");
+      const summaryData = {}
+      summaryData.hName = summaryHast.tagName;
+      summaryData.hProperties = summaryHast.properties;
+      summaryData.hChildren = summaryHast.children;
 
-    const summaryHast = h(`summary`, {}, "详情");
-    const summaryData = {}
-    summaryData.hName = summaryHast.tagName;
-    summaryData.hProperties = summaryHast.properties;
-    summaryData.hChildren = summaryHast.children;
+      grandNode.children[spliceIdxs.beginIdx+1].children.unshift({
+        data: summaryData,
+        type: 'text',
+      })
+    }
+    
 
-    grandNode.children[spliceIdxs.beginIdx+1].children = [{
-      data: summaryData,
-      type: 'text',
-    }, ...spliceChildren]
 
     // console.log(grandNode.children)
 

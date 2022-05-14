@@ -67,13 +67,13 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 \`\`\`
 
 
-# 卡片2 @sub
+# 折叠卡片(默认关闭) @sub
 
 卡片内容2
 
 @emoji{help} 
 
-# 卡片3 @other
+# 折叠卡片(默认关闭) @other
 
 卡片内容3
 
