@@ -59,23 +59,17 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 # 卡片1 @card
 
-卡片内容1
-
 \`\`\`
 @emoji{safe} 
 @emoji{ichange} 
 \`\`\`
 
 
-# 折叠卡片(默认关闭) @sub
-
-卡片内容2
+# 折叠卡片(开启) @sub
 
 @emoji{help} 
 
-# 折叠卡片(默认关闭) @other
-
-卡片内容3
+# 折叠卡片(关闭) @other
 
 @emoji{usejava}
 
