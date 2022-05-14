@@ -2,6 +2,6 @@ export default {
   namespace: 'hot',
   attachAnno: 'until',
   properties: {
-    tipText: "📌热文"
+    tip: "📌热文"
   }
 }

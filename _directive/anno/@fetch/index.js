@@ -108,27 +108,12 @@ export default {
       includeKeys = ["day", "date", "week", "wea"];
     }
 
-    const table = document.getElementById(tableId);
-    const thead = document.createElement("thead");
-    const tr = document.createElement("tr");
-    for (let key in resData[0]) {
-      if (
-        includeKeys &&
-        !includeKeys.includes("*") &&
-        !includeKeys.includes(key)
-      ) {
-        continue;
-      }
-      const th = document.createElement("th");
-      th.innerText = key;
-      tr.appendChild(th);
-    }
-    thead.appendChild(tr);
 
-    const tbody = document.createElement("tbody");
-    for (let i = 0; i < resData.length; i++) {
+    const renderContent = () => {
+      const table = document.getElementById(tableId);
+      const thead = document.createElement("thead");
       const tr = document.createElement("tr");
-      for (let key in resData[i]) {
+      for (let key in resData[0]) {
         if (
           includeKeys &&
           !includeKeys.includes("*") &&
@@ -136,23 +121,55 @@ export default {
         ) {
           continue;
         }
-        const td = document.createElement("td");
-        td.innerText = JSON.stringify(resData[i][key]);
-        tr.appendChild(td);
+        const th = document.createElement("th");
+        th.innerText = key;
+        tr.appendChild(th);
       }
-      tbody.appendChild(tr);
+      thead.appendChild(tr);
+  
+      const tbody = document.createElement("tbody");
+      for (let i = 0; i < resData.length; i++) {
+        const tr = document.createElement("tr");
+        for (let key in resData[i]) {
+          if (
+            includeKeys &&
+            !includeKeys.includes("*") &&
+            !includeKeys.includes(key)
+          ) {
+            continue;
+          }
+          const td = document.createElement("td");
+          td.innerText = JSON.stringify(resData[i][key]);
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+      }
+  
+      table.appendChild(thead);
+      table.appendChild(tbody);
+  
+      let loadingDiv = document.getElementById(loadingDivId);
+      loadingDiv.setAttribute("aria-busy", false);
+  
+      // @todo 耦合代码
+      if (isWeatherApi) {
+        let tableTitle = document.getElementById(tableTitleId);
+        tableTitle.innerText = `(${res.data.city}-未来一周天气表)`;
+      }
     }
+    
 
-    table.appendChild(thead);
-    table.appendChild(tbody);
+    // 定时器
+    const timer = setTimeout(() => {
+      const table = document.getElementById(tableId)
+      if (table) {
+        renderContent()
+      } else {
+        timer()
+      }
+    }, 100)
 
-    let loadingDiv = document.getElementById(loadingDivId);
-    loadingDiv.setAttribute("aria-busy", false);
 
-    // @todo 耦合代码
-    if (isWeatherApi) {
-      let tableTitle = document.getElementById(tableTitleId);
-      tableTitle.innerText = `(${res.data.city}-未来一周天气表)`;
-    }
+
   },
 };

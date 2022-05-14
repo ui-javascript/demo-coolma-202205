@@ -1,24 +1,19 @@
 import Vue from "vue";
 import VueCompositionApi, {
-  computed,
-  defineComponent,
   onMounted,
   ref,
 } from "@vue/composition-api";
 import { watchDebounced, watchThrottled } from '@vueuse/core'
 
+// import ElementUI from 'element-ui';
+// import 'element-ui/lib/theme-chalk/index.css';
+
+
 // import "@picocss/pico/css/pico.classless.min.css"
 import "./style.less";
 
-import { api } from "./anno/@fetch";
-import { emojiUrls } from "./anno/@img";
 
 import unifiedParser from "./utils/unifiedParserUtil";
-import { watch } from "less";
-import { trim } from "lodash";
-
-const weatherApi = api.weather
-
 
 // const content = `@until('20220513')`
 
@@ -29,7 +24,8 @@ const weatherApi = api.weather
 
 // `;
 
-const content = `#### 世界很大, 而我又是靓仔 @nice @rate 3.3
+
+const content = `#### 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 虽然说了句正确的废话 @del 
 
@@ -37,11 +33,13 @@ const content = `#### 世界很大, 而我又是靓仔 @nice @rate 3.3
 
 @doc https://procomponents.ant.design/components/editable-table @hot 20221223 
 
-@until(22120309){tipText: '📣新发布', createDate: '20211212'}
+@until(22120309){tip: '📣新发布', createDate: '20211212'}
 
 @bvid BV1YT4y1Q7xx
 
 @abbr(HTML, "Hyper Text Markup Language") 
+
+@weather
 
 @emoji{help} @emoji{java}
 
@@ -65,21 +63,11 @@ const content3 = `# 世界很大, 而我又是靓仔 @nice
 
 ---
 
-@emoji{xiong}
-@img ${emojiUrls.dog}
-@img("${emojiUrls.cat}"){style: "width: 150px;"}
-@emoji("${emojiUrls.cool}")
-@emoji{src: "${emojiUrls.tiger}"}
-
----
-
 A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red #id} @abbr(HTML, "HTML的全称"){.bg-blue.border-orange-lighter.border-solid}
 
 ---
 
 @weather
-
-@fetch("${weatherApi}"){includeKeys: '[*]'}
 
 @fetch{weather}
 
@@ -107,8 +95,6 @@ hello @nice test *em* @nice ssss *em* sss @nice xxx
 `
 
 
-
-
 const App = {
   template: `
 
@@ -118,16 +104,8 @@ const App = {
     <div class="grid">
 
       <textarea style="display: block;min-height: 350px" v-model="before"></textarea>
-      <!-- 
-      
- 
-      <coolma :html="after" />  
-      -->
-      
-      <div v-html="after"></div> 
-         
 
-  
+      <div v-html="after" />  
   
     </div>
 
@@ -135,133 +113,30 @@ const App = {
     </main>
 
   `,
-  components: {
-    'coolma': {
-      props: {
-        html: String
-      },
-      render: (h, data) => {
+  // @tofix @todo 本来想采用这种方法渲染elementui组件
+  // https://blog.csdn.net/weixin_40057800/article/details/90316624
+  // 但是这里一旦console.log(this.html)的字符串值就会罢工
+  // 不知道是不是chrome或者vue某个版本的bug, 换了个比较low的方法先渲染
+  // components: {
+  //   'coolma': {
+  //     props: {
+  //       html: String
+  //     },
+  //     render: (h, data) => {
 
+  //       // window.$HTML = this.html
 
-        // const test = `<h4>世界很大, 而我又是靓仔<span></span>
-        //   <el-rate star="3.3" disabled show-score text-color="#ff9900" value="3.3" score-template="{value}" style="display: inline-block"></el-rate><span></span>
-        // </h4>
-        // <p><del tagName="del">虽然说了句正确的废话</del><span></span></p>
-        // <p>
-        //   <img style="width: 150px;" dog src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249579841-Yty6cpQs34pj.jpeg">
-        //   <img style="width: 150px;" cat src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg">
-        //   <img style="width: 150px;" tiger src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg">
-        // </p>
-        // <p><a href="https://procomponents.ant.design/components/editable-table" target="_blank">editable-table</a><span></span><span tipText="📌热文" deadline="20221223">📌热文</span><span></span></p>
-        // <p><span tipText="📣新发布" createDate="20211212" deadline="22120309">📣新发布(5 months ago)</span></p>
-        // <p>
-        //   <iframe vid="BV1YT4y1Q7xx" src="https://player.bilibili.com/player.html?bvid=BV1YT4y1Q7xx" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe><span></span>
-        // </p>
-        // <p><abbr abbrName="HTML" fullName="Hyper Text Markup Language" data-tooltip="Hyper Text Markup Language">HTML</abbr></p>
-        // <p>
-        //   <img style="width: 150px;" help src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332602412-By7AEtwwyKe4.jpeg">
-        //   <img style="width: 150px;" java src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png">
-        // </p>
-        // <pre><code>@emoji{safe} 
-        // @emoji{ichange} 
-        // </code></pre>
-        // `
+  //       // const component = Vue.extend({
+  //       //   template: `<div>${this.html}</div>`,
+  //       // })
 
-        // console.log('输出前')
-        // console.log(this.html)
-        // console.log('输出后')
+  //       return h('div', {
+  //         innerHTML: this.html
+  //       })
 
-        // const test2 = '\n<h4>世界很大, 而我又是靓仔<span></span>\n  <el-rate star="3.3" disabled show-score text-color="#ff9900" value="3.3" score-template="{value}" style="display: inline-block"></el-rate><span></span>\n</h4>\n<p><del tagName="del">虽然说了句正确的废话</del><span></span></p>\n<p>\n  <img style="width: 150px;" dog src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249579841-Yty6cpQs34pj.jpeg">\n  <img style="width: 150px;" cat src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg">\n  <img style="width: 150px;" tiger src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg">\n</p>\n<p><a href="https://procomponents.ant.design/components/editable-table" target="_blank">editable-table</a><span></span><span tipText="📌热文" deadline="20221223">📌热文</span><span></span></p>\n<p><span tipText="📣新发布" createDate="20211212" deadline="22120309">📣新发布(5 months ago)</span></p>\n<p>\n  <iframe vid="BV1YT4y1Q7xx" src="https://player.bilibili.com/player.html?bvid=BV1YT4y1Q7xx" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe><span></span>\n</p>\n<p><abbr abbrName="HTML" fullName="Hyper Text Markup Language" data-tooltip="Hyper Text Markup Language">HTML</abbr></p>\n<p>\n  <img style="width: 150px;" help src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332602412-By7AEtwwyKe4.jpeg">\n  <img style="width: 150px;" java src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png">\n</p>\n<pre><code>@emoji{safe} \n@emoji{ichange} \n</code></pre>\n'
-
-        const component = Vue.extend({
-          // template: `<div>${this.html}</div>`,
-          template: '<div>' + String(this.html) + '</div>',
-        //   template: "<div>" + `<h4>世界很大, 而我又是靓仔<span></span>
-        //   <el-rate star="3.3" disabled show-score text-color="#ff9900" value="3.3" score-template="{value}" style="display: inline-block"></el-rate><span></span>
-        // </h4>
-        // <p><del tagName="del">虽然说了句正确的废话</del><span></span></p>
-        // <p>
-        //   <img style="width: 150px;" dog src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249579841-Yty6cpQs34pj.jpeg">
-        //   <img style="width: 150px;" cat src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg">
-        //   <img style="width: 150px;" tiger src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg">
-        // </p>
-        // <p><a href="https://procomponents.ant.design/components/editable-table" target="_blank">editable-table</a><span></span><span tipText="📌热文" deadline="20221223">📌热文</span><span></span></p>
-        // <p><span tipText="📣新发布" createDate="20211212" deadline="22120309">📣新发布(5 months ago)</span></p>
-        // <p>
-        //   <iframe vid="BV1YT4y1Q7xx" src="https://player.bilibili.com/player.html?bvid=BV1YT4y1Q7xx" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe><span></span>
-        // </p>
-        // <p><abbr abbrName="HTML" fullName="Hyper Text Markup Language" data-tooltip="Hyper Text Markup Language">HTML</abbr></p>
-        // <p>
-        //   <img style="width: 150px;" help src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332602412-By7AEtwwyKe4.jpeg">
-        //   <img style="width: 150px;" java src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png">
-        // </p>
-        // <pre><code>@emoji{safe} @emoji{ichange}</code></pre>` + "</div>",
-
-//           template: `<div>`
-          
-//           + `<h4>世界很大, 而我又是靓仔<span></span>
-//           <el-rate class="inline-block" star="3.3" disabled show-score text-color="#ff9900" value="3.3" score-template="{value}"></el-rate><span></span>
-//          </h4>
-//          <p><del tagName="del">虽然说了句正确的废话</del><span></span></p>`
-
-//  + `<p>
-//       <img style="width: 150px;" dog src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249579841-Yty6cpQs34pj.jpeg">
-//      <img style="width: 150px;" cat src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg">
-//      <img style="width: 150px;" tiger src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg">
-//       </p>`
-
-//       + 
-
-//       `  <p>
-//           <iframe vid="BV1YT4y1Q7xx" src="https://player.bilibili.com/player.html?bvid=BV1YT4y1Q7xx" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe><span></span>
-//     </p>`
-
-//          + `<div>`
-        })
-
-        return h(component, {})
-
-        // return h('div', {
-        //   domProps: {
-        //     innerHTML: '<el-rate class="text-center mb-5" star="4.7" disabled="" show-score="" text-color="#ff9900" value="4.7" score-template="{value}"></el-rate>'
-        //   }
-        // })
-
-        // return h('div', {
-        //   domProps: {
-        //     // innerHTML: `<div>hello</div>`,
-        //     innerHTML: `<div>${this.html}</div>`,
-
-        //   //   innerHTML: `<div><h4>世界很大, 而我又是靓仔<span></span>
-        //   //   <el-rate star="3.3" disabled show-score text-color="#ff9900" value="3.3" score-template="{value}"></el-rate><span></span>
-        //   // </h4>
-        //   // <p><del tagName="del">虽然说了句正确的废话</del><span></span></p>
-        //   // <p>
-        //   //   <img style="width: 150px;" dog src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249579841-Yty6cpQs34pj.jpeg">
-        //   //   <img style="width: 150px;" cat src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg">
-        //   //   <img style="width: 150px;" tiger src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg">
-        //   // </p>
-        //   // <p><a href="https://procomponents.ant.design/components/editable-table" target="_blank">editable-table</a><span></span><span tipText="📌热文" deadline="20221223">📌热文</span><span></span></p>
-        //   // <p><span tipText="📣新发布" createDate="20211212" deadline="22120309">📣新发布(5 months ago)</span></p>
-        //   // <p>
-        //   //   <iframe vid="BV1YT4y1Q7xx" src="https://player.bilibili.com/player.html?bvid=BV1YT4y1Q7xx" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe><span></span>
-        //   // </p>
-        //   // <p><abbr abbrName="HTML" fullName="Hyper Text Markup Language" data-tooltip="Hyper Text Markup Language">HTML</abbr></p>
-        //   // <p>
-        //   //   <img style="width: 150px;" help src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332602412-By7AEtwwyKe4.jpeg">
-        //   //   <img style="width: 150px;" java src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png">
-        //   // </p>
-        //   // <pre><code>@emoji{safe} 
-        //   // @emoji{ichange} 
-        //   // </code></pre></div>`
-
-        //   }
-        // })
-
-
-      }
-    }
-  },
+  //     }
+  //   }
+  // },
   setup() {
 
     const before = ref("");
@@ -269,40 +144,25 @@ const App = {
   
     watchDebounced(before, async () => {
         const res = await unifiedParser(before.value);
-
-        console.log(String(res));
         after.value = String(res);
     }, { 
       debounce: 200, 
-      maxWait: 1000
-    });
-
-    const coolmaVal = computed(() => {
-      debugger
-      return after.value
+      maxWait: 500
     });
 
     onMounted(() => {
       before.value = content
     })
 
-    const getAfter = () => {
-      return after.value
-    }
-
-
     return {
       before,
       after,
-      getAfter,
-      weatherApi,
-      emojiUrls,
-      coolmaVal
     };
   },
 };
 
 Vue.use(VueCompositionApi);
+// Vue.use(ElementUI); // 改用CDN
 
 Vue.config.productionTip = false;
 

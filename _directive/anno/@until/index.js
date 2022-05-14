@@ -7,7 +7,7 @@ export default {
   namespace: 'until',
   
   realAnnoRequiredArgNames: ['deadline'], // 必填字段
-  realAnnoExtArgNames: ['tipText', 'createDate'], // 补充字段, 非必填
+  realAnnoExtArgNames: ['tip', 'createDate'], // 补充字段, 非必填
   autoConvertArg2Attr: true,
   realAnnoShortcutAttrs: null,
 
@@ -52,7 +52,7 @@ export default {
       {
         ...node.attributes,
       },
-      (node.attributes.tipText ||  '📌热门') + (timeTip ? `(${timeTip})`: '')
+      (node.attributes.tip ||  '📌热门') + (timeTip ? `(${timeTip})`: '')
     );
 
 
