@@ -1,4 +1,4 @@
-import { renderVoidElement } from "../../utils/utils";
+import { getNanoId, renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 import Vue from "vue";
@@ -11,11 +11,11 @@ export default {
   realAnnoRequiredArgNames: ['star'],
   realAnnoExtArgNames: ['tip'], // 补充字段, 数组形式, 非必填
   autoConvertArg2Attr: true,
-  
+
   realAnnoShortcutAttrs: null,
   
   beforeRender: {
-    args2Attr: (node, ancestors) => {},
+    
 
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
         node.attributes[realAnnoRequiredArgNames[0]] = trim(nextNode.value)
@@ -26,7 +26,7 @@ export default {
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
    
-    const rateId = nanoid();
+    const rateId = getNanoId()
     const data = node.data || (node.data = {});
     const hast = h(`div`, {
       style: "display: inline-block"
@@ -51,7 +51,7 @@ export default {
     </el-rate>`,
       data: function () {
         return {
-          value: node.attributes[realAnnoRequiredArgNames[0]],
+          value: parseFloat(node.attributes[realAnnoRequiredArgNames[0]]),
         }
       }
     })
@@ -59,14 +59,22 @@ export default {
 
     // @todo 待优化 div好像没有onload方法
     const timer = setTimeout(() => {
+   
+    }, 250)
+
+    function renderTimer() {
       const rate = document.getElementById(rateId)
       if (rate) {
         // 创建 Profile 实例，并挂载到一个元素上。
         new Rate().$mount(`#${rateId}`)
       } else {
-        timer()
+        setTimeout(() => {
+          renderTimer()
+        }, 200)
       }
-    }, 250)
+    }
+
+    renderTimer()
 
   }
 

@@ -5,12 +5,15 @@ export default {
   
   realAnnoRequiredArgNames: ['abbrName', 'fullName'],
   realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
-  autoConvertArg2Attr: true,
   realAnnoShortcutAttrs: null,
 
+  // 自动转换配置
+  autoConvertArg2Attr: true,
+  needConvertPrevNode2Attr: false,
+  needConvertNextNode2Attr: true,
   
   beforeRender: {
-    args2Attr: (node, ancestors) => {},
+    
   },
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成

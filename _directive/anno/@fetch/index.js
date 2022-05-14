@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { renderVoidElement } from "../../utils/utils";
+import { getNanoId, renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { nanoid } from "nanoid";
 import { difference, intersection, trim } from "lodash";
@@ -12,26 +12,26 @@ export const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[
 
 export default {
   namespace: "fetch",
-  
+
   realAnnoRequiredArgNames: ['url'],
   realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
   autoConvertArg2Attr: true,
-  
+
   realAnnoShortcutAttrs: Object.keys(api),
 
   beforeRender: {
-    args2Attr: (node, ancestors) => {},
+    
 
     // 不要用后置节点
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
-        // 判断后置节点内容是否为URL
-        let nextVal = trim(nextNode.value)
-        if (!urlRegex.test(nextVal)) {
-            return
-        }
-        
-        node.attributes[realAnnoRequiredArgNames[0]] = nextVal
-        renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
+      // 判断后置节点内容是否为URL
+      let nextVal = trim(nextNode.value)
+      if (!urlRegex.test(nextVal)) {
+        return
+      }
+
+      node.attributes[realAnnoRequiredArgNames[0]] = nextVal
+      renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
     }
 
   },
@@ -42,30 +42,28 @@ export default {
 
     // 没有快捷属性匹配
     // const shortcutAttrMatch = intersection(realAnnoShortcutAttrs, node.attributes)
-    if (loseAttrs && loseAttrs.length > 0 
+    if (loseAttrs && loseAttrs.length > 0
       && realAnnoShortcutAttrs && realAnnoShortcutAttrs.length > 0) { // 需要补全缺失的属性
 
       for (let idx in realAnnoShortcutAttrs) {
         const shortcutAttr = realAnnoShortcutAttrs[idx]
         if (node.attributes[shortcutAttr] && api[shortcutAttr]) {
           node.attributes[realAnnoRequiredArgNames[0]] = api[shortcutAttr];
-          isWeatherApi =  shortcutAttr === "weather"
+          isWeatherApi = shortcutAttr === "weather"
           break
         }
       }
-   
+
       // 仍然没有矫正属性则提前结束
       if (!node.attributes[realAnnoRequiredArgNames[0]]) {
-        return 
+        return
       }
     }
 
 
-    
-
-    const tableId = nanoid();
-    const loadingDivId = nanoid();
-    const tableTitleId = nanoid();
+    const tableId = getNanoId()
+    const loadingDivId = getNanoId()
+    const tableTitleId = getNanoId()
 
     const data = node.data || (node.data = {});
     const hast = h(
@@ -76,9 +74,9 @@ export default {
         h("figure", {}, [
           isWeatherApi
             ? [
-                h(`table#${tableId}`, { role: "grid" }, []),
-                h(`h6#${tableTitleId}`, { class: "text-center" }, ""),
-              ]
+              h(`table#${tableId}`, { role: "grid" }, []),
+              h(`h6#${tableTitleId}`, { class: "text-center" }, ""),
+            ]
             : [h(`table#${tableId}`, { role: "grid" }, [])],
         ]),
       ]
@@ -126,7 +124,7 @@ export default {
         tr.appendChild(th);
       }
       thead.appendChild(tr);
-  
+
       const tbody = document.createElement("tbody");
       for (let i = 0; i < resData.length; i++) {
         const tr = document.createElement("tr");
@@ -144,32 +142,34 @@ export default {
         }
         tbody.appendChild(tr);
       }
-  
+
       table.appendChild(thead);
       table.appendChild(tbody);
-  
+
       let loadingDiv = document.getElementById(loadingDivId);
       loadingDiv.setAttribute("aria-busy", false);
-  
+
       // @todo 耦合代码
       if (isWeatherApi) {
         let tableTitle = document.getElementById(tableTitleId);
         tableTitle.innerText = `(${res.data.city}-未来一周天气表)`;
       }
     }
-    
+
 
     // 定时器
-    const timer = setTimeout(() => {
+    function renderTimer() {
       const table = document.getElementById(tableId)
       if (table) {
         renderContent()
       } else {
-        timer()
+        setTimeout(() => {
+          renderTimer()
+        }, 200)
       }
-    }, 100)
+    }
 
-
+    renderTimer()
 
   },
 };

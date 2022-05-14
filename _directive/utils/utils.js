@@ -1,5 +1,6 @@
 import { h } from "hastscript";
 import { trim, intersection, difference, before } from "lodash";
+import { customAlphabet } from "nanoid";
 
 // @todo 先伪装成块内元素
 export function renderVoidElement(node) {
@@ -49,16 +50,28 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
         node.attributes[realAnnoRequiredArgNames[idx]] = node.args[idx]
       }
     }  
-  } else {
-    const args2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "args2Attr")
-    if (args2AttrFunc) {
-      args2AttrFunc(node, ancestors)
+  } 
+
+  const autoPrevNode2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'needConvertPrevNode2Attr')
+  if (autoPrevNode2Attr == true // 必须显示配置成true
+    && realAnnoRequiredArgNames && realAnnoRequiredArgNames.length > 0) {
+    
+    if (!(realAnnoRequiredArgNames[0] in node.attributes)) { // 不能覆盖node.attributes的配置
+
+      const prevNode = getPrevNodeByAncestors(node, ancestors)
+
+      // 通过节点读取值暂时只处理一个参数
+      const prevNode2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "prevNode2Attr")
+      if (prevNode && prevNode2AttrFunc) {
+        prevNode2AttrFunc(node, ancestors, realAnnoRequiredArgNames, prevNode)
+      }
     }
   }
 
   // 处理后节点的属性
-  const autoNextNode2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'autoNextNode2Attr')
-  if (autoNextNode2Attr != false && realAnnoRequiredArgNames && realAnnoRequiredArgNames.length > 0) {
+  const autoNextNode2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'needConvertNextNode2Attr')
+  if (autoNextNode2Attr != false // 只有禁止才会不执行
+    && realAnnoRequiredArgNames && realAnnoRequiredArgNames.length > 0) {
     
     if (!(realAnnoRequiredArgNames[0] in node.attributes)) { // 不能覆盖node.attributes的配置
 
@@ -219,7 +232,10 @@ export function getAutoConvertConfig(aliasAnno, realRenderAnno, key) {
     return realRenderAnno[key]
   }
 
-  return true
+  return null
 }
 
 
+export function getNanoId() {
+  return customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 8)()
+}

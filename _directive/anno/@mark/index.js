@@ -11,7 +11,7 @@ export default {
   realAnnoShortcutAttrs: null,
 
   beforeRender: {
-    args2Attr: (node, ancestors) => {},
+    
   },
   
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成

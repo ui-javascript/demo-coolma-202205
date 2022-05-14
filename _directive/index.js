@@ -5,8 +5,8 @@ import VueCompositionApi, {
 } from "@vue/composition-api";
 import { watchDebounced, watchThrottled } from '@vueuse/core'
 
-// import ElementUI from 'element-ui';
-// import 'element-ui/lib/theme-chalk/index.css';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 
 
 // import "@picocss/pico/css/pico.classless.min.css"
@@ -49,6 +49,9 @@ const content = `###### 世界很大, 而我又是靓仔 @nice @rate(4.7)
 @emoji{safe} 
 @emoji{ichange} 
 \`\`\`
+
+
+
 
 @backtop
 `
@@ -166,7 +169,7 @@ const App = {
 };
 
 Vue.use(VueCompositionApi);
-// Vue.use(ElementUI); // 改用CDN
+Vue.use(ElementUI); // 改用CDN
 
 Vue.config.productionTip = false;
 

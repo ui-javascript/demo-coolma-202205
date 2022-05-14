@@ -12,7 +12,7 @@ export default {
   realAnnoShortcutAttrs: null,
 
   beforeRender: {
-    args2Attr: (node, ancestors) => {},
+    
 
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
       const nextVal = moment(trim(nextNode.value))

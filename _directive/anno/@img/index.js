@@ -33,7 +33,7 @@ export default {
   realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
   autoConvertArg2Attr: true,
   beforeRender: {
-    args2Attr: (node, ancestors) => {},
+    
 
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
       let nextVal = trim(nextNode.value)

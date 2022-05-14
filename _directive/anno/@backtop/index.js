@@ -1,4 +1,4 @@
-import { renderVoidElement } from "../../utils/utils";
+import { getNanoId, renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 import Vue from "vue";
@@ -8,13 +8,16 @@ export default {
   namespace: 'backtop',
 
   realAnnoRequiredArgNames: null,
-  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
-  autoConvertArg2Attr: true,
-  
+  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填  
   realAnnoShortcutAttrs: null,
+
+  // 自动转换配置
+  autoConvertArg2Attr: true,
+  needConvertPrevNode2Attr: false,
+  needConvertNextNode2Attr: true,
   
   beforeRender: {
-    args2Attr: (node, ancestors) => {},
+    
   },
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
@@ -22,11 +25,11 @@ export default {
    
     debugger
 
-    const backtopId = nanoid();
+
+    const backtopId = getNanoId()
     const data = node.data || (node.data = {});
-    const hast = h(`div`, {}, [
-      h(`div#${backtopId}`, {})
-    ]);
+    const hast = h(`div#${backtopId}`, {})
+    
 
     data.hName = hast.tagName;
     data.hProperties = hast.properties;
@@ -56,16 +59,21 @@ export default {
     })
 
     // @todo 待优化 div好像没有onload方法
-    const timer = setTimeout(() => {
+    function renderTimer() {
+
       const backtop = document.getElementById(backtopId)
       if (backtop) {
         console.log('backtop '+backtopId)
         // 创建 Profile 实例，并挂载到一个元素上。
         new Backtop().$mount(`#${backtopId}`)
       } else {
-        timer()
+        setTimeout(() => {
+          renderTimer()
+        }, 200)
       }
-    }, 100)
+    }
+
+    renderTimer()
 
   }
 

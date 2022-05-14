@@ -14,7 +14,7 @@ export default {
   realAnnoShortcutAttrs: null,
 
   beforeRender: {
-    args2Attr: (node, ancestors) => {},
+    
 
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
       // 判断后置节点内容是否为URL

@@ -6,13 +6,16 @@ export default {
   namespace: 'bvid',
 
   realAnnoRequiredArgNames: ['vid'],
-  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
-  autoConvertArg2Attr: true,
-  
+  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填  
   realAnnoShortcutAttrs: null,
+
+  // 自动转换配置
+  autoConvertArg2Attr: true,
+  needConvertPrevNode2Attr: false,
+  needConvertNextNode2Attr: true,
   
   beforeRender: {
-    args2Attr: (node, ancestors) => {},
+    
 
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
         node.attributes[realAnnoRequiredArgNames[0]] = trim(nextNode.value)
