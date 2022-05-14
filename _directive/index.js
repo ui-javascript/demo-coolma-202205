@@ -25,9 +25,9 @@ import unifiedParser from "./utils/unifiedParserUtil";
 // `;
 
 
-const content = `#### 世界很大, 而我又是靓仔 @nice @rate(4.7) 
+const content = `###### 世界很大, 而我又是靓仔 @nice @rate(4.7) 
 
-颜值认证成功 @success
+恭喜, 颜值认证成功! @success
 
 虽然说了句正确的废话  @del 
 

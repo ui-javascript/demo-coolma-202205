@@ -26,10 +26,10 @@ export default {
     let renderNode = null
 
     // 优先渲染后置节点
-    renderNode = getNextNodeByLatestAncestor(node, latestAncestors)
+    renderNode = getPrevNodeByLatestAncestor(node, latestAncestors)
     
     if (!renderNode) {
-      renderNode = getPrevNodeByLatestAncestor(node, latestAncestors)
+      renderNode = getNextNodeByLatestAncestor(node, latestAncestors)
     }
 
     if (renderNode) {
