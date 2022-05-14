@@ -52,7 +52,7 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 @weather
 
-@emoji{help} @emoji{java}
+@emoji{help} @emoji{usejava}
 
 \`\`\`
 @emoji{safe} 
@@ -129,7 +129,7 @@ const App = {
   
     <div class="grid">
 
-      <textarea style="display: block;height: 700px" v-model="before"></textarea>
+      <textarea style="display: block;min-height: 600px" v-model="before"></textarea>
 
       <div v-html="after" />  
   
@@ -170,7 +170,9 @@ const App = {
   
     watchDebounced(before, async () => {
         const res = await unifiedParser(before.value);
+        console.log(String(res))
         after.value = String(res);
+
     }, { 
       debounce: 500, 
       maxWait: 1000

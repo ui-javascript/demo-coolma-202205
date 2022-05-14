@@ -20,7 +20,7 @@ export const emojiUrls = {
 
   help:
     "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332602412-By7AEtwwyKe4.jpeg",
-  java:
+  usejava:
     "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png",
 };
 
