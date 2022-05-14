@@ -66,6 +66,7 @@ export default {
         new Divider().$mount(`#${dividerId}`)
       
       } else {
+        console.log("重试")
         setTimeout(() => {
           renderTimer()
         }, 200)

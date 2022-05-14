@@ -167,6 +167,7 @@ export default {
       if (table) {
         renderContent()
       } else {
+        console.log("重试")
         setTimeout(() => {
           renderTimer()
         }, 200)

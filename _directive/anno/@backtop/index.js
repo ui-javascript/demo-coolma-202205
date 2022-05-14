@@ -67,6 +67,7 @@ export default {
         // 创建 Profile 实例，并挂载到一个元素上。
         new Backtop().$mount(`#${backtopId}`)
       } else {
+        console.log("重试")
         setTimeout(() => {
           renderTimer()
         }, 200)
