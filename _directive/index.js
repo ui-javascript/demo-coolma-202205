@@ -150,7 +150,7 @@ const App = {
         const res = await unifiedParser(before.value);
         after.value = String(res);
     }, { 
-      debounce: 300, 
+      debounce: 500, 
       maxWait: 1000
     });
 

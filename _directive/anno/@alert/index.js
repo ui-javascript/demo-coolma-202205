@@ -66,7 +66,7 @@ export default {
         } else {
           timer()
         }
-      }, 200)
+      }, 250)
 
 
     }
