@@ -49,15 +49,16 @@ export default {
     // console.log(grandNode.children)
 
     
-    const hast = toHast({
-      children: spliceChildren,
-      type: "paragraph"
-    }, {allowDangerousHtml: true})
+    // const hast = toHast({
+    //   children: spliceChildren,
+    //   type: "paragraph"
+    // }, {allowDangerousHtml: true})
 
     const data = grandNode.children[spliceIdxs.beginIdx+1].data || (grandNode.children[spliceIdxs.beginIdx+1].data = {})
     data.hName = 'article'; // 卡片
-    data.hProperties = hast.properties;
-    data.hChildren = hast.children;
+    // data.hProperties = hast.properties;
+    // data.hChildren = hast.children;
+    grandNode.children[spliceIdxs.beginIdx+1].children = spliceChildren
 
     // console.log(grandNode.children)
 

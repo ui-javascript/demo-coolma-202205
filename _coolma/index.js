@@ -34,7 +34,7 @@ import unifiedParser from "./utils/unifiedParserUtil";
 // `;
 
 
-const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
+const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7 @card
 
 恭喜, 颜值认证成功! @success
 
@@ -66,11 +66,7 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 @backtop
 
-# 卡片标题1 @card 
-
-卡片内容1
-
-# 卡片标题2 @card 
+# 卡片2 @card 
 
 卡片内容2
 `
