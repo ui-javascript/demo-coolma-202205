@@ -33,7 +33,7 @@ export default {
     data.hChildren = hast.children;
 
     var Backtop = Vue.extend({
-      template: ` <el-backtop target=".container-fluid" :bottom="200">
+      template: `<el-backtop target=".container-fluid" :bottom="200">
       <div
         style="{
           height: 100%;
