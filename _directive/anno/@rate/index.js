@@ -30,7 +30,8 @@ export default {
       'show-score': true,
       'text-color': "#ff9900",
       value: node.attributes.star,
-      'score-template': "{value}"
+      'score-template': "{value}",
+      style: "display: inline-block"
     });
 
     data.hName = hast.tagName;

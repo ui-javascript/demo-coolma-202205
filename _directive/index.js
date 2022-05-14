@@ -15,6 +15,7 @@ import { emojiUrls } from "./anno/@img";
 
 import unifiedParser from "./utils/unifiedParserUtil";
 import { watch } from "less";
+import { trim } from "lodash";
 
 const weatherApi = api.weather
 
@@ -110,23 +111,28 @@ hello @nice test *em* @nice ssss *em* sss @nice xxx
 
 const App = {
   template: `
-    <div>
 
     <main class="container-fluid">
 
-    <el-rate class="text-center mb-5" star="4.7" disabled="" show-score="" text-color="#ff9900" value="4.7" score-template="{value}"></el-rate>
   
     <div class="grid">
 
       <textarea style="display: block;min-height: 350px" v-model="before"></textarea>
-      <div v-html="after"></div>
-      <!-- <coolma v-if="coolmaVal" :html="coolmaVal" />  -->    
+      <!-- 
+      
+ 
+      <coolma :html="after" />  
+      -->
+      
+      <div v-html="after"></div> 
+         
+
+  
   
     </div>
 
    
     </main>
-    </div>
 
   `,
   components: {
@@ -135,35 +141,124 @@ const App = {
         html: String
       },
       render: (h, data) => {
-        debugger
-        return h('div', {
-          domProps: {
-            innerHTML: `<div>${this.html}</div>`,
 
-          //   innerHTML: `<div><h4>世界很大, 而我又是靓仔<span></span>
-          //   <el-rate star="3.3" disabled show-score text-color="#ff9900" value="3.3" score-template="{value}"></el-rate><span></span>
-          // </h4>
-          // <p><del tagName="del">虽然说了句正确的废话</del><span></span></p>
-          // <p>
-          //   <img style="width: 150px;" dog src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249579841-Yty6cpQs34pj.jpeg">
-          //   <img style="width: 150px;" cat src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg">
-          //   <img style="width: 150px;" tiger src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg">
-          // </p>
-          // <p><a href="https://procomponents.ant.design/components/editable-table" target="_blank">editable-table</a><span></span><span tipText="📌热文" deadline="20221223">📌热文</span><span></span></p>
-          // <p><span tipText="📣新发布" createDate="20211212" deadline="22120309">📣新发布(5 months ago)</span></p>
-          // <p>
-          //   <iframe vid="BV1YT4y1Q7xx" src="https://player.bilibili.com/player.html?bvid=BV1YT4y1Q7xx" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe><span></span>
-          // </p>
-          // <p><abbr abbrName="HTML" fullName="Hyper Text Markup Language" data-tooltip="Hyper Text Markup Language">HTML</abbr></p>
-          // <p>
-          //   <img style="width: 150px;" help src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332602412-By7AEtwwyKe4.jpeg">
-          //   <img style="width: 150px;" java src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png">
-          // </p>
-          // <pre><code>@emoji{safe} 
-          // @emoji{ichange} 
-          // </code></pre></div>`
-          }
+
+        // const test = `<h4>世界很大, 而我又是靓仔<span></span>
+        //   <el-rate star="3.3" disabled show-score text-color="#ff9900" value="3.3" score-template="{value}" style="display: inline-block"></el-rate><span></span>
+        // </h4>
+        // <p><del tagName="del">虽然说了句正确的废话</del><span></span></p>
+        // <p>
+        //   <img style="width: 150px;" dog src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249579841-Yty6cpQs34pj.jpeg">
+        //   <img style="width: 150px;" cat src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg">
+        //   <img style="width: 150px;" tiger src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg">
+        // </p>
+        // <p><a href="https://procomponents.ant.design/components/editable-table" target="_blank">editable-table</a><span></span><span tipText="📌热文" deadline="20221223">📌热文</span><span></span></p>
+        // <p><span tipText="📣新发布" createDate="20211212" deadline="22120309">📣新发布(5 months ago)</span></p>
+        // <p>
+        //   <iframe vid="BV1YT4y1Q7xx" src="https://player.bilibili.com/player.html?bvid=BV1YT4y1Q7xx" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe><span></span>
+        // </p>
+        // <p><abbr abbrName="HTML" fullName="Hyper Text Markup Language" data-tooltip="Hyper Text Markup Language">HTML</abbr></p>
+        // <p>
+        //   <img style="width: 150px;" help src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332602412-By7AEtwwyKe4.jpeg">
+        //   <img style="width: 150px;" java src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png">
+        // </p>
+        // <pre><code>@emoji{safe} 
+        // @emoji{ichange} 
+        // </code></pre>
+        // `
+
+        // console.log('输出前')
+        // console.log(this.html)
+        // console.log('输出后')
+
+        // const test2 = '\n<h4>世界很大, 而我又是靓仔<span></span>\n  <el-rate star="3.3" disabled show-score text-color="#ff9900" value="3.3" score-template="{value}" style="display: inline-block"></el-rate><span></span>\n</h4>\n<p><del tagName="del">虽然说了句正确的废话</del><span></span></p>\n<p>\n  <img style="width: 150px;" dog src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249579841-Yty6cpQs34pj.jpeg">\n  <img style="width: 150px;" cat src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg">\n  <img style="width: 150px;" tiger src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg">\n</p>\n<p><a href="https://procomponents.ant.design/components/editable-table" target="_blank">editable-table</a><span></span><span tipText="📌热文" deadline="20221223">📌热文</span><span></span></p>\n<p><span tipText="📣新发布" createDate="20211212" deadline="22120309">📣新发布(5 months ago)</span></p>\n<p>\n  <iframe vid="BV1YT4y1Q7xx" src="https://player.bilibili.com/player.html?bvid=BV1YT4y1Q7xx" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe><span></span>\n</p>\n<p><abbr abbrName="HTML" fullName="Hyper Text Markup Language" data-tooltip="Hyper Text Markup Language">HTML</abbr></p>\n<p>\n  <img style="width: 150px;" help src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332602412-By7AEtwwyKe4.jpeg">\n  <img style="width: 150px;" java src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png">\n</p>\n<pre><code>@emoji{safe} \n@emoji{ichange} \n</code></pre>\n'
+
+        const component = Vue.extend({
+          // template: `<div>${this.html}</div>`,
+          template: '<div>' + String(this.html) + '</div>',
+        //   template: "<div>" + `<h4>世界很大, 而我又是靓仔<span></span>
+        //   <el-rate star="3.3" disabled show-score text-color="#ff9900" value="3.3" score-template="{value}" style="display: inline-block"></el-rate><span></span>
+        // </h4>
+        // <p><del tagName="del">虽然说了句正确的废话</del><span></span></p>
+        // <p>
+        //   <img style="width: 150px;" dog src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249579841-Yty6cpQs34pj.jpeg">
+        //   <img style="width: 150px;" cat src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg">
+        //   <img style="width: 150px;" tiger src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg">
+        // </p>
+        // <p><a href="https://procomponents.ant.design/components/editable-table" target="_blank">editable-table</a><span></span><span tipText="📌热文" deadline="20221223">📌热文</span><span></span></p>
+        // <p><span tipText="📣新发布" createDate="20211212" deadline="22120309">📣新发布(5 months ago)</span></p>
+        // <p>
+        //   <iframe vid="BV1YT4y1Q7xx" src="https://player.bilibili.com/player.html?bvid=BV1YT4y1Q7xx" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe><span></span>
+        // </p>
+        // <p><abbr abbrName="HTML" fullName="Hyper Text Markup Language" data-tooltip="Hyper Text Markup Language">HTML</abbr></p>
+        // <p>
+        //   <img style="width: 150px;" help src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332602412-By7AEtwwyKe4.jpeg">
+        //   <img style="width: 150px;" java src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png">
+        // </p>
+        // <pre><code>@emoji{safe} @emoji{ichange}</code></pre>` + "</div>",
+
+//           template: `<div>`
+          
+//           + `<h4>世界很大, 而我又是靓仔<span></span>
+//           <el-rate class="inline-block" star="3.3" disabled show-score text-color="#ff9900" value="3.3" score-template="{value}"></el-rate><span></span>
+//          </h4>
+//          <p><del tagName="del">虽然说了句正确的废话</del><span></span></p>`
+
+//  + `<p>
+//       <img style="width: 150px;" dog src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249579841-Yty6cpQs34pj.jpeg">
+//      <img style="width: 150px;" cat src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg">
+//      <img style="width: 150px;" tiger src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg">
+//       </p>`
+
+//       + 
+
+//       `  <p>
+//           <iframe vid="BV1YT4y1Q7xx" src="https://player.bilibili.com/player.html?bvid=BV1YT4y1Q7xx" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe><span></span>
+//     </p>`
+
+//          + `<div>`
         })
+
+        return h(component, {})
+
+        // return h('div', {
+        //   domProps: {
+        //     innerHTML: '<el-rate class="text-center mb-5" star="4.7" disabled="" show-score="" text-color="#ff9900" value="4.7" score-template="{value}"></el-rate>'
+        //   }
+        // })
+
+        // return h('div', {
+        //   domProps: {
+        //     // innerHTML: `<div>hello</div>`,
+        //     innerHTML: `<div>${this.html}</div>`,
+
+        //   //   innerHTML: `<div><h4>世界很大, 而我又是靓仔<span></span>
+        //   //   <el-rate star="3.3" disabled show-score text-color="#ff9900" value="3.3" score-template="{value}"></el-rate><span></span>
+        //   // </h4>
+        //   // <p><del tagName="del">虽然说了句正确的废话</del><span></span></p>
+        //   // <p>
+        //   //   <img style="width: 150px;" dog src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249579841-Yty6cpQs34pj.jpeg">
+        //   //   <img style="width: 150px;" cat src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg">
+        //   //   <img style="width: 150px;" tiger src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg">
+        //   // </p>
+        //   // <p><a href="https://procomponents.ant.design/components/editable-table" target="_blank">editable-table</a><span></span><span tipText="📌热文" deadline="20221223">📌热文</span><span></span></p>
+        //   // <p><span tipText="📣新发布" createDate="20211212" deadline="22120309">📣新发布(5 months ago)</span></p>
+        //   // <p>
+        //   //   <iframe vid="BV1YT4y1Q7xx" src="https://player.bilibili.com/player.html?bvid=BV1YT4y1Q7xx" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe><span></span>
+        //   // </p>
+        //   // <p><abbr abbrName="HTML" fullName="Hyper Text Markup Language" data-tooltip="Hyper Text Markup Language">HTML</abbr></p>
+        //   // <p>
+        //   //   <img style="width: 150px;" help src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332602412-By7AEtwwyKe4.jpeg">
+        //   //   <img style="width: 150px;" java src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png">
+        //   // </p>
+        //   // <pre><code>@emoji{safe} 
+        //   // @emoji{ichange} 
+        //   // </code></pre></div>`
+
+        //   }
+        // })
+
+
       }
     }
   },
