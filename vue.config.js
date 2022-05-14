@@ -140,7 +140,7 @@ module.exports = {
       .rule('webpack-glob-loader')
       .test(/\.js$/)
       .include
-      .add(resolve("_directive", "anno"))
+      .add(resolve("_coolma", "anno"))
       .end()
       .exclude
       .add(resolve("node_modules"))

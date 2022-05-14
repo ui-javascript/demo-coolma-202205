@@ -267,19 +267,12 @@ export function containNextNode2Section(node, parentNode, grandNode) {
     return
   }
 
-  for (let idx = beginIdx+1; idx < grandNode.children.length - 1; idx++) {
+  for (let idx = beginIdx+1; idx < grandNode.children.length; idx++) {
     const item = grandNode.children[idx]
-
-    
-    // if (item.type === "list") {
-    //   item.ordered = true
-    //   // break
-    // }
 
     if (item.type === "heading") {
       break
     }
-
     endIdx = idx
   }
 

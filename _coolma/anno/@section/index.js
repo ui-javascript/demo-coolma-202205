@@ -39,14 +39,14 @@ export default {
       return 
     }
 
-    console.log("切割下来的块")
+    // console.log("切割下来的块")
     const spliceChildren = grandNode.children.splice(spliceIdxs.beginIdx+1, spliceIdxs.endIdx-spliceIdxs.beginIdx)
-    console.log(spliceChildren)
+    // console.log(spliceChildren)
     grandNode.children.splice(spliceIdxs.beginIdx+1, 0, {
       children: [],
       type: "paragraph"
     })
-    console.log(grandNode.children)
+    // console.log(grandNode.children)
 
     
     const hast = toHast({
@@ -59,7 +59,7 @@ export default {
     data.hProperties = hast.properties;
     data.hChildren = hast.children;
 
-    console.log(grandNode.children)
+    // console.log(grandNode.children)
 
   },
 };

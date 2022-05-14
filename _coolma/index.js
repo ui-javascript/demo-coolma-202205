@@ -17,24 +17,24 @@ import unifiedParser from "./utils/unifiedParserUtil";
 
 // const content = `@until('20220513')`
 
-const content = `
-# heading @section
+// const content = `
+// # heading @section
 
-- test1
+// - test1
 
-\`\`\`
-sth
-\`\`\`
+// \`\`\`
+// sth
+// \`\`\`
 
-- test2
+// - test2
 
-# asdasd
-
-
-`;
+// # asdasd
 
 
-const content1 = `## 世界很大, 而我又是靓仔 @nice @rate 4.7 
+// `;
+
+
+const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 恭喜, 颜值认证成功! @success
 
@@ -60,12 +60,19 @@ const content1 = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 \`\`\`
 
 
-@hr
-@divider{title: 我是一条分割线}
+@hr{title: 我是一条分割线}
+
+@building 0.5
 
 @backtop
 
-@building 0.5
+# 卡片标题1 @card 
+
+卡片内容1
+
+# 卡片标题2 @card 
+
+卡片内容2
 `
 
 const content3 = `# 世界很大, 而我又是靓仔 @nice    
