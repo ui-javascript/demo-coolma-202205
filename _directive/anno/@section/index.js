@@ -55,7 +55,7 @@ export default {
     }, {allowDangerousHtml: true})
 
     const data = grandNode.children[spliceIdxs.beginIdx+1].data || (grandNode.children[spliceIdxs.beginIdx+1].data = {})
-    data.hName = 'article';
+    data.hName = 'article'; // 卡片
     data.hProperties = hast.properties;
     data.hChildren = hast.children;
 

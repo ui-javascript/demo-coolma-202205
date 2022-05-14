@@ -283,7 +283,7 @@ export function containNextNode2Section(node, parentNode, grandNode) {
     endIdx = idx
   }
 
-  if (endIdx - beginIdx === 1) { // 后续元素也是heading类型, 直接结束
+  if (!endIdx || endIdx - beginIdx === 0) { // 后续元素也是heading类型, 直接结束
     return
   }
 
