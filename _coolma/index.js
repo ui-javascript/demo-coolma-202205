@@ -130,7 +130,7 @@ const App = {
   
     <div class="grid">
 
-      <textarea style="display: block;min-height: 550px" v-model="before"></textarea>
+      <textarea style="display: block;min-height: 500px" v-model="before"></textarea>
 
       <div v-html="after" />  
   
