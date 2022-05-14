@@ -1,5 +1,7 @@
 import Vue from "vue";
 import VueCompositionApi, {
+  computed,
+  defineComponent,
   onMounted,
   ref,
 } from "@vue/composition-api";
@@ -12,6 +14,7 @@ import { api } from "./anno/@fetch";
 import { emojiUrls } from "./anno/@img";
 
 import unifiedParser from "./utils/unifiedParserUtil";
+import { watch } from "less";
 
 const weatherApi = api.weather
 
@@ -38,8 +41,6 @@ const content = `#### 世界很大, 而我又是靓仔 @nice @rate 3.3
 @bvid BV1YT4y1Q7xx
 
 @abbr(HTML, "Hyper Text Markup Language") 
-
-@weather
 
 @emoji{help} @emoji{java}
 
@@ -119,7 +120,8 @@ const App = {
 
       <textarea style="display: block;min-height: 350px" v-model="before"></textarea>
       <div v-html="after"></div>
-
+      <!-- <coolma v-if="coolmaVal" :html="coolmaVal" />  -->    
+  
     </div>
 
    
@@ -127,11 +129,49 @@ const App = {
     </div>
 
   `,
+  components: {
+    'coolma': {
+      props: {
+        html: String
+      },
+      render: (h, data) => {
+        debugger
+        return h('div', {
+          domProps: {
+            innerHTML: `<div>${this.html}</div>`,
+
+          //   innerHTML: `<div><h4>世界很大, 而我又是靓仔<span></span>
+          //   <el-rate star="3.3" disabled show-score text-color="#ff9900" value="3.3" score-template="{value}"></el-rate><span></span>
+          // </h4>
+          // <p><del tagName="del">虽然说了句正确的废话</del><span></span></p>
+          // <p>
+          //   <img style="width: 150px;" dog src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249579841-Yty6cpQs34pj.jpeg">
+          //   <img style="width: 150px;" cat src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652243827370-DjxeEK7YYXXp.jpeg">
+          //   <img style="width: 150px;" tiger src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652249821637-cT4N4NAhHzcX.jpeg">
+          // </p>
+          // <p><a href="https://procomponents.ant.design/components/editable-table" target="_blank">editable-table</a><span></span><span tipText="📌热文" deadline="20221223">📌热文</span><span></span></p>
+          // <p><span tipText="📣新发布" createDate="20211212" deadline="22120309">📣新发布(5 months ago)</span></p>
+          // <p>
+          //   <iframe vid="BV1YT4y1Q7xx" src="https://player.bilibili.com/player.html?bvid=BV1YT4y1Q7xx" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen></iframe><span></span>
+          // </p>
+          // <p><abbr abbrName="HTML" fullName="Hyper Text Markup Language" data-tooltip="Hyper Text Markup Language">HTML</abbr></p>
+          // <p>
+          //   <img style="width: 150px;" help src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332602412-By7AEtwwyKe4.jpeg">
+          //   <img style="width: 150px;" java src="https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652332680187-rF5Xj86GGQTz.png">
+          // </p>
+          // <pre><code>@emoji{safe} 
+          // @emoji{ichange} 
+          // </code></pre></div>`
+          }
+        })
+      }
+    }
+  },
   setup() {
 
     const before = ref("");
     const after = ref("");
-
+  
     watchDebounced(before, async () => {
         const res = await unifiedParser(before.value);
 
@@ -142,16 +182,27 @@ const App = {
       maxWait: 1000
     });
 
+    const coolmaVal = computed(() => {
+      debugger
+      return after.value
+    });
+
     onMounted(() => {
       before.value = content
     })
+
+    const getAfter = () => {
+      return after.value
+    }
 
 
     return {
       before,
       after,
+      getAfter,
       weatherApi,
-      emojiUrls
+      emojiUrls,
+      coolmaVal
     };
   },
 };
