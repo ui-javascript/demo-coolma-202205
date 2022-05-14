@@ -1,6 +1,7 @@
 import { getNextNodeByLatestAncestor, getNextNodeByAncestor, renderVoidElement, getPrevNodeByAncestors, getPrevNodeByLatestAncestor, containNextNode2Section } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
+import { toHast } from "mdast-util-to-hast";
 
 export default {
   namespace: "section",
@@ -25,16 +26,40 @@ export default {
       return 
     }
 
-    const latestAncestors = ancestors[ancestors.length - 1];
-    const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令外至少还要有标题
+    const parentNode = ancestors[ancestors.length - 1];
+    const grandNode = ancestors[ancestors.length - 2];
+    const hasEnoughChildren = parentNode.children && parentNode.children.length > 1; // 除指令外至少还要有标题
     if (!hasEnoughChildren) {
       return
     }
 
+    const spliceIdxs = containNextNode2Section(node, parentNode, grandNode)
 
-    debugger
-    containNextNode2Section(node, ancestors[ancestors.length - 1], ancestors[ancestors.length - 2])
+    if (!spliceIdxs) { // 不能有效切割, 提前结束
+      return 
+    }
 
+    console.log("切割下来的块")
+    const spliceChildren = grandNode.children.splice(spliceIdxs.beginIdx+1, spliceIdxs.endIdx-spliceIdxs.beginIdx)
+    console.log(spliceChildren)
+    grandNode.children.splice(spliceIdxs.beginIdx+1, 0, {
+      children: [],
+      type: "paragraph"
+    })
+    console.log(grandNode.children)
+
+    
+    const hast = toHast({
+      children: spliceChildren,
+      type: "paragraph"
+    }, {allowDangerousHtml: true})
+
+    const data = grandNode.children[spliceIdxs.beginIdx+1].data || (grandNode.children[spliceIdxs.beginIdx+1].data = {})
+    data.hName = 'article';
+    data.hProperties = hast.properties;
+    data.hChildren = hast.children;
+
+    console.log(grandNode.children)
 
   },
 };

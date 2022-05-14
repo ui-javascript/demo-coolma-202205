@@ -241,35 +241,46 @@ export function getNanoId() {
   return customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 8)()
 }
 
-export function containNextNode2Section(node, parentNodes, grandNodes) {
+export function containNextNode2Section(node, parentNode, grandNode) {
   let beginIdx = null
   let endIdx = null
 
-  if (parentNodes.type !== "heading") { // 只作用于heading类型
+
+  if (parentNode.type !== "heading") { // 只作用于heading类型
     return 
   }
 
-  for (let idx in grandNodes.children) {
+  for (let idx in grandNode.children) {
 
-    const item = grandNodes.children[idx];
+    const item = grandNode.children[idx];
     idx = parseInt(idx);
 
-    if (item === parentNodes) {
+    if (item === parentNode) {
       beginIdx = idx;
+      break;
     }
 
   }
 
-  if (!beginIdx || beginIdx >= grandNodes.children.length - 1) { // 没有后续元素, 直接结束
+
+  if (beginIdx == null || beginIdx >= grandNode.children.length - 1) { // 没有后续元素, 直接结束
     return
   }
 
-  for (let idx = beginIdx+1; beginIdx < grandNodes.children.length - 1; idx++) {
-    const item = grandNodes.children[idx]
-    endIdx = idx
+  for (let idx = beginIdx+1; idx < grandNode.children.length - 1; idx++) {
+    const item = grandNode.children[idx]
+
+    
+    // if (item.type === "list") {
+    //   item.ordered = true
+    //   // break
+    // }
+
     if (item.type === "heading") {
       break
     }
+
+    endIdx = idx
   }
 
   if (endIdx - beginIdx === 1) { // 后续元素也是heading类型, 直接结束
@@ -278,5 +289,10 @@ export function containNextNode2Section(node, parentNodes, grandNodes) {
 
   console.log("begin: " + beginIdx)
   console.log("end: " + endIdx)
+
+  return {
+    beginIdx,
+    endIdx
+  }
 
 }
