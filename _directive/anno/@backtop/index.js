@@ -14,7 +14,7 @@ export default {
   // 自动转换配置
   autoConvertArg2Attr: true,
   needConvertPrevNode2Attr: false,
-  needConvertNextNode2Attr: true,
+  needConvertNextNode2Attr: false,
   
   beforeRender: {
     

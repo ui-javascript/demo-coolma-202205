@@ -37,8 +37,7 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
     debugger
   }
 
-  // 参数转属性
-  
+  // 参数自动转成属性
   const realAnnoRequiredArgNames = realRenderAnno.realAnnoRequiredArgNames  
   const autoConvertArg2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'autoConvertArg2Attr')
   if (autoConvertArg2Attr != false 
@@ -52,6 +51,8 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
     }  
   } 
 
+
+  // 前置节点转换成参数
   const autoPrevNode2Attr = getAutoConvertConfig(annoAlias[node.name], realRenderAnno, 'needConvertPrevNode2Attr')
   if (autoPrevNode2Attr == true // 必须显示配置成true
     && realAnnoRequiredArgNames && realAnnoRequiredArgNames.length > 0) {

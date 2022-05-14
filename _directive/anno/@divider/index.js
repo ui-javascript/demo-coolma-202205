@@ -15,15 +15,26 @@ export default {
   // 参数转换配置
   autoConvertArg2Attr: true,
   needConvertPrevNode2Attr: false, // 默认false, 配置true会优先向前读
-  needConvertNextNode2Attr: true, 
+  needConvertNextNode2Attr: false, 
 
   beforeRender: {
-    
+ 
   },
   
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     
+    // 帮忙偷懒
+    // const latestAncestors = ancestors[ancestors.length - 1];
+    // const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令外至少还有一个元素
+    // if (hasEnoughChildren) {
+    //   let nextNode = getNextNodeByLatestAncestor(node, latestAncestors)
+    //   if (nextNode) {
+    //     node.attributes.title = trim(nextNode.value)
+    //     renderVoidElement(nextNode)
+    //   }
+    // }
+
     var Divider = Vue.extend({
       template: `<el-divider content-position="left">${node.attributes.title ? node.attributes.title : ''}</el-divider>`,
       data: function () {

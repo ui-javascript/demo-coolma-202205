@@ -39,7 +39,6 @@ export default {
 
   beforeRender: {
     
-
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
       let nextVal = trim(nextNode.value)
 

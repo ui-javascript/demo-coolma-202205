@@ -17,8 +17,7 @@ export default {
 
 
   beforeRender: {
-    
-
+  
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
       const nextVal = moment(trim(nextNode.value))
       if (nextVal.isValid()) {

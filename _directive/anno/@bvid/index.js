@@ -15,7 +15,6 @@ export default {
   needConvertNextNode2Attr: true,
   
   beforeRender: {
-    
 
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
         node.attributes[realAnnoRequiredArgNames[0]] = trim(nextNode.value)

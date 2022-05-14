@@ -15,12 +15,10 @@ export default {
   // 参数转换配置
   autoConvertArg2Attr: true,
   needConvertPrevNode2Attr: false, // 默认false, 配置true会优先向前读
-  needConvertNextNode2Attr: true, 
+  needConvertNextNode2Attr: false, 
 
 
   beforeRender: {
-    
-
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
         node.attributes[realAnnoRequiredArgNames[0]] = trim(nextNode.value)
         renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
