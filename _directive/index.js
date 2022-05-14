@@ -25,7 +25,7 @@ import unifiedParser from "./utils/unifiedParserUtil";
 // `;
 
 
-const content = `#### 世界很大, 而我又是靓仔 @nice @rate 4.7
+const content = `#### 世界很大, 而我又是靓仔 @nice @rate(4.7) 
 
 虽然说了句正确的废话 @del 
 
@@ -47,6 +47,8 @@ const content = `#### 世界很大, 而我又是靓仔 @nice @rate 4.7
 @emoji{safe} 
 @emoji{ichange} 
 \`\`\`
+
+@backtop
 `
 
 const content3 = `# 世界很大, 而我又是靓仔 @nice    

@@ -32,7 +32,7 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
     }
   }
 
-  if (node.name === "rate") {
+  if (node.name === "backtop") {
     debugger
   }
 
