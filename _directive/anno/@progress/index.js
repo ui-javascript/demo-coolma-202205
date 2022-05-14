@@ -5,63 +5,58 @@ import { customAlphabet, nanoid } from "nanoid";
 import Vue from "vue";
 
 export default {
-  namespace: "alert",
-
-  realAnnoRequiredArgNames: ['content'], // 不需要参数
-  realAnnoExtArgNames: ['type'], // 补充字段, 数组形式, 非必填
+  namespace: "progress",
+  
+  realAnnoRequiredArgNames: ['ratio'], // 不需要参数
+  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
   realAnnoShortcutAttrs: null,
 
-  // 自动转换配置
+  // 参数转换配置
   autoConvertArg2Attr: true,
-  needConvertPrevNode2Attr: true, // 默认false, 配置true会优先向前读
+  needConvertPrevNode2Attr: false, // 默认false, 配置true会优先向前读
   needConvertNextNode2Attr: true, 
 
   beforeRender: {
-  
-    prevNode2Attr: (node, ancestors, realAnnoRequiredArgNames, prevNode) => {
-      node.attributes[realAnnoRequiredArgNames[0]] = trim(prevNode.value)
-      renderVoidElement(prevNode) // 取值结束不再需要渲染后置节点
-    },
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
       node.attributes[realAnnoRequiredArgNames[0]] = trim(nextNode.value)
       renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
     }
   },
-
-  // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
-  render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs) => {
-
   
-    var Alert = Vue.extend({
-      template: `<el-alert
-      title="${node.attributes[realAnnoRequiredArgNames[0]]}"
-      type=${node.attributes['type'] ? "'" + node.attributes['type'] + "'" : 'info'}>
-    </el-alert>`,
+  // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
+  render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
+  
+
+    var Progress = Vue.extend({
+      template: `<el-progress :percentage="${parseFloat(node.attributes[realAnnoRequiredArgNames[0]])*100}"></el-progress>`,
       data: function () {
         return {
-          value: node.attributes[realAnnoRequiredArgNames[0]],
+          // value: node.attributes[realAnnoRequiredArgNames[0]],
         }
       }
     })
 
-    const alertId = getNanoId()
+    const progressId = getNanoId()
     const data = node.data || (node.data = {});
-    const hast = h(`div#${alertId}`, { ...node.attributes })
-
+    const hast = h(`div#${progressId}`, node.attributes, null);
     data.hName = hast.tagName;
     data.hProperties = hast.properties;
     data.hChildren = hast.children;
     // data.value = null
 
     //  div好像没有onload方法
+    const timer = setTimeout(() => {
+   
+    }, 250)
+
+ 
+
     function renderTimer() {
-
-      const alert = document.getElementById(alertId)
-      if (alert) {
-
+      const progress = document.getElementById(progressId)
+      if (progress) {
         // 创建 Profile 实例，并挂载到一个元素上。
-        new Alert().$mount(`#${alertId}`)
-
+        new Progress().$mount(`#${progressId}`)
+      
       } else {
         setTimeout(() => {
           renderTimer()
@@ -70,9 +65,6 @@ export default {
     }
 
     renderTimer()
-
-
- 
 
   },
 };

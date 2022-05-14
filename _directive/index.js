@@ -25,7 +25,7 @@ import unifiedParser from "./utils/unifiedParserUtil";
 // `;
 
 
-const content = `#### 世界很大, 而我又是靓仔 @nice @rate(4.7) 
+const content = `#### 世界很大, 而我又是靓仔 @nice @rate 4.7 
 
 恭喜, 颜值认证成功! @success
 
@@ -55,6 +55,8 @@ const content = `#### 世界很大, 而我又是靓仔 @nice @rate(4.7)
 @divider{title: 我是一条分割线}
 
 @backtop
+
+@building 0.5
 `
 
 const content3 = `# 世界很大, 而我又是靓仔 @nice    
