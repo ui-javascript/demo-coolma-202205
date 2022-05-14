@@ -13,7 +13,7 @@ export default {
 
   // 自动转换配置
   autoConvertArg2Attr: true,
-  needConvertPrevNode2Attr: true,
+  needConvertPrevNode2Attr: true, // 默认false, 配置true会优先向前读
   needConvertNextNode2Attr: true, 
 
   beforeRender: {

@@ -9,8 +9,13 @@ export default {
   
   realAnnoRequiredArgNames: null, // 不需要参数
   realAnnoExtArgNames: ['title'], // 补充字段, 数组形式, 非必填
-  autoConvertArg2Attr: true,
+
   realAnnoShortcutAttrs: null,
+
+  // 参数转换配置
+  autoConvertArg2Attr: true,
+  needConvertPrevNode2Attr: false, // 默认false, 配置true会优先向前读
+  needConvertNextNode2Attr: true, 
 
   beforeRender: {
     

@@ -8,10 +8,14 @@ export default {
   namespace: "link",
   
   realAnnoRequiredArgNames: ['href'],
-  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
-  autoConvertArg2Attr: true,
-  
+  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填  
   realAnnoShortcutAttrs: null,
+
+  // 参数转换配置
+  autoConvertArg2Attr: true,
+  needConvertPrevNode2Attr: false, // 默认false, 配置true会优先向前读
+  needConvertNextNode2Attr: true, 
+
 
   beforeRender: {
     

@@ -8,8 +8,13 @@ export default {
   
   realAnnoRequiredArgNames: ['deadline'], // 必填字段
   realAnnoExtArgNames: ['tip', 'createDate'], // 补充字段, 非必填
-  autoConvertArg2Attr: true,
   realAnnoShortcutAttrs: null,
+
+  // 参数转换配置
+  autoConvertArg2Attr: true,
+  needConvertPrevNode2Attr: false, // 默认false, 配置true会优先向前读
+  needConvertNextNode2Attr: true, 
+
 
   beforeRender: {
     
