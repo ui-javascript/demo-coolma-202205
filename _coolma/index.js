@@ -34,7 +34,7 @@ import unifiedParser from "./utils/unifiedParserUtil";
 // `;
 
 
-const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7 @card
+const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 恭喜, 颜值认证成功! @success
 
@@ -52,7 +52,14 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7 @card
 
 @weather
 
-@emoji{help} @emoji{usejava}
+@hr{title: 我是一条分割线}
+
+@building 0.5
+
+
+# 卡片1 @card
+
+卡片内容1
 
 \`\`\`
 @emoji{safe} 
@@ -60,15 +67,19 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7 @card
 \`\`\`
 
 
-@hr{title: 我是一条分割线}
-
-@building 0.5
-
-@backtop
-
-# 卡片2 @card 
+# 卡片2 @sub
 
 卡片内容2
+
+@emoji{help} 
+
+# 卡片3 @other
+
+卡片内容3
+
+@emoji{usejava}
+
+@backtop
 `
 
 const content3 = `# 世界很大, 而我又是靓仔 @nice    

@@ -33,6 +33,7 @@ export default {
       return
     }
 
+
     const spliceIdxs = containNextNode2Section(node, parentNode, grandNode)
 
     if (!spliceIdxs) { // 不能有效切割, 提前结束
@@ -56,9 +57,24 @@ export default {
 
     const data = grandNode.children[spliceIdxs.beginIdx+1].data || (grandNode.children[spliceIdxs.beginIdx+1].data = {})
     data.hName = node.attributes.tagName || 'article'; // 卡片
-    // data.hProperties = hast.properties;
+    data.hProperties = {
+      ...data.hProperties,
+      ...node.attributes
+    };
     // data.hChildren = hast.children;
-    grandNode.children[spliceIdxs.beginIdx+1].children = spliceChildren
+
+    // const prevNode = getPrevNodeByAncestors(ancestors);
+
+    const summaryHast = h(`summary`, {}, "详情");
+    const summaryData = {}
+    summaryData.hName = summaryHast.tagName;
+    summaryData.hProperties = summaryHast.properties;
+    summaryData.hChildren = summaryHast.children;
+
+    grandNode.children[spliceIdxs.beginIdx+1].children = [{
+      data: summaryData,
+      type: 'text',
+    }, ...spliceChildren]
 
     // console.log(grandNode.children)
 

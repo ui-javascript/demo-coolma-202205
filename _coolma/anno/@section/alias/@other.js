@@ -1,8 +1,8 @@
 export default {
-  namespace: 'sub',
+  namespace: 'other',
   attachAnno: 'section',
   properties: {
     tagName: 'details',
-    open: true
+    open: false
   }
 }
