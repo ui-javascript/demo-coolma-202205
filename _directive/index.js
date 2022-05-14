@@ -150,8 +150,8 @@ const App = {
         const res = await unifiedParser(before.value);
         after.value = String(res);
     }, { 
-      debounce: 200, 
-      maxWait: 500
+      debounce: 300, 
+      maxWait: 1000
     });
 
     onMounted(() => {
