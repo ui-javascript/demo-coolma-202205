@@ -27,7 +27,9 @@ import unifiedParser from "./utils/unifiedParserUtil";
 
 const content = `#### 世界很大, 而我又是靓仔 @nice @rate(4.7) 
 
-虽然说了句正确的废话 @del 
+颜值认证成功 @success
+
+虽然说了句正确的废话  @del 
 
 @dog @cat @tiger
 

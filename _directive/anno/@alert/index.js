@@ -40,7 +40,7 @@ export default {
       var Alert = Vue.extend({
         template: `<el-alert
         title="${renderNode.value}"
-        type=${ node.attributes['type'] ? "'" + node.attributes['type'] + "'" : 'success'}>
+        type=${ node.attributes['type'] ? "'" + node.attributes['type'] + "'" : 'info'}>
       </el-alert>`,
         data: function () {
           return {
@@ -51,7 +51,7 @@ export default {
 
       const alertId = nanoid()
       const data = renderNode.data || (renderNode.data = {});
-      const hast = h(`div${alertId}`, node.attributes, null);
+      const hast = h(`div#${alertId}`, node.attributes, null);
       data.hName = hast.tagName;
       data.value = null
       data.hProperties = hast.properties;
@@ -60,7 +60,7 @@ export default {
       // @todo 待优化 div好像没有onload方法
       const timer = setTimeout(() => {
         const alert = document.getElementById(alertId)
-        if (backtop) {
+        if (alert) {
           // 创建 Profile 实例，并挂载到一个元素上。
           new Alert().$mount(`#${alertId}`)
         } else {
