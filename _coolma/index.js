@@ -50,7 +50,7 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 @cat{.mask.mask-heart}
 @tiger{.mask.mask-circle} 
 
-@doc https://procomponents.ant.design/components/editable-table @hot 20221223 
+@doc('https://procomponents.ant.design/components/editable-table') @hot 20221223 
 
 @until(22120309){t: '📣新发布', c: '20211212'}
 
@@ -65,19 +65,18 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 @building 0.5
 
-\`\`\`
-@emoji{safe} 
-@emoji{ichange} 
+\`\`\`js
+import rehype from 'rehype'
+import rehypePrism from 'rehype-prism-plus'
+
+rehype().use(rehypePrism).process(/* some html */)
 \`\`\`
 
 @hr{t: 我是一条分割线}
 
 # 折叠卡片(默认关闭) @card @sub 
 
-@emoji{help} 
-
-@emoji{usejava}
-
+- [ ] 星辰大海
 
 # 折叠卡片(默认关闭) @sub @card 
 
@@ -86,13 +85,12 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 @emoji{usejava}
 
 
-# 无关卡片(直接忽略) @card @other
+# 无关卡片(直接忽略)  @other
 
 @emoji{safe} 
+@emoji{ichange} 
 
-@emoji{ichange}
-
-@hr
+---
 
 # 参考 @ref
 
@@ -153,7 +151,7 @@ const App = {
   <main class="container-fluid">
     <div class="grid p-2">
       <textarea v-if="isVsCode !== 'true'" class="textarea textarea-info inline-block" style="min-height: 500px" v-model="before"></textarea>
-      <div v-html="after" />  
+      <div class="pl-5 pr-5" v-html="after" />  
     </div>
   </main>
   `,
