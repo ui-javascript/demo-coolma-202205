@@ -137,23 +137,17 @@ hello @nice test *em* @nice ssss *em* sss @nice xxx
 `
 
 
+
+
+
 const App = {
   template: `
-
-    <main class="container-fluid">
-
-  
-    <div class="grid">
-
-      <textarea style="display: block;min-height: 500px" v-model="before"></textarea>
-
+  <main class="container-fluid">
+    <div class="grid p-2">
+      <textarea class="textarea textarea-info inline-block" style="min-height: 500px" v-model="before"></textarea>
       <div v-html="after" />  
-  
     </div>
-
-   
-    </main>
-
+  </main>
   `,
   // @tofix @todo 本来想采用这种方法渲染elementui组件
   // https://blog.csdn.net/weixin_40057800/article/details/90316624

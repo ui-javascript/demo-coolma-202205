@@ -67,7 +67,6 @@ export default {
 
     const tableId = getNanoId()
     const loadingDivId = getNanoId()
-    const tableTitleId = getNanoId()
 
     const data = node.data || (node.data = {});
     const hast = h(
@@ -76,12 +75,7 @@ export default {
       // @todo 耦合代码
       [
         h("figure", {}, [
-          isWeatherApi
-            ? [
-              h(`table#${tableId}`, { role: "grid" }, []),
-              h(`h6#${tableTitleId}`, { class: "text-center" }, ""),
-            ]
-            : [h(`table#${tableId}`, { role: "grid" }, [])],
+           h(`table#${tableId}`, { role: "grid" }, [])
         ]),
       ]
     );
@@ -153,11 +147,7 @@ export default {
       let loadingDiv = document.getElementById(loadingDivId);
       loadingDiv.setAttribute("aria-busy", false);
 
-      // @todo 耦合代码
-      if (isWeatherApi) {
-        let tableTitle = document.getElementById(tableTitleId);
-        tableTitle.innerText = `(${res.data.city}-未来一周天气表)`;
-      }
+
     }
 
 
