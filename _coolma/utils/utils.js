@@ -270,9 +270,26 @@ export function containNextNode2Section(node, parentNode, grandNode) {
   for (let idx = beginIdx+1; idx < grandNode.children.length; idx++) {
     const item = grandNode.children[idx]
 
-    if (item.type === "heading") {
+    if (item.type === "heading" || item.type === 'thematicBreak') {
       break
     }
+
+    let isEnd = false
+    if (item.type === "paragraph" && item.children && item.children.length > 0) {
+      for(let key in item.children) {
+        const itemm = item.children[key]
+        debugger
+        if (itemm.type === "textDirective" && ['divider', 'hr'].includes(itemm.name)) {
+          isEnd = true
+          break
+        }
+      }
+    }
+
+    if (isEnd) {
+      break
+    }
+
     endIdx = idx
   }
 

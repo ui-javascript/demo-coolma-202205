@@ -52,31 +52,39 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 @weather
 
-@hr{t: 我是一条分割线}
+
+# 普通卡片 @card
 
 @building 0.5
-
-
-# 卡片 @card
 
 \`\`\`
 @emoji{safe} 
 @emoji{ichange} 
 \`\`\`
 
+@hr{t: 我是一条分割线}
 
-# 卡片(默认关闭) @card @sub
+# 折叠卡片(默认关闭) @card @sub 
 
 @emoji{help} 
 
 @emoji{usejava}
 
 
-# 卡片(直接忽略) @card @other
+# 折叠卡片(默认关闭) @sub @card 
+
+@emoji{help} 
+
+@emoji{usejava}
+
+
+# 无关卡片(直接忽略) @card @other
 
 @emoji{safe} 
 
 @emoji{ichange}
+
+@hr
 
 # 参考 @ref
 
