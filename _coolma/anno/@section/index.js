@@ -69,9 +69,9 @@ export default {
 
     const data = grandNode.children[spliceIdxs.beginIdx+1].data || (grandNode.children[spliceIdxs.beginIdx+1].data = {})
     data.hName = node.attributes.tagName || 'article'; // 卡片
-    data.hProperties = {
-      ...node.attributes
-    };
+    // data.hProperties = {
+    //   // ...node.attributes
+    // };
     // data.hChildren = hast.children;
     grandNode.children[spliceIdxs.beginIdx+1].children = spliceChildren
 

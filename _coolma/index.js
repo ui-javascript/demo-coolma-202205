@@ -57,7 +57,7 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 @building 0.5
 
 
-# 卡片1 @card
+# 卡片 
 
 \`\`\`
 @emoji{safe} 
@@ -65,11 +65,11 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 \`\`\`
 
 
-# 折叠卡片(开启) @sub
+# 卡片(开启) @sub
 
 @emoji{help} 
 
-# 折叠卡片(关闭) @other
+# 卡片(关闭) @other
 
 @emoji{usejava}
 
