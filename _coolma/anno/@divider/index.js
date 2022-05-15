@@ -8,7 +8,7 @@ export default {
   namespace: "divider",
   
   realAnnoRequiredArgNames: null, // 不需要参数
-  realAnnoExtArgNames: ['title'], // 补充字段, 数组形式, 非必填
+  realAnnoExtArgNames: ['title', 't'], // 补充字段, 数组形式, 非必填
 
   realAnnoShortcutAttrs: null,
 
@@ -35,8 +35,10 @@ export default {
     //   }
     // }
 
+
+    const title = node.attributes.title || node.attributes.t
     var Divider = Vue.extend({
-      template: `<el-divider content-position="left">${node.attributes.title ? node.attributes.title : ''}</el-divider>`,
+      template: `<el-divider content-position="left">${title ? title : ''}</el-divider>`,
       data: function () {
         return {
           // value: node.attributes[realAnnoRequiredArgNames[0]],

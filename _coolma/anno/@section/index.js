@@ -45,9 +45,9 @@ export default {
       return 
     }
 
-    // if (node.name === 'sub' || node.name === 'other') {
-    //   spliceIdxs.beginIdx--
-    // }
+    if (node.name === 'other') {
+      spliceIdxs.beginIdx--
+    }
 
 
     // console.log("切割下来的块")
@@ -57,6 +57,10 @@ export default {
       children: [],
       type: "paragraph"
     })
+
+    if (node.name === 'other') {
+      return 
+    }
 
     // console.log(spliceChildren)
     // console.log(grandNode.children)
@@ -69,17 +73,18 @@ export default {
 
     const data = grandNode.children[spliceIdxs.beginIdx+1].data || (grandNode.children[spliceIdxs.beginIdx+1].data = {})
     data.hName = node.attributes.tagName || 'article'; // 卡片
-    // data.hProperties = {
-    //   // ...node.attributes
-    // };
+    data.hProperties = {
+      open: node.attributes.open
+    };
+
     // data.hChildren = hast.children;
     grandNode.children[spliceIdxs.beginIdx+1].children = spliceChildren
 
-    if (node.name === "sub" || node.name === "other") {
+    if (node.name === "sub") {
       const summaryHast = h(`summary`, {
         // role:"button",
         ...node.attributes
-      }, "详情");
+      }, "查看详情");
       const summaryData = {}
       summaryData.hName = summaryHast.tagName;
       summaryData.hProperties = summaryHast.properties;

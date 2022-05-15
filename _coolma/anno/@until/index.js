@@ -7,7 +7,7 @@ export default {
   namespace: 'until',
   
   realAnnoRequiredArgNames: ['deadline'], // 必填字段
-  realAnnoExtArgNames: ['tip', 'createDate'], // 补充字段, 非必填
+  realAnnoExtArgNames: ['tip', 'createDate', 't', 'c'], // 补充字段, 非必填
   realAnnoShortcutAttrs: null,
 
   // 参数转换配置
@@ -46,8 +46,9 @@ export default {
     }
 
     let timeTip = null
-    if (node.attributes.createDate && moment(node.attributes.createDate).isValid()) {
-      timeTip = moment(node.attributes.createDate).fromNow()
+    const createDate = node.attributes.createDate || node.attributes.c
+    if (createDate && moment(createDate).isValid()) {
+      timeTip = moment(createDate).fromNow()
     }
 
     const data = node.data || (node.data = {});
@@ -56,7 +57,7 @@ export default {
       {
         ...node.attributes,
       },
-      (node.attributes.tip ||  '📌热门') + (timeTip ? `(${timeTip})`: '')
+      (node.attributes.tip || node.attributes.t ||  '📌热门') + (timeTip ? `(${timeTip})`: '')
     );
 
 

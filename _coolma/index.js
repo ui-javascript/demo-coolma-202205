@@ -44,7 +44,7 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 @doc https://procomponents.ant.design/components/editable-table @hot 20221223 
 
-@until(22120309){tip: '📣新发布', createDate: '20211212'}
+@until(22120309){t: '📣新发布', c: '20211212'}
 
 @bvid BV1YT4y1Q7xx
 
@@ -52,12 +52,12 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 @weather
 
-@hr{title: 我是一条分割线}
+@hr{t: 我是一条分割线}
 
 @building 0.5
 
 
-# 卡片 
+# 卡片 @card
 
 \`\`\`
 @emoji{safe} 
@@ -65,13 +65,20 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 \`\`\`
 
 
-# 卡片(开启) @sub
+# 卡片(默认关闭) @sub
 
 @emoji{help} 
 
-# 卡片(关闭) @other
-
 @emoji{usejava}
+
+
+# 卡片(直接忽略) @other
+
+@emoji{safe} 
+
+@emoji{ichange}
+
+# 参考 @ref
 
 @backtop
 `
