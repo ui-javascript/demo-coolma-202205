@@ -60,15 +60,17 @@ export default {
 
 
     //  div好像没有onload方法
+    let retryTimes = 0 
     function renderTimer() {
       const rate = document.getElementById(rateId)
       if (rate) {
         // 创建 Profile 实例，并挂载到一个元素上。
         new Rate().$mount(`#${rateId}`)
       } else {
-        console.log("重试")
+        retryTimes++
+        console.log(node.name + "重试" + retryTimes + "次")
         setTimeout(() => {
-          renderTimer()
+           retryTimes < 3 && renderTimer()
         }, 200)
       }
     }

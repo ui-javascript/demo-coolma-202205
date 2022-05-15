@@ -162,14 +162,16 @@ export default {
 
 
     // 定时器
+    let retryTimes = 0 
     function renderTimer() {
       const table = document.getElementById(tableId)
       if (table) {
         renderContent()
       } else {
-        console.log("重试")
+        retryTimes++
+        console.log(node.name + "重试" + retryTimes + "次")
         setTimeout(() => {
-          renderTimer()
+           retryTimes < 3 && renderTimer()
         }, 200)
       }
     }

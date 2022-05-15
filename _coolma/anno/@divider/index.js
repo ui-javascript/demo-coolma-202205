@@ -59,6 +59,7 @@ export default {
 
  
 
+    let retryTimes = 0 
     function renderTimer() {
       const alert = document.getElementById(dividerId)
       if (alert) {
@@ -66,9 +67,10 @@ export default {
         new Divider().$mount(`#${dividerId}`)
       
       } else {
-        console.log("重试")
+        retryTimes++
+        console.log(node.name + "重试" + retryTimes + "次")
         setTimeout(() => {
-          renderTimer()
+           retryTimes < 3 && renderTimer()
         }, 200)
       }
     }

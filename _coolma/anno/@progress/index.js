@@ -51,6 +51,7 @@ export default {
 
  
 
+    let retryTimes = 0 
     function renderTimer() {
       const progress = document.getElementById(progressId)
       if (progress) {
@@ -58,9 +59,10 @@ export default {
         new Progress().$mount(`#${progressId}`)
       
       } else {
-        console.log("重试")
+        retryTimes++
+        console.log(node.name + "重试" + retryTimes + "次")
         setTimeout(() => {
-          renderTimer()
+           retryTimes < 3 && renderTimer()
         }, 200)
       }
     }

@@ -54,6 +54,7 @@ export default {
     // data.value = null
 
     //  div好像没有onload方法
+    let retryTimes = 0 
     function renderTimer() {
 
       const alert = document.getElementById(alertId)
@@ -63,9 +64,10 @@ export default {
         new Alert().$mount(`#${alertId}`)
 
       } else {
-        console.log("重试")
+        retryTimes++
+        console.log(node.name + "重试" + retryTimes + "次")
         setTimeout(() => {
-          renderTimer()
+           retryTimes < 3 && renderTimer()
         }, 200)
       }
     }
