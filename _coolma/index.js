@@ -190,8 +190,8 @@ const App = {
       console.log(String(res))
       after.value = String(res);
     }, { 
-      debounce: 300, 
-      maxWait: 1000
+      debounce: 50, 
+      maxWait: 300
     });
 
 
