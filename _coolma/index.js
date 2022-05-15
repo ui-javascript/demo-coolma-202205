@@ -50,7 +50,7 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 @cat{.mask.mask-heart}
 @tiger{.mask.mask-circle} 
 
-@doc('https://procomponents.ant.design/components/editable-table') @hot 20221223 
+@doc https://procomponents.ant.design/components/editable-table  @hot 20221223 
 
 @until(22120309){t: '📣新发布', c: '20211212'}
 
@@ -74,11 +74,13 @@ rehype().use(rehypePrism).process(/* some html */)
 
 @hr{t: 我是一条分割线}
 
-# 折叠卡片(默认关闭) @card @sub 
+# 卡片折叠 @card @sub 
 
-- [ ] 星辰大海
+- 星辰大海改天再去 @todo
+    - 远古天空
+    - 历代星辰
 
-# 折叠卡片(默认关闭) @sub @card 
+# 折叠卡片 @sub @card 
 
 @emoji{help} 
 
