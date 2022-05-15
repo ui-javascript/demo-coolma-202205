@@ -65,14 +65,14 @@ const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
 \`\`\`
 
 
-# 卡片(默认关闭) @sub
+# 卡片(默认关闭) @card @sub
 
 @emoji{help} 
 
 @emoji{usejava}
 
 
-# 卡片(直接忽略) @other
+# 卡片(直接忽略) @card @other
 
 @emoji{safe} 
 
