@@ -152,7 +152,8 @@ export function getNextNodeByLatestAncestor(node, latestAncestors) {
       while (++nextIdx < latestAncestors.children.length) {
         const tempNode = latestAncestors.children[nextIdx];
 
-        if (tempNode && tempNode.type === "text" && trim(tempNode.value)) { // 空字符串不认为是后置结点
+
+        if (tempNode && ['text', 'link'].includes(tempNode.type) && trim(tempNode.value || tempNode.url)) { // 空字符串不认为是后置结点
           nextNode = tempNode;
           break;
         }
@@ -199,8 +200,7 @@ export function getPrevNodeByLatestAncestor(node, latestAncestors) {
         const tempNode = latestAncestors.children[prevIdx];
 
         
-        if (tempNode && tempNode.type === "text" && trim(tempNode.value)) {
-          ;
+        if (tempNode && ['text', 'link'].includes(tempNode.type) && trim(tempNode.value)) {
           prevNode = tempNode;
           break;
         }

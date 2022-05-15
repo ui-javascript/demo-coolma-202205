@@ -10,21 +10,27 @@ import remarkGfm from 'remark-gfm'
 // import remarkToc from 'remark-toc'
 // import rehypeHighlight from 'rehype-highlight'
 import rehypePrism from 'rehype-prism-plus'
+// import remarkLintListItemIndent from 'remark-lint-list-item-indent'
 
 export default function unifiedParser(content) {
     return unified()
     .use(remarkParse)
-    .use(remarkDirective)
-    .use(myRemarkPlugin)
-    .use(remarkGfm)
-    .use(remarkRehype)
-    .use(rehypeFormat)
-    .use(rehypeStringify)
     // .use(remarkToc, {
     //     heading: 'contents',
     //     tight: true, 
     //     ordered: true
     // })
+    .use(remarkDirective)
+    .use(myRemarkPlugin)
+    .use(remarkGfm)
+    .use(remarkRehype)
+    .use(rehypeFormat)
+    // .use(remarkLintListItemIndent)
+    .use(rehypeStringify, {
+        // @adjust https://github.com/remarkjs/remark/tree/main/packages/remark-stringify
+        listItemIndent: "tab"
+    })
+
     // .use(rehypeHighlight)
     .use(rehypePrism)
     .process(content)

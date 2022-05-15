@@ -21,8 +21,10 @@ export default {
     
 
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
+      debugger
+      
       // 判断后置节点内容是否为URL
-      let nextVal = trim(nextNode.value)
+      let nextVal = trim(nextNode.value || nextNode.url)
       if (!urlRegex.test(nextVal)) {
           return
       }

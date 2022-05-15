@@ -53,6 +53,7 @@
     "rehype-prism-plus": "^1.4.0",
     "rehype-stringify": "^9.0.3",
     "remark-gfm": "^3.0.1",
+    "remark-lint-list-item-indent": "^3.1.1",
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
     "remark-toc": "^8.0.1",
