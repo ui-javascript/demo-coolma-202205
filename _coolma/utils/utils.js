@@ -278,7 +278,6 @@ export function containNextNode2Section(node, parentNode, grandNode) {
     if (item.type === "paragraph" && item.children && item.children.length > 0) {
       for(let key in item.children) {
         const itemm = item.children[key]
-        debugger
         if (itemm.type === "textDirective" && ['divider', 'hr'].includes(itemm.name)) {
           isEnd = true
           break

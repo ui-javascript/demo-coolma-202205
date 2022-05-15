@@ -3,7 +3,7 @@ import VueCompositionApi, {
   onMounted,
   ref,
 } from "@vue/composition-api";
-import { watchDebounced, watchThrottled } from '@vueuse/core'
+import { useUrlSearchParams, watchDebounced, watchThrottled } from '@vueuse/core'
 
 // import ElementUI from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css';
@@ -32,6 +32,12 @@ import unifiedParser from "./utils/unifiedParserUtil";
 
 
 // `;
+
+
+const params = useUrlSearchParams('history')
+const isVsCode = params.isVsCode 
+console.log(isVsCode)
+
 
 
 const content = `## 世界很大, 而我又是靓仔 @nice @rate 4.7
@@ -146,7 +152,7 @@ const App = {
   template: `
   <main class="container-fluid">
     <div class="grid p-2">
-      <textarea class="textarea textarea-info inline-block" style="min-height: 500px" v-model="before"></textarea>
+      <textarea v-if="isVsCode != true" class="textarea textarea-info inline-block" style="min-height: 500px" v-model="before"></textarea>
       <div v-html="after" />  
     </div>
   </main>
@@ -180,33 +186,84 @@ const App = {
     const before = ref("");
     const after = ref("");
   
-    watchDebounced(before, async () => {
+    if (isVsCode == true) {
+      watchEffect(async () => {
+        const res = await unifiedParser(before.value);
+        console.log(String(res));
+        after.value = String(res);
+      });
+    }
+
+    if (isVsCode != true) {
+      watchDebounced(before, async () => {
         const res = await unifiedParser(before.value);
         console.log(String(res))
         after.value = String(res);
+      }, { 
+        debounce: 500, 
+        maxWait: 1000
+      });
 
-    }, { 
-      debounce: 500, 
-      maxWait: 1000
-    });
+    }
+
 
     onMounted(() => {
-      before.value = content
+      debugger
+      before.value = isVsCode == true ? window.$CONTENT : content
     })
 
     return {
       before,
       after,
+      isVsCode
     };
   },
 };
+
 
 Vue.use(VueCompositionApi);
 // Vue.use(ElementUI); // 改用CDN
 
 Vue.config.productionTip = false;
 
-new Vue({
-  el: "#app",
-  render: (h) => h(App),
-});
+
+debugger
+if (isVsCode != true) { // 不是插件模式
+  debugger
+
+  new Vue({
+    el: "#app",
+    render: (h) => h(App),
+  });
+
+} else {
+  window.addEventListener("message", init, false);
+  function init (event) {
+  
+    console.log(event)
+  
+    if (event.data.cmd === "mountApp") {
+      window.$CONTENT = event.data.data; // MD内容
+      window.$MDPATH = event.data.mdPath; // MD路径
+  
+      window.$VUE = new Vue({
+          render: h => h(App),
+      }).$mount('#app');
+    
+    }
+  
+    if (event.data.cmd === "mdSync") {
+      window.$CONTENT = event.data.data; // MD内容
+      window.$MDPATH = event.data.mdPath; // MD路径
+  
+      if (window.$VUE) {
+        window.$VUE.$children[0].before = window.$CONTENT
+      } 
+    
+    }
+    
+  };
+}
+
+
+
