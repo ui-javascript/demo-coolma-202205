@@ -186,28 +186,19 @@ const App = {
     const before = ref("");
     const after = ref("");
   
-    if (isVsCode === 'true') {
-      watchEffect(async () => {
-        const res = await unifiedParser(before.value);
-        console.log(String(res));
-        after.value = String(res);
-      });
-    } else {
-      watchDebounced(before, async () => {
-        const res = await unifiedParser(before.value);
-        console.log(String(res))
-        after.value = String(res);
-      }, { 
-        debounce: 500, 
-        maxWait: 1000
-      });
-
-    }
+ 
+    watchDebounced(before, async () => {
+      const res = await unifiedParser(before.value);
+      console.log(String(res))
+      after.value = String(res);
+    }, { 
+      debounce: 300, 
+      maxWait: 1000
+    });
 
 
     onMounted(() => {
-      debugger
-      before.value = isVsCode === 'true' ? window.$CONTENT : content
+      before.value = (isVsCode === 'true') ? window.$CONTENT : content
     })
 
     return {
@@ -225,40 +216,43 @@ Vue.use(VueCompositionApi);
 Vue.config.productionTip = false;
 
 
-debugger
-if (isVsCode !== 'true') { // 不是插件模式
-  new Vue({
+// 插件初始化
+function init (event) {
+  
+  console.log(event)
+
+  if (event.data.cmd === "mountApp") {
+    window.$CONTENT = event.data.data; // MD内容
+    window.$MDPATH = event.data.mdPath; // MD路径
+
+    window.$VUE = new Vue({
+        render: h => h(App),
+    }).$mount('#app');
+  
+  }
+
+  if (event.data.cmd === "mdSync") {
+    window.$CONTENT = event.data.data; // MD内容
+    window.$MDPATH = event.data.mdPath; // MD路径
+
+    if (window.$VUE) {
+      window.$VUE.$children[0].before = window.$CONTENT
+    } 
+  
+  }
+  
+};
+
+
+
+if (isVsCode !== 'true') {
+  window.$VUE = new Vue({
     el: "#app",
     render: (h) => h(App),
   });
 
-} else {
+} else {  // 插件模式
   window.addEventListener("message", init, false);
-  function init (event) {
-  
-    console.log(event)
-  
-    if (event.data.cmd === "mountApp") {
-      window.$CONTENT = event.data.data; // MD内容
-      window.$MDPATH = event.data.mdPath; // MD路径
-  
-      window.$VUE = new Vue({
-          render: h => h(App),
-      }).$mount('#app');
-    
-    }
-  
-    if (event.data.cmd === "mdSync") {
-      window.$CONTENT = event.data.data; // MD内容
-      window.$MDPATH = event.data.mdPath; // MD路径
-  
-      if (window.$VUE) {
-        window.$VUE.$children[0].before = window.$CONTENT
-      } 
-    
-    }
-    
-  };
 }
 
 
