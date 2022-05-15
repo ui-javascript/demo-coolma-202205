@@ -34,7 +34,7 @@ import unifiedParser from "./utils/unifiedParserUtil";
 // `;
 
 
-const params = useUrlSearchParams('history')
+const params = useUrlSearchParams('hash')
 const isVsCode = params.isVsCode 
 console.log(isVsCode)
 
@@ -152,7 +152,7 @@ const App = {
   template: `
   <main class="container-fluid">
     <div class="grid p-2">
-      <textarea v-if="isVsCode != true" class="textarea textarea-info inline-block" style="min-height: 500px" v-model="before"></textarea>
+      <textarea v-if="isVsCode !== 'true'" class="textarea textarea-info inline-block" style="min-height: 500px" v-model="before"></textarea>
       <div v-html="after" />  
     </div>
   </main>
@@ -186,15 +186,13 @@ const App = {
     const before = ref("");
     const after = ref("");
   
-    if (isVsCode == true) {
+    if (isVsCode === 'true') {
       watchEffect(async () => {
         const res = await unifiedParser(before.value);
         console.log(String(res));
         after.value = String(res);
       });
-    }
-
-    if (isVsCode != true) {
+    } else {
       watchDebounced(before, async () => {
         const res = await unifiedParser(before.value);
         console.log(String(res))
@@ -209,7 +207,7 @@ const App = {
 
     onMounted(() => {
       debugger
-      before.value = isVsCode == true ? window.$CONTENT : content
+      before.value = isVsCode === 'true' ? window.$CONTENT : content
     })
 
     return {
@@ -228,9 +226,7 @@ Vue.config.productionTip = false;
 
 
 debugger
-if (isVsCode != true) { // 不是插件模式
-  debugger
-
+if (isVsCode !== 'true') { // 不是插件模式
   new Vue({
     el: "#app",
     render: (h) => h(App),
