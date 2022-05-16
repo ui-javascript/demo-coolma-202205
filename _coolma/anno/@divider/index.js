@@ -1,4 +1,4 @@
-import { getNextNodeByLatestAncestor, getNextNodeByAncestor, renderVoidElement, getPrevNodeByAncestors, getPrevNodeByLatestAncestor, getNanoId } from "../../utils/utils";
+import { getNextTextOrLinkNodeByLatestAncestor, getNextNodeByAncestor, renderVoidElement, getPrevTextOrLinkNodeByAncestors, getPrevTextOrLinkNodeByLatestAncestor, getNanoId } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 import { customAlphabet, nanoid } from "nanoid";
@@ -28,7 +28,7 @@ export default {
     // const latestAncestors = ancestors[ancestors.length - 1];
     // const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令外至少还有一个元素
     // if (hasEnoughChildren) {
-    //   let nextNode = getNextNodeByLatestAncestor(node, latestAncestors)
+    //   let nextNode = getNextTextOrLinkNodeByLatestAncestor(node, latestAncestors)
     //   if (nextNode) {
     //     node.attributes.title = trim(nextNode.value)
     //     renderVoidElement(nextNode)

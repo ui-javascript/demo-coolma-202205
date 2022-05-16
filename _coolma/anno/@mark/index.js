@@ -1,4 +1,4 @@
-import { getNextNodeByLatestAncestor, getNextNodeByAncestor, renderVoidElement, getPrevNodeByAncestors, getPrevNodeByLatestAncestor } from "../../utils/utils";
+import { getNextTextOrLinkNodeByLatestAncestor, getNextNodeByAncestor, renderVoidElement, getPrevTextOrLinkNodeByAncestors, getPrevTextOrLinkNodeByLatestAncestor } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 
@@ -30,10 +30,10 @@ export default {
     let renderNode = null
 
     // 优先渲染后置节点
-    renderNode = getPrevNodeByLatestAncestor(node, latestAncestors)
+    renderNode = getPrevTextOrLinkNodeByLatestAncestor(node, latestAncestors)
     
     if (!renderNode) {
-      renderNode = getNextNodeByLatestAncestor(node, latestAncestors)
+      renderNode = getNextTextOrLinkNodeByLatestAncestor(node, latestAncestors)
     }
 
     if (renderNode) {

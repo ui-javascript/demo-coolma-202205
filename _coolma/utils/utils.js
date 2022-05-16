@@ -2,6 +2,7 @@ import { h } from "hastscript";
 import { trim, intersection, difference, before } from "lodash";
 import { customAlphabet } from "nanoid";
 
+
 // @todo 先伪装成块内元素
 export function renderVoidElement(node) {
   const nodeData = node.data || (node.data = {});
@@ -59,7 +60,7 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
     
     if (!(realAnnoRequiredArgNames[0] in node.attributes)) { // 不能覆盖node.attributes的配置
 
-      const prevNode = getPrevNodeByAncestors(node, ancestors)
+      const prevNode = getPrevTextOrLinkNodeByAncestors(node, ancestors)
 
       // 通过节点读取值暂时只处理一个参数
       const prevNode2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "prevNode2Attr")
@@ -76,7 +77,7 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
     
     if (!(realAnnoRequiredArgNames[0] in node.attributes)) { // 不能覆盖node.attributes的配置
 
-      const nextNode = getNextNodeByAncestors(node, ancestors)
+      const nextNode = getNextTextOrLinkNodeByAncestors(node, ancestors)
 
       // 通过节点读取值暂时只处理一个参数
       const nextNode2AttrFunc = getObjConvertFunc(annoAlias[node.name], realRenderAnno, "beforeRender", "nextNode2Attr")
@@ -122,7 +123,31 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
 }
 
 
-export function getNextNodeByAncestors(node, ancestors) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export function getNextTextOrLinkNodeByAncestors(node, ancestors) {
+  return getNextNodeByAncestorAndType(node, ancestors, ['text', 'link']);
+}
+
+export function getNextTextOrLinkNodeByLatestAncestors(node, latestAncestors) {
+  return getNextNodeByLatestAncestorAndType(node, latestAncestors, ['text', 'link']);
+}
+
+export function getNextNodeByAncestorAndType(node, ancestors, typeArr) {
   let nextNode = null;
 
   const latestAncestors = ancestors[ancestors.length - 1];
@@ -132,11 +157,12 @@ export function getNextNodeByAncestors(node, ancestors) {
     return nextNode;
   }
 
-  nextNode = getNextNodeByLatestAncestor(node, latestAncestors)
+  nextNode = getNextNodeByLatestAncestorAndType(node, latestAncestors, typeArr)
   return nextNode;
 }
 
-export function getNextNodeByLatestAncestor(node, latestAncestors) {
+
+export function getNextNodeByLatestAncestorAndType(node, latestAncestors, typeArr) {
   let nextNode = null;
 
   for (let idx in latestAncestors.children) {
@@ -153,7 +179,7 @@ export function getNextNodeByLatestAncestor(node, latestAncestors) {
         const tempNode = latestAncestors.children[nextIdx];
 
 
-        if (tempNode && ['text', 'link'].includes(tempNode.type) && trim(tempNode.value || tempNode.url)) { // 空字符串不认为是后置结点
+        if (tempNode && (typeArr && typeArr.length > 0 ? typeArr : ['text', 'link']).includes(tempNode.type) && trim(tempNode.value || tempNode.url)) { // 空字符串不认为是后置结点
           nextNode = tempNode;
           break;
         }
@@ -165,7 +191,42 @@ export function getNextNodeByLatestAncestor(node, latestAncestors) {
 }
 
 
-export function getPrevNodeByAncestors(node, ancestors) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export function getPrevTextOrLinkNodeByAncestors(node, ancestors) {
+  return getPrevNodeByAncestorsAndType(node, ancestors, ['text', 'link']);
+}
+
+
+export function getPrevTextOrLinkNodeByLatestAncestor(node, latestAncestors) {
+  return getPrevNodeByLatestAncestorAndType(node, latestAncestors, ['text', 'link']);
+}
+
+
+export function getPrevNodeByAncestorsAndType(node, ancestors, typeArr) {
   let prevNode = null;
 
   const latestAncestors = ancestors[ancestors.length - 1];
@@ -174,11 +235,11 @@ export function getPrevNodeByAncestors(node, ancestors) {
     return prevNode;
   }
 
-  prevNode = getPrevNodeByLatestAncestor(node, latestAncestors)
+  prevNode = getPrevNodeByLatestAncestorAndType(node, latestAncestors, typeArr)
   return prevNode;
 }
 
-export function getPrevNodeByLatestAncestor(node, latestAncestors) {
+export function getPrevNodeByLatestAncestorAndType(node, latestAncestors, typeArr) {
   let prevNode = null;
 
   const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令外至少还有一个元素
@@ -200,7 +261,7 @@ export function getPrevNodeByLatestAncestor(node, latestAncestors) {
         const tempNode = latestAncestors.children[prevIdx];
 
         
-        if (tempNode && ['text', 'link'].includes(tempNode.type) && trim(tempNode.value)) {
+        if (tempNode && (typeArr && typeArr.length > 0 ? typeArr : ['text', 'link']).includes(tempNode.type) && trim(tempNode.value)) {
           prevNode = tempNode;
           break;
         }
@@ -211,6 +272,8 @@ export function getPrevNodeByLatestAncestor(node, latestAncestors) {
 
   return prevNode;
 }
+
+
 
 export function getObjConvertFunc(aliasAnno, realRenderAnno, convertKey, convertFuncKey) {
   if (aliasAnno && aliasAnno[convertKey] && aliasAnno[convertKey][convertFuncKey]) {

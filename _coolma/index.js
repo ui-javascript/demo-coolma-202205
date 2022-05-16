@@ -17,6 +17,8 @@ const params = useUrlSearchParams('hash')
 const isVsCode = params.isVsCode 
 console.log(isVsCode)
 
+// const content = `@calendar`
+
 
 const content = `# 世界很大, 而我又是靓仔 @nice @rate 4.7
 
@@ -38,20 +40,14 @@ const content = `# 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 @bvid BV1YT4y1Q7xx
 
+@building 0.1
+
 ---
 
 # 北京一周天气
 
-@building 0.1
 
 @weather
-
-\`\`\`js
-import rehype from 'rehype'
-import rehypePrism from 'rehype-prism-plus'
-
-rehype().use(rehypePrism).process(/* some html */)
-\`\`\`
 
 ---
 
@@ -69,6 +65,14 @@ rehype().use(rehypePrism).process(/* some html */)
 
 @emoji{usejava}
 
+\`\`\`js
+import rehype from 'rehype'
+import rehypePrism from 'rehype-prism-plus'
+
+rehype().use(rehypePrism).process(/* some html */)
+\`\`\`
+
+
 # 无关内容(直接忽略)  @ignore
 
 @emoji{safe} 
@@ -84,8 +88,12 @@ rehype().use(rehypePrism).process(/* some html */)
 const App = {
   template: `
   <main class="container-fluid">
+    <nav>
+      <button v-show="isVsCode !== 'true' && editable === true" @click="editable = false">仅预览</button>
+      <button v-show="isVsCode !== 'true' && editable === false" @click="editable = true">显示编辑框</button>
+    </nav>
     <div class="grid p-2">
-      <textarea v-if="isVsCode !== 'true'" class="textarea textarea-info inline-block" style="min-height: 500px" v-model="before"></textarea>
+      <textarea v-if="isVsCode !== 'true' && editable" class="textarea textarea-info inline-block" style="min-height: 500px" v-model="before"></textarea>
       <div class="pl-2 pr-2" v-html="after" />  
     </div>
   </main>
@@ -118,7 +126,7 @@ const App = {
 
     const before = ref("");
     const after = ref("");
-  
+    const editable = ref(true);
  
     watchDebounced(before, async () => {
       const res = await unifiedParser(before.value);
@@ -137,7 +145,8 @@ const App = {
     return {
       before,
       after,
-      isVsCode
+      isVsCode,
+      editable
     };
   },
 };
