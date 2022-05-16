@@ -18,7 +18,7 @@ export default {
 
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
         node.attributes[realAnnoRequiredArgNames[0]] = trim(nextNode.value)
-        renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
+        // renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
 
         const data = nextNode.data || (nextNode.data = {});
         const hast = h("a", {
@@ -38,7 +38,7 @@ export default {
     const data = node.data || (node.data = {});
     const hast = h("span", {
 
-    }, "--");
+    }, "-- ");
 
     data.hName = hast.tagName;
     data.hProperties = hast.properties;
