@@ -153,7 +153,7 @@ const App = {
   <main class="container-fluid">
     <div class="grid p-2">
       <textarea v-if="isVsCode !== 'true'" class="textarea textarea-info inline-block" style="min-height: 500px" v-model="before"></textarea>
-      <div class="pl-5 pr-5" v-html="after" />  
+      <div class="pl-2 pr-2" v-html="after" />  
     </div>
   </main>
   `,
