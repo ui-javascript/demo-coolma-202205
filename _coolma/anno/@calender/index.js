@@ -1,4 +1,4 @@
-import { getNanoId, getNextLineCodeNode, getNextNodeByAncestorAndType, getNextTextOrLinkNodeByAncestors, renderVoidElement } from "../../utils/utils";
+import { getMonthBetween, getNanoId, getNextLineCodeNode, getNextNodeByAncestorAndType, getNextTextOrLinkNodeByAncestors, renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 import Vue from "vue";
@@ -25,7 +25,6 @@ export default {
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
    
-    debugger
 
     if (ancestors.length < 2) {
       return 
@@ -35,7 +34,6 @@ export default {
     const grandNode = ancestors[ancestors.length - 2];
     const nextLineCodeNode = getNextLineCodeNode(parentNode, grandNode)
 
-    debugger
     if (!nextLineCodeNode) {
       return 
     }
@@ -45,7 +43,6 @@ export default {
       return
     }
 
-    debugger
     let dateMap = {}
     dateContentArr.forEach(item => {
       let sliceIndex = null 
@@ -57,15 +54,26 @@ export default {
 
       const date = trim(item.slice(0, sliceIndex))
       const content = trim(item.slice(sliceIndex+1, item.length))
-      
 
-      if (moment(date).isValid()) {
-        dateMap[moment(date).format("YYYY-MM-DD")] = content
+      if (date.includes("~")) {
+        const betweenDateArr = date.split("~")
+        if (betweenDateArr.length === 2) {
+          if (moment(betweenDateArr[0]).isValid() && moment(betweenDateArr[1]).isValid()) {
+            const between = getMonthBetween(betweenDateArr[0], betweenDateArr[1])
+            between.forEach(itemm => dateMap[itemm] = content)
+          }
+        }
+   
+      
+      } else {
+        if (moment(date).isValid()) {
+          dateMap[moment(date).format("YYYY-MM-DD")] = content
+        }
       }
+      
 
     })
 
-    debugger
 
     const dateArr = Object.keys(dateMap).sort()
     if (!dateArr || dateArr.length === 0) {
@@ -75,12 +83,10 @@ export default {
     renderVoidElement(nextLineCodeNode)
     
 
-    let weekOfday = parseInt(moment(dateArr[0]).format('d')) // 计算今天是这周第几天 
-    let dateStart = moment(dateArr[0]).subtract(weekOfday, 'days').format('YYYY-MM-DD') // 周日, 一周中的第一天
-    let dateEnd = moment(dateArr[0]).add(1, 'months').format('YYYY-MM-DD') // 下个月的第一周
+    let dateStart = moment(dateArr[0]).startOf('week').add(1, "days").format('YYYY-MM-DD') // 周日+1, 该周中的第一天+1
+    let dateEnd = moment(dateStart).add(7*4-1, 'days').format('YYYY-MM-DD')
     let dateRange = [dateStart, dateEnd]
 
-    debugger
 
     const calendarId = getNanoId()
     const data = node.data || (node.data = {});
@@ -95,9 +101,8 @@ export default {
     dateMap = Object.assign({}, node.attributes, dateMap)
 
 
-    debugger
     var Calendar = Vue.extend({
-      template: `<el-calendar :range='["2019-03-04", "2019-04-07"]'>
+      template: `<el-calendar :range='dateRange'>
       <template
         slot="dateCell"
         slot-scope="{date, data}">

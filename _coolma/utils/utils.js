@@ -1,5 +1,6 @@
 import { h } from "hastscript";
 import { trim, intersection, difference, before } from "lodash";
+import moment from "moment";
 import { customAlphabet } from "nanoid";
 
 
@@ -393,7 +394,6 @@ export function getNextLineCodeNode(parentNode, grandNode) {
   }
 
 
-  debugger
   if (beginIdx == null || beginIdx >= grandNode.children.length - 1) { // 没有后续元素, 直接结束
     return
   }
@@ -410,4 +410,28 @@ export function getNextLineCodeNode(parentNode, grandNode) {
 
   return nextLineCodeNode
 
+}
+
+
+// https://blog.csdn.net/JulyNight/article/details/119759694
+export function getMonthBetween(betweenStartDate, betweenEndDate) {
+  let startDate = moment(betweenStartDate);
+  let endDate = moment(betweenEndDate);
+  
+  let temp = null
+  if (!startDate.isBefore(endDate)) {
+    temp = startDate 
+    startDate = endDate
+    endDate = startDate
+  }
+
+  const allYearMonthDay = []; // 接收所有年份和月份的数组
+  while (endDate.isSameOrAfter(startDate) && allYearMonthDay.length <= 31) {
+    allYearMonthDay.push(startDate.format('YYYY-MM-DD'));
+    startDate.add(1,'days');
+  }
+
+
+
+  return allYearMonthDay;
 }
