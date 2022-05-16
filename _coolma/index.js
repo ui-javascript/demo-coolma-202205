@@ -89,7 +89,7 @@ const App = {
   template: `
   <main class="container-fluid">
     <nav>
-      <button v-show="isVsCode !== 'true' && editable === true" @click="editable = false">仅预览</button>
+      <button v-show="isVsCode !== 'true' && editable === true" @click="editable = false">隐藏编辑框</button>
       <button v-show="isVsCode !== 'true' && editable === false" @click="editable = true">显示编辑框</button>
     </nav>
     <div class="grid p-2">
