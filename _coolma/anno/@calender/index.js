@@ -40,14 +40,26 @@ export default {
       return 
     }
 
-    const dateContentArr = nextLineCodeNode.value.split("\n").filter(item => item.indexOf(":") > -1 || item.indexOf(" "))
+    const dateContentArr = nextLineCodeNode.value.split("\n").filter(item => item.indexOf(":") > -1 || item.indexOf("：") > -1 || item.indexOf(" ") > -1)
     if (!dateContentArr) {
       return
     }
 
+    debugger
     let dateMap = {}
     dateContentArr.forEach(item => {
-      let sliceIndex = item.indexOf(":") > -1 ? item.indexOf(":") : item.indexOf(":") 
+      let sliceIndex = null 
+      if (item.indexOf(": ") > -1) {
+        sliceIndex = item.indexOf(": ") 
+      } else if(item.indexOf("： ") > -1) {
+        sliceIndex = item.indexOf("： ") 
+      } else if (item.indexOf(" ") > -1) {
+        sliceIndex = item.indexOf(" ") 
+      } else if (item.indexOf("：") > -1) {
+        sliceIndex = item.indexOf("：") 
+      } else {
+        sliceIndex = item.indexOf(":") 
+      }
 
       const date = trim(item.slice(0, sliceIndex))
       const content = trim(item.slice(sliceIndex+1, item.length))
@@ -58,6 +70,8 @@ export default {
       }
 
     })
+
+    debugger
 
     const dateArr = Object.keys(dateMap).sort()
     if (!dateArr || dateArr.length === 0) {
@@ -84,67 +98,32 @@ export default {
     data.hProperties = hast.properties;
     data.hChildren = hast.children;
 
-    dateMap = {
-      ...node.attributes,
-      ...dateMap,
-    }
+    dateMap = Object.assign({}, node.attributes, dateMap)
 
 
     debugger
-
-    // var Calendar = Vue.extend({
-    //   template: `<el-calendar :range="dateRange">
-    //   <template
-    //     slot="dateCell"
-    //     slot-scope="{date, data}">
-
-    //     <img v-if="dateMap[data.day] && urlRegex.test(dateMap[data.day])" 
-    //       style="max-width: 100%;max-height: 100%;" 
-    //       :src="dateMap[data.day]" />
-
-    //     <span v-else class="inline-block">
-    //     {{ dateMap[data.day] || data.day }}
-    //     </div>
-        
-          
-    //   </template>
-    // </el-calendar>`,
-    //   data: function () {
-    //     return {
-    //       urlRegex: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/,
-    //       dateRange:  ["2019-03-03", "2019-04-04"],
-    //       dateMap: {
-    //         "2019-03-04": "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652701995280-d2mdQGB4HSYm.png",
-    //         "2019-03-05": "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652702732678-chFXTAdwZi6K.jpeg",
-    //         "2019-03-06": "团购买菜"
-    //       }
-    //     }
-    //   }
-    // })
-
-
     var Calendar = Vue.extend({
-      template: `<el-calendar :range="['2019-03-04', '2019-04-07']">
+      template: `<el-calendar :range='["2019-03-04", "2019-04-07"]'>
+      <template
         slot="dateCell"
         slot-scope="{date, data}">
-        
         <img v-if="dateMap[data.day] && urlRegex.test(dateMap[data.day])" 
           style="max-width: 100%;max-height: 100%;" 
           :src="dateMap[data.day]" />
-        <span v-else class="inline-block">
-        {{ dateMap[data.day] || data.day }}
+        <span v-else :data-tooltip="dateMap[data.day]" class="inline-block">
+        {{ (dateMap[data.day] 
+            ? (dateMap[data.day].length > 10 ? (dateMap[data.day].slice(0, 9) + "...") : dateMap[data.day])
+            : data.day) }}
         </div>
+        
           
       </template>
     </el-calendar>`,
       data: function () {
         return {
           urlRegex: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/,
-          dateMap: {
-            "2019-03-04": "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652701995280-d2mdQGB4HSYm.png",
-            "2019-03-05": "https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652702732678-chFXTAdwZi6K.jpeg",
-            "2019-03-06": "团购买菜"
-          }
+          dateRange: dateRange,
+          dateMap: dateMap,
         }
       }
     })
@@ -152,8 +131,8 @@ export default {
     //  div好像没有onload方法
     let retryTimes = 0 
     function renderTimer() {
-      const rate = document.getElementById(calendarId)
-      if (rate) {
+      const canlendar = document.getElementById(calendarId)
+      if (canlendar) {
         try {
           // 创建 Profile 实例，并挂载到一个元素上。
           new Calendar().$mount(`#${calendarId}`)
