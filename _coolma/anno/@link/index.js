@@ -1,13 +1,13 @@
-import { getNextNodeByLatestAncestor, renderVoidElement } from "../../utils/utils";
+import { getNextNodeByAncestors, getNextNodeByLatestAncestor, renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
-import { trim } from "lodash";
+import { trim, upperCase } from "lodash";
 
 export const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/
 
 export default {
   namespace: "link",
   
-  realAnnoRequiredArgNames: ['href'],
+  realAnnoRequiredArgNames: null,
   realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填  
   realAnnoShortcutAttrs: null,
 
@@ -20,42 +20,50 @@ export default {
   beforeRender: {
     
 
-    nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
-      
-      // 判断后置节点内容是否为URL
-      let nextVal = trim(nextNode.value || nextNode.url)
-      if (!urlRegex.test(nextVal)) {
-          return
-      }
-
-      node.attributes[realAnnoRequiredArgNames[0]] = nextVal
-      renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
-    }
   },
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
 
-  const linkSplitArr =  node.attributes[realAnnoRequiredArgNames[0]].split("/");
-  const linkSplitName =
-    linkSplitArr.length > 0
-      ? linkSplitArr[linkSplitArr.length - 1] || node.attributes[realAnnoRequiredArgNames[0]]
-      : node.attributes[realAnnoRequiredArgNames[0]];
+    let renderNode = null
 
-    const data = node.data || (node.data = {});
-    const hast = h(
-      node.attributes.tagName || "a",
-      {
-        ...node.attributes,
-        [node.attributes.srcName || realAnnoRequiredArgNames[0]]: node.attributes[realAnnoRequiredArgNames[0]],
-        target: "_blank",
-      },
-      [node.attributes.title || linkSplitName]
-    );
+    // 优先渲染后置节点
+    renderNode = getNextNodeByAncestors(node, ancestors) 
+    
+    if (!renderNode) {
+      const data = node.data || (node.data = {});
+      const hast = h("span", {}, "@" + upperCase(node.name));
 
-    data.hName = hast.tagName;
-    data.hProperties = hast.properties;
-    data.hChildren = hast.children;
+      data.hName = hast.tagName;
+      data.hProperties = hast.properties;
+      data.hChildren = hast.children;
+
+      return
+    }
+
+    const urlVal = trim(renderNode.value || renderNode.url)
+    renderVoidElement(renderNode)
+
+    const linkSplitArr =  urlVal.split("/");
+    const linkSplitName =
+      linkSplitArr.length > 0
+        ? linkSplitArr[linkSplitArr.length - 1] || urlVal
+        : urlVal;
+
+      const data = node.data || (node.data = {});
+      const hast = h(
+        node.attributes.tagName || "a",
+        {
+          ...node.attributes,
+          [node.attributes.srcName || urlVal]: urlVal,
+          target: "_blank",
+        },
+        [node.attributes.title || linkSplitName]
+      );
+
+      data.hName = hast.tagName;
+      data.hProperties = hast.properties;
+      data.hChildren = hast.children;
 
 
 

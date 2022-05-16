@@ -45,7 +45,7 @@ export default {
       return 
     }
 
-    if (node.name === 'other') {
+    if (['ignore', 'other'].includes(node.name)) {
       spliceIdxs.beginIdx--
     }
 
@@ -58,7 +58,7 @@ export default {
       type: "paragraph"
     })
 
-    if (node.name === 'other') {
+    if (['ignore', 'other'].includes(node.name)) {
       return 
     }
 

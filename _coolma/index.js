@@ -67,7 +67,7 @@ rehype().use(rehypePrism).process(/* some html */)
 
 @emoji{usejava}
 
-# 无关内容(直接忽略)  @other
+# 无关内容(直接忽略)  @ignore
 
 @emoji{safe} 
 @emoji{ichange} 
