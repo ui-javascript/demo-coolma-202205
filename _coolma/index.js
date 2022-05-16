@@ -12,15 +12,17 @@ import "./style.less";
 
 
 import unifiedParser from "./utils/unifiedParserUtil";
+import Axios from "axios";
 
 const params = useUrlSearchParams('hash')
 const isVsCode = params.isVsCode 
+const mdUrl = params.mdUrl 
 console.log(isVsCode)
 
 // const content = `@calendar`
 
 
-const content = `# 世界很大, 而我又是靓仔 @nice @rate 4.7
+let content = `# 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 @emoji{xiong} 
 
@@ -159,15 +161,30 @@ const App = {
     });
 
 
-    onMounted(() => {
-      before.value = (isVsCode === 'true') ? window.$CONTENT : content
+    onMounted(async () => {
+      if (isVsCode !== 'true') {
+        if (mdUrl) {
+          try {
+            // 形如 /#/?mdUrl=https://raw.githubusercontent.com/ui-javascript/demo-coolma-202205/master/README.md
+            const res = await Axios.get(mdUrl)
+            content = res.data
+          } catch(err) {
+            console.log(err)
+          }
+        }
+
+        before.value = content
+      } else {
+        before.value = window.$CONTENT 
+      }
     })
 
     return {
       before,
       after,
       isVsCode,
-      editable
+      editable,
+      mdUrl
     };
   },
 };

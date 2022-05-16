@@ -1,4 +1,4 @@
-import { getNextTextOrLinkNodeByLatestAncestor, getNextNodeByAncestor, renderVoidElement, getPrevTextOrLinkNodeByAncestors, getPrevTextOrLinkNodeByLatestAncestor, getNanoId } from "../../utils/utils";
+import { getNextTextOrLinkNodeByLatestAncestor, getNextNodeByAncestor, renderVoidElement, getPrevTextOrLinkNodeByAncestors, getPrevTextOrLinkNodeByLatestAncestors, getNanoId } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 import { customAlphabet, nanoid } from "nanoid";

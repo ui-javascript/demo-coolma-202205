@@ -1,4 +1,4 @@
-import { getNextTextOrLinkNodeByLatestAncestor, getNextNodeByAncestor, renderVoidElement, getPrevTextOrLinkNodeByAncestors, getPrevTextOrLinkNodeByLatestAncestor, containNextNode2Section } from "../../utils/utils";
+import { getNextTextOrLinkNodeByLatestAncestor, getNextNodeByAncestor, renderVoidElement, getPrevTextOrLinkNodeByAncestors, getPrevTextOrLinkNodeByLatestAncestors, containNextNode2Section } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 import { toHast } from "mdast-util-to-hast";

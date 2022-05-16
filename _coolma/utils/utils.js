@@ -141,14 +141,14 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
 
 
 export function getNextTextOrLinkNodeByAncestors(node, ancestors) {
-  return getNextNodeByAncestorAndType(node, ancestors, ['text', 'link']);
+  return getNextNodeByAncestorsAndType(node, ancestors, ['text', 'link']);
 }
 
 export function getNextTextOrLinkNodeByLatestAncestors(node, latestAncestors) {
-  return getNextNodeByLatestAncestorAndType(node, latestAncestors, ['text', 'link']);
+  return getNextNodeByLatestAncestorsAndType(node, latestAncestors, ['text', 'link']);
 }
 
-export function getNextNodeByAncestorAndType(node, ancestors, typeArr) {
+export function getNextNodeByAncestorsAndType(node, ancestors, typeArr) {
   let nextNode = null;
 
   const latestAncestors = ancestors[ancestors.length - 1];
@@ -158,12 +158,12 @@ export function getNextNodeByAncestorAndType(node, ancestors, typeArr) {
     return nextNode;
   }
 
-  nextNode = getNextNodeByLatestAncestorAndType(node, latestAncestors, typeArr)
+  nextNode = getNextNodeByLatestAncestorsAndType(node, latestAncestors, typeArr)
   return nextNode;
 }
 
 
-export function getNextNodeByLatestAncestorAndType(node, latestAncestors, typeArr) {
+export function getNextNodeByLatestAncestorsAndType(node, latestAncestors, typeArr) {
   let nextNode = null;
 
   for (let idx in latestAncestors.children) {
@@ -222,8 +222,8 @@ export function getPrevTextOrLinkNodeByAncestors(node, ancestors) {
 }
 
 
-export function getPrevTextOrLinkNodeByLatestAncestor(node, latestAncestors) {
-  return getPrevNodeByLatestAncestorAndType(node, latestAncestors, ['text', 'link']);
+export function getPrevTextOrLinkNodeByLatestAncestors(node, latestAncestors) {
+  return getPrevNodeByLatestAncestorsAndType(node, latestAncestors, ['text', 'link']);
 }
 
 
@@ -236,11 +236,11 @@ export function getPrevNodeByAncestorsAndType(node, ancestors, typeArr) {
     return prevNode;
   }
 
-  prevNode = getPrevNodeByLatestAncestorAndType(node, latestAncestors, typeArr)
+  prevNode = getPrevNodeByLatestAncestorsAndType(node, latestAncestors, typeArr)
   return prevNode;
 }
 
-export function getPrevNodeByLatestAncestorAndType(node, latestAncestors, typeArr) {
+export function getPrevNodeByLatestAncestorsAndType(node, latestAncestors, typeArr) {
   let prevNode = null;
 
   const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令外至少还有一个元素
