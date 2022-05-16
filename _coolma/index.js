@@ -51,6 +51,12 @@ const content = `# 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 ---
 
+# 上海核酸日记
+
+@calendar
+
+---
+
 # 卡片被折叠 @card @sub 
 
 - [ ] 星辰大海, 改日再去 @todo
