@@ -54,11 +54,7 @@ let content = `# 世界很大, 而我又是靓仔 @nice @rate 4.7
 \`\`\`
 2022-04-04 ~ 2022-04-30: https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652702732678-chFXTAdwZi6K.jpeg
 
-2022-4-4: https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652701995280-d2mdQGB4HSYm.png
-2022-4-16: https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652701995280-d2mdQGB4HSYm.png
-2022-4-18: https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652701995280-d2mdQGB4HSYm.png
-2022-4-24: https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652701995280-d2mdQGB4HSYm.png
-2022-4-28: https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652701995280-d2mdQGB4HSYm.png
+2022-4-4, 2022-4-16, 2022-4-18, 2022-4-24, 2022-4-28: https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652701995280-d2mdQGB4HSYm.png
 
 20220412: 开始抢菜
 20220416: 尝试写脚本抢菜, 结果失败了, 还不如手点有用

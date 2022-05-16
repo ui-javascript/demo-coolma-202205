@@ -72,6 +72,20 @@ export default {
         }
    
       
+      } else if (date.includes(",") || date.includes("，")) {
+      
+        let betweenDateArr = []
+        if (date.includes(",")) {
+          betweenDateArr = date.split(",")
+        } else {
+          betweenDateArr = date.split("，")
+        }
+        betweenDateArr.forEach(itemm => {
+          if (moment(trim(itemm)).isValid()) {
+            dateMap[moment(trim(itemm)).format("YYYY-MM-DD")] = content
+          }
+        })
+
       } else {
         if (moment(date).isValid()) {
           dateMap[moment(date).format("YYYY-MM-DD")] = content
