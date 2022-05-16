@@ -304,6 +304,8 @@ export function getNanoId() {
   return customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 8)()
 }
 
+
+
 export function containNextNode2Section(node, parentNode, grandNode) {
   let beginIdx = null
   let endIdx = null
@@ -366,5 +368,46 @@ export function containNextNode2Section(node, parentNode, grandNode) {
     beginIdx,
     endIdx
   }
+
+}
+
+
+export function getNextLineCodeNode(parentNode, grandNode) {
+  let beginIdx = null
+  let nextLineCodeNode = null
+
+  if (parentNode.type === "heading" || parentNode.type === "list") { // 不要作用于heading类型
+    return 
+  }
+
+  for (let idx in grandNode.children) {
+
+    const item = grandNode.children[idx];
+    idx = parseInt(idx);
+
+    if (item === parentNode) {
+      beginIdx = idx;
+      break;
+    }
+
+  }
+
+
+  debugger
+  if (beginIdx == null || beginIdx >= grandNode.children.length - 1) { // 没有后续元素, 直接结束
+    return
+  }
+
+
+  const nextLineCodeIdx = beginIdx+1
+  if (!grandNode.children[nextLineCodeIdx] 
+    || grandNode.children[nextLineCodeIdx].type !== 'code' 
+    || !trim(grandNode.children[nextLineCodeIdx].value)) {
+      return 
+  }
+
+  nextLineCodeNode = grandNode.children[nextLineCodeIdx]
+
+  return nextLineCodeNode
 
 }

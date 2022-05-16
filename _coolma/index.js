@@ -20,15 +20,15 @@ console.log(isVsCode)
 // const content = `@calendar`
 
 
-const content = `# 世界很大, 而我又是靓仔 @nice 
+const content = `# 世界很大, 而我又是靓仔 @nice @rate 4.7
 
-@emoji{xiong} @rate 4.7
+@emoji{xiong} 
 
 > 真正被爱的时候不用多好看 @by 孟加拉巨蜥
 
 恭喜, 颜值认证成功! @success
 
-虽然说了句正确的废话  @del  不知所措 @u 手舞足蹈 @i 喜出望外 @b
+虽然说了句正确的废话  @del 但是 手舞足蹈 @i 喜出望外 @b 不知所措 @u
 
 @dog{.mask.mask-squircle} 
 @cat{.mask.mask-heart}
@@ -51,9 +51,15 @@ const content = `# 世界很大, 而我又是靓仔 @nice
 
 ---
 
-# 上海核酸日记
+# 上海核酸日记 
 
 @diary
+
+\`\`\`
+2019-03-4: https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652701995280-d2mdQGB4HSYm.png
+2019-03-25 https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652702732678-chFXTAdwZi6K.jpeg
+2019 3 12: 团购买菜
+\`\`\`
 
 ---
 
