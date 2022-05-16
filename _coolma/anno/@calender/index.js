@@ -1,4 +1,4 @@
-import { getMonthBetween, getNanoId, getNextLineCodeNode, getNextNodeByAncestorAndType, getNextTextOrLinkNodeByAncestors, renderVoidElement } from "../../utils/utils";
+import { getYearMonthDaysBetween, getNanoId, getNextLineCodeNode, getNextNodeByAncestorAndType, getNextTextOrLinkNodeByAncestors, renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 import Vue from "vue";
@@ -25,16 +25,16 @@ export default {
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
    
-
     if (ancestors.length < 2) {
       return 
     }
 
-    const parentNode = ancestors[ancestors.length - 1];
-    const grandNode = ancestors[ancestors.length - 2];
-    const nextLineCodeNode = getNextLineCodeNode(parentNode, grandNode)
+    const parentNode = ancestors[ancestors.length - 3]; // 从上上上级list开始算
+    const grandNode = ancestors[ancestors.length - 4];
 
-    if (!nextLineCodeNode) {
+
+    const { nextLineCodeNode, nodeLineCodeNodeIdx } = getNextLineCodeNode(parentNode, grandNode)
+    if (!nextLineCodeNode || nodeLineCodeNodeIdx == null) {
       return 
     }
 
@@ -58,9 +58,16 @@ export default {
       if (date.includes("~")) {
         const betweenDateArr = date.split("~")
         if (betweenDateArr.length === 2) {
-          if (moment(betweenDateArr[0]).isValid() && moment(betweenDateArr[1]).isValid()) {
-            const between = getMonthBetween(betweenDateArr[0], betweenDateArr[1])
+          if (moment(trim(betweenDateArr[0])).isValid() && moment(trim(betweenDateArr[1])).isValid()) {
+            const between = getYearMonthDaysBetween(trim(betweenDateArr[0]), trim(betweenDateArr[1]))
             between.forEach(itemm => dateMap[itemm] = content)
+          } else {
+            if (moment(trim(betweenDateArr[0])).isValid()) {
+              dateMap[moment(trim(betweenDateArr[0])).format("YYYY-MM-DD")] = content
+            }
+            if (moment(trim(betweenDateArr[1])).isValid()) {
+              dateMap[moment(trim(betweenDateArr[1])).format("YYYY-MM-DD")] = content
+            }
           }
         }
    
@@ -81,6 +88,7 @@ export default {
     }
 
     renderVoidElement(nextLineCodeNode)
+    // renderVoidElement(node)
     
 
     let dateStart = moment(dateArr[0]).startOf('week').add(1, "days").format('YYYY-MM-DD') // 周日+1, 该周中的第一天+1
@@ -88,8 +96,14 @@ export default {
     let dateRange = [dateStart, dateEnd]
 
 
+    grandNode.children.splice(nodeLineCodeNodeIdx+1, 0, {
+      type: 'paragraph',
+      children: [],
+    })
+
+
     const calendarId = getNanoId()
-    const data = node.data || (node.data = {});
+    const data = grandNode.children[nodeLineCodeNodeIdx+1].data || (grandNode.children[nodeLineCodeNodeIdx+1].data = {});
     const hast = h(`div#${calendarId}`, {
       style: "display: inline-block"
     }, []);
@@ -101,15 +115,16 @@ export default {
     dateMap = Object.assign({}, node.attributes, dateMap)
 
 
+    // <el-card class="box-card" :body-style="{ padding: '10px' }">
     var Calendar = Vue.extend({
       template: `<el-calendar :range='dateRange'>
       <template
         slot="dateCell"
         slot-scope="{date, data}">
-        <img v-if="dateMap[data.day] && urlRegex.test(dateMap[data.day])" 
+        <img :title="data.day" v-if="dateMap[data.day] && urlRegex.test(dateMap[data.day])" 
           style="max-width: 100%;max-height: 100%;" 
           :src="dateMap[data.day]" />
-        <span v-else :data-tooltip="dateMap[data.day]" class="inline-block">
+        <span v-else :title="data.day" :data-tooltip="dateMap[data.day]" class="inline-block">
         {{ (dateMap[data.day] 
             ? (dateMap[data.day].length > 10 ? (dateMap[data.day].slice(0, 9) + "...") : dateMap[data.day])
             : data.day) }}

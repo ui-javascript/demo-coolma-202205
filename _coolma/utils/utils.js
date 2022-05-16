@@ -374,11 +374,12 @@ export function containNextNode2Section(node, parentNode, grandNode) {
 
 
 export function getNextLineCodeNode(parentNode, grandNode) {
-  let beginIdx = null
+  let nodeLineCodeNodeIdx = null
   let nextLineCodeNode = null
 
-  if (parentNode.type === "heading" || parentNode.type === "list") { // 不要作用于heading类型
-    return 
+
+  if (parentNode.type !== "list") { // 不要作用于heading类型
+    return {}
   }
 
   for (let idx in grandNode.children) {
@@ -387,34 +388,34 @@ export function getNextLineCodeNode(parentNode, grandNode) {
     idx = parseInt(idx);
 
     if (item === parentNode) {
-      beginIdx = idx;
+      nodeLineCodeNodeIdx = idx;
       break;
     }
 
   }
 
 
-  if (beginIdx == null || beginIdx >= grandNode.children.length - 1) { // 没有后续元素, 直接结束
-    return
+  if (nodeLineCodeNodeIdx == null || nodeLineCodeNodeIdx >= grandNode.children.length - 1) { // 没有后续元素, 直接结束
+    return {}
   }
 
 
-  const nextLineCodeIdx = beginIdx+1
+  const nextLineCodeIdx = nodeLineCodeNodeIdx+1
   if (!grandNode.children[nextLineCodeIdx] 
     || grandNode.children[nextLineCodeIdx].type !== 'code' 
     || !trim(grandNode.children[nextLineCodeIdx].value)) {
-      return 
+      return {}
   }
 
   nextLineCodeNode = grandNode.children[nextLineCodeIdx]
 
-  return nextLineCodeNode
+  return {nextLineCodeNode, nodeLineCodeNodeIdx}
 
 }
 
 
 // https://blog.csdn.net/JulyNight/article/details/119759694
-export function getMonthBetween(betweenStartDate, betweenEndDate) {
+export function getYearMonthDaysBetween(betweenStartDate, betweenEndDate) {
   let startDate = moment(betweenStartDate);
   let endDate = moment(betweenEndDate);
   
@@ -430,7 +431,6 @@ export function getMonthBetween(betweenStartDate, betweenEndDate) {
     allYearMonthDay.push(startDate.format('YYYY-MM-DD'));
     startDate.add(1,'days');
   }
-
 
 
   return allYearMonthDay;
