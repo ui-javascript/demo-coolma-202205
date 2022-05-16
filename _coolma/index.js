@@ -58,11 +58,13 @@ const content = `# 世界很大, 而我又是靓仔 @nice @rate 4.7
 
 @bvid BV1YT4y1Q7xx
 
+---
+
+# 北京一周天气
+
+@building 0.1
+
 @weather
-
-# 普通块 
-
-@building 0.5
 
 \`\`\`js
 import rehype from 'rehype'
@@ -71,7 +73,7 @@ import rehypePrism from 'rehype-prism-plus'
 rehype().use(rehypePrism).process(/* some html */)
 \`\`\`
 
-@hr{t: 我是一条分割线}
+---
 
 # 卡片折叠 @card @sub 
 
@@ -79,12 +81,13 @@ rehype().use(rehypePrism).process(/* some html */)
     - [x] 仰望远古星空
     - [ ] 照顾历代星辰
 
+---
+
 # 折叠卡片 @sub @card 
 
 @emoji{help} 
 
 @emoji{usejava}
-
 
 # 无关卡片(直接忽略)  @other
 
@@ -142,9 +145,6 @@ hello @nice @nice hi
 
 hello @nice test *em* @nice ssss *em* sss @nice xxx
 `
-
-
-
 
 
 const App = {
@@ -243,7 +243,6 @@ function init (event) {
 };
 
 
-
 if (isVsCode !== 'true') {
   window.$VUE = new Vue({
     el: "#app",
@@ -253,6 +252,3 @@ if (isVsCode !== 'true') {
 } else {  // 插件模式
   window.addEventListener("message", init, false);
 }
-
-
-
