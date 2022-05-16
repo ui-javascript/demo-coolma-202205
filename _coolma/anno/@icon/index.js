@@ -6,7 +6,7 @@ import { nanoid } from "nanoid";
 import { nextTick } from "@vue/composition-api";
 
 export default {
-  namespace: 'rate',
+  namespace: 'icon',
 
   realAnnoRequiredArgNames: ['star'],
   realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填

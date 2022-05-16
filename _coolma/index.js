@@ -20,6 +20,8 @@ console.log(isVsCode)
 
 const content = `# 世界很大, 而我又是靓仔 @nice @rate 4.7
 
+@emoji{xiong}
+
 > 真正被爱的时候不用多好看 @by 孟加拉巨蜥
 
 恭喜, 颜值认证成功! @success
