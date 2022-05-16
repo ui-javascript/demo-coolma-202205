@@ -55,7 +55,7 @@ rehype().use(rehypePrism).process(/* some html */)
 
 # 卡片被折叠 @card @sub 
 
-- [ ] 星辰大海, 改天再去 @by 鲁迅
+- [ ] 星辰大海, 改日再去 @todo
     - [x] 仰望远古星空
     - [ ] 照顾历代星辰
 
