@@ -40,7 +40,7 @@ export default {
       return 
     }
 
-    const dateContentArr = nextLineCodeNode.value.split("\n").filter(item => item.indexOf(":") > -1 || item.indexOf("：") > -1 || item.indexOf(" ") > -1)
+    const dateContentArr = nextLineCodeNode.value.split("\n").filter(item => item.indexOf(":") > -1 || item.indexOf("：") > -1)
     if (!dateContentArr) {
       return
     }
@@ -49,13 +49,7 @@ export default {
     let dateMap = {}
     dateContentArr.forEach(item => {
       let sliceIndex = null 
-      if (item.indexOf(": ") > -1) {
-        sliceIndex = item.indexOf(": ") 
-      } else if(item.indexOf("： ") > -1) {
-        sliceIndex = item.indexOf("： ") 
-      } else if (item.indexOf(" ") > -1) {
-        sliceIndex = item.indexOf(" ") 
-      } else if (item.indexOf("：") > -1) {
+      if (item.indexOf("：") > -1) {
         sliceIndex = item.indexOf("：") 
       } else {
         sliceIndex = item.indexOf(":") 
