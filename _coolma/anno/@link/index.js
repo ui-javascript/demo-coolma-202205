@@ -8,7 +8,7 @@ export default {
   namespace: "link",
   
   realAnnoRequiredArgNames: null,
-  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填  
+  realAnnoExtArgNames: ['srcName'], // 补充字段, 数组形式, 非必填  
   realAnnoShortcutAttrs: null,
 
   // 参数转换配置
@@ -55,7 +55,7 @@ export default {
         node.attributes.tagName || "a",
         {
           ...node.attributes,
-          [node.attributes.srcName || urlVal]: urlVal,
+          [node.attributes.srcName || 'href']: urlVal,
           target: "_blank",
         },
         [node.attributes.title || linkSplitName]
