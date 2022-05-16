@@ -7,37 +7,15 @@ import { useUrlSearchParams, watchDebounced, watchThrottled } from '@vueuse/core
 
 // import ElementUI from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css';
-
-
 // import "@picocss/pico/css/pico.classless.min.css"
 import "./style.less";
 
 
 import unifiedParser from "./utils/unifiedParserUtil";
 
-// const content = `@until('20220513')`
-
-// const content = `
-// # heading @section
-
-// - test1
-
-// \`\`\`
-// sth
-// \`\`\`
-
-// - test2
-
-// # asdasd
-
-
-// `;
-
-
 const params = useUrlSearchParams('hash')
 const isVsCode = params.isVsCode 
 console.log(isVsCode)
-
 
 
 const content = `# 世界很大, 而我又是靓仔 @nice @rate 4.7
@@ -75,7 +53,7 @@ rehype().use(rehypePrism).process(/* some html */)
 
 ---
 
-# 卡片折叠 @card @sub 
+# 卡片被折叠 @card @sub 
 
 - [ ] 星辰大海, 改天再去 @by 鲁迅
     - [x] 仰望远古星空
@@ -83,13 +61,13 @@ rehype().use(rehypePrism).process(/* some html */)
 
 ---
 
-# 折叠卡片 @sub @card 
+# 可折叠卡片 @sub @card 
 
 @emoji{help} 
 
 @emoji{usejava}
 
-# 无关卡片(直接忽略)  @other
+# 无关内容(直接忽略)  @other
 
 @emoji{safe} 
 @emoji{ichange} 
@@ -100,52 +78,6 @@ rehype().use(rehypePrism).process(/* some html */)
 
 @backtop
 `
-
-const content3 = `# 世界很大, 而我又是靓仔 @nice    
-
----
-
-说点正确的废话 @del    
-
----
-
-- 相关链接 
-  - @code{title = coolma演示} https://github.com/ui-javascript/demo-coolma-202205
-  - @doc https://procomponents.ant.design/components/editable-table
-
----
-
-A lovely language know as @abbr[namespace](HTML, "HTML的全称"){.red #id} @abbr(HTML, "HTML的全称"){.bg-blue.border-orange-lighter.border-solid}
-
----
-
-@weather
-
-@fetch{weather}
-
-@fetch{weather: true}
-
-数组属性没有引号包裹, 注解直接摆烂, 原地显示 --> @fetch{weather: true, includeKeys: ['date']}
-
-@fetch{weather: true, includeKeys: "['date']"}
-
-@fetch{weather: false}
-
----
-
-hello @nice
-  
-@nice hello
-
-hello hi @nice @nice
-
-hello hi *暂时跳过这种标签* @abbr(HTML, "HTML的全称"){.bg-blue} @nice @nice
-
-hello @nice @nice hi
-
-hello @nice test *em* @nice ssss *em* sss @nice xxx
-`
-
 
 const App = {
   template: `
@@ -173,7 +105,7 @@ const App = {
   //       //   template: `<div>${this.html}</div>`,
   //       // })
 
-  //       return h('div', {
+  //       return h(component, {
   //         innerHTML: this.html
   //       })
 
