@@ -1,7 +1,7 @@
 export default {
-  namespace: 'nice',
+  namespace: 'underline',
   attachAnno: 'mark',
   properties: {
-    tagName: 'mark'
+    tagName: 'u'
   }
 }

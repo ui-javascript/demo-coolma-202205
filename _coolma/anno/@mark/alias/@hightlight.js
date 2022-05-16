@@ -1,5 +1,5 @@
 export default {
-  namespace: 'nice',
+  namespace: 'hightlight',
   attachAnno: 'mark',
   properties: {
     tagName: 'mark'

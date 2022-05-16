@@ -6,7 +6,7 @@ export default {
   namespace: "mark",
   
   realAnnoRequiredArgNames: null, // 不需要参数
-  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
+  realAnnoExtArgNames: ['tagName'], // 补充字段, 数组形式, 非必填
   realAnnoShortcutAttrs: null,
 
   // 参数转换配置
