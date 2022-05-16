@@ -1,4 +1,4 @@
-import { getNanoId, getNextTextOrLinkNodeByAncestors, renderVoidElement } from "../../utils/utils";
+import { getNanoId, getNextNodeByAncestorAndType, getNextTextOrLinkNodeByAncestors, renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 import Vue from "vue";
@@ -24,7 +24,17 @@ export default {
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
    
-    getNextTextOrLinkNodeByAncestors
+    const nextNode = getNextNodeByAncestorAndType(node, ancestors, ["code"]);
+    if (!nextNode) {
+      return
+    }
+
+    debugger
+
+    const dateContentArr = nextNode.value.split("\n").filter(item => item.indexOf(":") > -1 || item.indexOf(" "))
+    if (!dateContentArr) {
+      return
+    }
 
     const calendarId = getNanoId()
     const data = node.data || (node.data = {});
