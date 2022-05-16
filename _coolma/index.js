@@ -76,9 +76,9 @@ rehype().use(rehypePrism).process(/* some html */)
 
 # 卡片折叠 @card @sub 
 
-- 星辰大海改天再去 @todo
-    - 仰望远古星空
-    - 照顾历代星辰
+- [ ] 星辰大海 -- 改天再去 @by 鲁迅
+    - [x] 仰望远古星空
+    - [ ] 照顾历代星辰
 
 # 折叠卡片 @sub @card 
 

@@ -33,7 +33,7 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
     }
   }
 
-  if (node.name === "section") {
+  if (node.name === "todo") {
     debugger
   }
 
