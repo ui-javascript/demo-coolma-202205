@@ -89,7 +89,9 @@ let content = `# 世界很大, 而我又是靓仔 @nice
 - [1] @order
   - [1.1]
   - [1.2]
+
 - [2] 
+
 - [3] 
   - [3.1]
   - [3.2]
@@ -97,10 +99,6 @@ let content = `# 世界很大, 而我又是靓仔 @nice
 ---
 
 # 可折叠卡片 @sub @card 
-
-@emoji{help} 
-
-@emoji{usejava}
 
 \`\`\`js
 import rehype from 'rehype'
@@ -113,11 +111,16 @@ rehype().use(rehypePrism).process(/* some html */)
 # 无关内容(直接忽略)  @ignore
 
 @emoji{safe} 
+
 @emoji{ichange} 
 
 ---
 
 # 参考 @ref
+
+@emoji{help} 
+
+@emoji{usejava}
 
 @backtop
 `
