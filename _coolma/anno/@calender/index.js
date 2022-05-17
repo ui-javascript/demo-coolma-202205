@@ -38,20 +38,15 @@ export default {
       return 
     }
 
-    const dateContentArr = nextLineCodeNode.value.split("\n").filter(item => item.indexOf(":") > -1 || item.indexOf("：") > -1)
+    const dateContentArr = nextLineCodeNode.value.split("\n").filter(item => item.indexOf("|") > -1)
     if (!dateContentArr) {
       return
     }
 
     let dateMap = {}
     dateContentArr.forEach(item => {
-      let sliceIndex = null 
-      if (item.indexOf("：") > -1) {
-        sliceIndex = item.indexOf("：") 
-      } else {
-        sliceIndex = item.indexOf(":") 
-      }
-
+      let sliceIndex =  sliceIndex = item.indexOf("|")
+ 
       const date = trim(item.slice(0, sliceIndex))
       const content = trim(item.slice(sliceIndex+1, item.length))
 
