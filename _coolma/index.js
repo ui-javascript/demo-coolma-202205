@@ -108,11 +108,11 @@ const App = {
   template: `
   <main class="container-fluid">
     <nav>
-      <button v-show="isVsCode !== 'true' && editable === true" @click="editable = false">隐藏编辑框</button>
-      <button v-show="isVsCode !== 'true' && editable === false" @click="editable = true">显示编辑框</button>
+      <button v-show="isVsCode !== 'true' && !mdUrl && editable === true" @click="editable = false">隐藏编辑框</button>
+      <button v-show="isVsCode !== 'true' && !mdUrl && editable === false" @click="editable = true">显示编辑框</button>
     </nav>
     <div class="grid p-2">
-      <textarea v-if="isVsCode !== 'true' && editable" class="textarea textarea-info inline-block" style="min-height: 500px" v-model="before"></textarea>
+      <textarea v-if="isVsCode !== 'true' && !mdUrl && editable" class="textarea textarea-info inline-block" style="min-height: 500px" v-model="before"></textarea>
       <div class="pl-2 pr-2" v-html="after" />  
     </div>
   </main>
