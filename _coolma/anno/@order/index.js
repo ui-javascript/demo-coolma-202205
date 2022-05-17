@@ -21,10 +21,17 @@ export default {
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     
-  
-    const parentNode = ancestors[ancestors.length - 1]
+    if (ancestors.length < 3) {
+      return
+    }
 
-    debugger
+    const parentNode = ancestors[ancestors.length - 2]
+    if (parentNode.children.length > 1) {
+      parentNode.children[1].ordered = true
+    }
+
+    const grandNode = ancestors[ancestors.length - 3]
+    grandNode.ordered = true
    
   },
 };

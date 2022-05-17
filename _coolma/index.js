@@ -19,18 +19,18 @@ const isVsCode = params.isVsCode
 const mdUrl = params.mdUrl 
 console.log(isVsCode)
 
-let content = `
-- hello @order
-  - aasa
-  - asas
+// let content = `
+// - hello @order
+//   - aasa
+//   - asas
 
-1. asas
-  1. 11sas
-  2. asasas  
-`
+// 1. asas
+//     1. 11sas
+//     2. asasas   
+// `
 
 
-let content2 = `# 世界很大, 而我又是靓仔 @nice 
+let content = `# 世界很大, 而我又是靓仔 @nice 
 
 @emoji{xiong} 
 
@@ -85,6 +85,14 @@ let content2 = `# 世界很大, 而我又是靓仔 @nice
 - [ ] 星辰大海, 改日再去 @todo
     - [x] 仰望远古星空
     - [ ] 照顾历代星辰
+
+- [1] @order
+  - [1.1]
+  - [1.2]
+- [2] 
+- [3] 
+  - [3.1]
+  - [3.2]
 
 ---
 
