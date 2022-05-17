@@ -15,9 +15,14 @@
 
 # 演示地址
 
-- https://ui-javascript.github.io/demo-coolma-202205/
-- https://ui-javascript.github.io/demo-coolma-202205/#/?mdUrl=https://raw.githubusercontent.com/ui-javascript/temp-md-20220517/main/test.md
-- https://marketplace.visualstudio.com/items?itemName=luo0412.vscode-coolma
+- 在线编辑模式
+    - https://ui-javascript.github.io/demo-coolma-202205/
+
+- URL预览形式
+    - https://ui-javascript.github.io/demo-coolma-202205/#/?mdUrl=https://raw.githubusercontent.com/ui-javascript/temp-md-20220517/main/test.md
+
+- VSCode插件
+    - https://marketplace.visualstudio.com/items?itemName=luo0412.vscode-coolma
 
 # 常用工具
 
