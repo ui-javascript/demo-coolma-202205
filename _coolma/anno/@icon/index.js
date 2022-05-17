@@ -1,4 +1,4 @@
-import { getNanoId, renderVoidElement } from "../../utils/utils";
+import { getNanoId, getNextTextOrLinkNodeByAncestors, renderVoidElement } from "../../utils/utils";
 import { h } from "hastscript";
 import { trim } from "lodash";
 import Vue from "vue";
@@ -8,7 +8,7 @@ import { nextTick } from "@vue/composition-api";
 export default {
   namespace: 'icon',
 
-  realAnnoRequiredArgNames: ['star'],
+  realAnnoRequiredArgNames: ['type'],
   realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
   realAnnoShortcutAttrs: null,
   
@@ -20,37 +20,31 @@ export default {
 
   beforeRender: {
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
-        node.attributes[realAnnoRequiredArgNames[0]] = trim(nextNode.value)
-        renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
+      node.attributes.type = trim(nextNode.value)
+      renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
     }
   },
 
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
    
-    const rateId = getNanoId()
+    debugger
+    const iconId = getNanoId()
     const data = node.data || (node.data = {});
-    const hast = h(`div`, {
-      style: "display: inline-block"
-    }, [  
-      h(`span#${rateId}`, {...node.attributes}, '')
-    ]);
+    const hast = h(`span#${iconId}`, {
+      ...node.attributes,
+      style: "display:inline-block"
+    }, [])
 
     data.hName = hast.tagName;
     data.hProperties = hast.properties;
     data.hChildren = hast.children;
 
-    var Rate = Vue.extend({
-      template: `<el-rate
-      v-model="value"
-      disabled
-      show-score
-      text-color="#ff9900"
-      score-template="{value}">
-    </el-rate>`,
+    var Icon = Vue.extend({
+      template: `<i :class="type"></i>`,
       data: function () {
         return {
-          value: parseFloat(node.attributes[realAnnoRequiredArgNames[0]]),
+          type: 'el-icon-' + (node.attributes[realAnnoRequiredArgNames[0]]),
         }
       }
     })
@@ -59,10 +53,10 @@ export default {
     //  div好像没有onload方法
     let retryTimes = 0 
     function renderTimer() {
-      const rate = document.getElementById(rateId)
-      if (rate) {
+      const icon = document.getElementById(iconId)
+      if (icon) {
         // 创建 Profile 实例，并挂载到一个元素上。
-        new Rate().$mount(`#${rateId}`)
+        new Icon().$mount(`#${iconId}`)
       } else {
         retryTimes++
         console.log(node.name + "重试" + retryTimes + "次")

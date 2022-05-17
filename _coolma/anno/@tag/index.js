@@ -8,17 +8,21 @@ import { nextTick } from "@vue/composition-api";
 export default {
   namespace: 'tag',
 
-  realAnnoRequiredArgNames: ['star'],
-  realAnnoExtArgNames: null, // 补充字段, 数组形式, 非必填
+  realAnnoRequiredArgNames: ['name'],
+  realAnnoExtArgNames: ['type', 't'], // 补充字段, 数组形式, 非必填
   realAnnoShortcutAttrs: null,
   
   // 参数转换配置
   autoConvertArg2Attr: true,
-  needConvertPrevNode2Attr: false, // 默认false, 配置true会优先向前读
+  needConvertPrevNode2Attr: true, // 默认false, 配置true会优先向前读
   needConvertNextNode2Attr: true, 
 
 
   beforeRender: {
+      prevNode2Attr: (node, ancestors, realAnnoRequiredArgNames, prevNode) => {
+        node.attributes[realAnnoRequiredArgNames[0]] = trim(prevNode.value)
+        renderVoidElement(prevNode) // 取值结束不再需要渲染后置节点
+    },
     nextNode2Attr: (node, ancestors, realAnnoRequiredArgNames, nextNode) => {
         node.attributes[realAnnoRequiredArgNames[0]] = trim(nextNode.value)
         renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
@@ -28,29 +32,24 @@ export default {
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
    
-    const rateId = getNanoId()
+    const tagId = getNanoId()
     const data = node.data || (node.data = {});
     const hast = h(`div`, {
       style: "display: inline-block"
     }, [  
-      h(`span#${rateId}`, {...node.attributes}, '')
+      h(`span#${tagId}`, {...node.attributes}, '')
     ]);
 
     data.hName = hast.tagName;
     data.hProperties = hast.properties;
     data.hChildren = hast.children;
 
-    var Rate = Vue.extend({
-      template: `<el-rate
-      v-model="value"
-      disabled
-      show-score
-      text-color="#ff9900"
-      score-template="{value}">
-    </el-rate>`,
+    var Tag = Vue.extend({
+      template: `<el-tag :type="type">{{value}}</el-tag>`,
       data: function () {
         return {
-          value: parseFloat(node.attributes[realAnnoRequiredArgNames[0]]),
+          type: node.attributes.type || node.attributes.t || "",
+          value: node.attributes[realAnnoRequiredArgNames[0]],
         }
       }
     })
@@ -59,10 +58,10 @@ export default {
     //  div好像没有onload方法
     let retryTimes = 0 
     function renderTimer() {
-      const rate = document.getElementById(rateId)
-      if (rate) {
+      const tag = document.getElementById(tagId)
+      if (tag) {
         // 创建 Profile 实例，并挂载到一个元素上。
-        new Rate().$mount(`#${rateId}`)
+        new Tag().$mount(`#${tagId}`)
       } else {
         retryTimes++
         console.log(node.name + "重试" + retryTimes + "次")
