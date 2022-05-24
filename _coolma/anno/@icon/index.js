@@ -28,7 +28,6 @@ export default {
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
    
-    debugger
     const iconId = getNanoId()
     const data = node.data || (node.data = {});
     const hast = h(`span#${iconId}`, {

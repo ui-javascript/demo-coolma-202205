@@ -16,7 +16,9 @@
     <link href="https://unpkg.com/@picocss/pico@1.5.0/css/pico.min.css" rel="stylesheet" >
     <!-- <link href="https://cdn.staticfile.org/prism/1.28.0/themes/prism.min.css" rel="stylesheet" > -->
     <link href="https://cdn.staticfile.org/prism/1.28.0/themes/prism-tomorrow.min.css" rel="stylesheet" >
-    
+    <link href="https://cdn.staticfile.org/viewerjs/0.1.0/viewer.min.css" rel="stylesheet" >
+   
+
     <!--[if lt IE 9]>
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -35,7 +37,8 @@
 <!-- built files will be auto injected -->
 
 <!-- jQuery =========== -->
-<!-- <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script> -->
+<script src="https://cdn.staticfile.org/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/viewerjs/1.9.0/viewer.min.js"></script>
 
 <!-- Vue ============== -->
 <script src="https://cdn.staticfile.org/vue/2.6.14/vue.min.js"></script>
@@ -54,6 +57,21 @@
 
 <script>
   // Vue.config.productionTip = false
+  var viewer = null
+  $(document).on("dblclick","p img",function() {
+      if (viewer != null) {
+          viewer.destroy()
+      }
+      viewer = new Viewer(document.getElementsByTagName('main')[0], {
+          viewed() {
+              viewer.zoomTo(1);
+          },
+          button: false,
+          navbar: false,
+          toolbar: false,
+      });
+
+  })
 </script>
 
 </body>

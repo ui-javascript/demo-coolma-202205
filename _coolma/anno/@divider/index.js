@@ -24,17 +24,6 @@ export default {
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
     
-    // 帮忙偷懒
-    // const latestAncestors = ancestors[ancestors.length - 1];
-    // const hasEnoughChildren = latestAncestors.children && latestAncestors.children.length > 1; // 除指令外至少还有一个元素
-    // if (hasEnoughChildren) {
-    //   let nextNode = getNextTextOrLinkNodeByLatestAncestor(node, latestAncestors)
-    //   if (nextNode) {
-    //     node.attributes.title = trim(nextNode.value)
-    //     renderVoidElement(nextNode)
-    //   }
-    // }
-
 
     const title = node.attributes.title || node.attributes.t
     var Divider = Vue.extend({
