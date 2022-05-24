@@ -1,6 +1,6 @@
 import { getNextTextOrLinkNodeByLatestAncestor, getNextNodeByAncestor, renderVoidElement, getPrevTextOrLinkNodeByAncestors, getPrevTextOrLinkNodeByLatestAncestors, containNextNode2Section } from "../../utils/utils";
 import { h } from "hastscript";
-import { trim } from "lodash";
+import { lowerCase, trim, upperCase } from "lodash";
 import { toHast } from "mdast-util-to-hast";
 
 export default {
@@ -16,12 +16,7 @@ export default {
   needConvertNextNode2Attr: false, 
 
   beforeRender: {
-    // prevNode2Attr: (node, ancestors, realAnnoRequiredArgNames, prevNode) => {
-    //   node.attributes[realAnnoRequiredArgNames[0]] = trim(prevNode.value)
-    //   if (node.name === "sub" || node.name === "other") {
-    //     renderVoidElement(node) // 取值结束不再需要渲染后置节点
-    //   }
-    // },
+
   },
   
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
@@ -94,11 +89,23 @@ export default {
         data: summaryData,
         type: 'text',
       })
-    }
+    } 
     
 
 
     // console.log(grandNode.children)
+
+    if (node.name === "sub") {
+      const nodeData = node.data || (node.data = {});
+      const hast = h("span", {}, "@" + upperCase(node.name));
+  
+      nodeData.hName = hast.tagName;
+      nodeData.hProperties = hast.properties;
+      nodeData.hChildren = hast.children;
+    } else {
+      renderVoidElement(node)
+    }
+
 
   },
 };
