@@ -100,7 +100,7 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
   const realAnnoShortcutAttrs = realRenderAnno.realAnnoShortcutAttrs; // 真实注解专有, 别名注解使用无效
   if (realAnnoShortcutAttrs && realAnnoShortcutAttrs.length > 0) {
     realAnnoShortcutAttrs.forEach(shortcutAttr => {
-      if (shortcutAttr in node.attributes && node.attributes.shortcutAttr != false) {
+      if (shortcutAttr in node.attributes && node.attributes[shortcutAttr] != 'false') {
         node.attributes[shortcutAttr] = true
       }       
     });
@@ -180,7 +180,10 @@ export function getNextNodeByLatestAncestorsAndType(node, latestAncestors, typeA
         const tempNode = latestAncestors.children[nextIdx];
 
 
-        if (tempNode && (typeArr && typeArr.length > 0 ? typeArr : ['text', 'link']).includes(tempNode.type) && trim(tempNode.value || tempNode.url)) { // 空字符串不认为是后置结点
+        if (tempNode 
+          && (typeArr && typeArr.length > 0 ? typeArr : ['text', 'link']).includes(tempNode.type) 
+          && trim(tempNode.value || tempNode.url) 
+          && trim(tempNode.value || tempNode.url) != '->>') { // 空字符串不认为是后置结点
           nextNode = tempNode;
           break;
         }
@@ -262,7 +265,10 @@ export function getPrevNodeByLatestAncestorsAndType(node, latestAncestors, typeA
         const tempNode = latestAncestors.children[prevIdx];
 
         
-        if (tempNode && (typeArr && typeArr.length > 0 ? typeArr : ['text', 'link']).includes(tempNode.type) && trim(tempNode.value)) {
+        if (tempNode 
+          && (typeArr && typeArr.length > 0 ? typeArr : ['text', 'link']).includes(tempNode.type) 
+          && trim(tempNode.value)
+          && trim(tempNode.value || tempNode.url) != '->>') {
           prevNode = tempNode;
           break;
         }
