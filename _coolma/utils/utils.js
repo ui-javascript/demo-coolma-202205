@@ -35,7 +35,7 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
     }
   }
 
-  if (node.name === "todo") {
+  if (node.name === "search") {
     debugger
   }
 
