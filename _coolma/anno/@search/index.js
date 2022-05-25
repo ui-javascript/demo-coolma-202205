@@ -12,8 +12,8 @@ export default {
   realAnnoRequiredArgNames: ['keyword'],
   realAnnoExtArgNames: ['pushed', 'p', 'stars', 's'], // 补充字段, 数组形式, 非必填
   realAnnoShortcutAttrs: [
-    'github', 'google', 'zhihu', // 默认开启
-    'jj', 'juejin', 'sof', 'stackoverflow', 'gitee', 'baidu', 'csdn', 'sf', 'segmentfault', 'bing' // @todo 需要显式设置 才开启
+    'github', 'google', 'g',  // 默认开启
+    'zhihu', 'jj', 'juejin', 'sof', 'stackoverflow', 'gitee', 'baidu', 'csdn', 'sf', 'segmentfault', 'bing' // @todo 需要显式设置 才开启
   ],
   
   // 参数转换配置
@@ -38,16 +38,19 @@ export default {
 
     const getSites = () => {
       const sites = []
-      debugger
-      if (node.attributes.github != 'false') {
-        sites.push('github')
+      
+      if (!(node.attributes.g && node.attributes.g == 'false')) {
+        if (node.attributes.github != 'false') {
+          sites.push('github')
+        }
+  
+        if (node.attributes.google != 'false') {
+          sites.push('google')
+        }
       }
+ 
 
-      if (node.attributes.google != 'false') {
-        sites.push('google')
-      }
-
-      if (node.attributes.zhihu != 'false') {
+      if (node.attributes.zhihu && node.attributes.zhihu != 'false') {
         sites.push('知乎')
       }
 
@@ -92,15 +95,17 @@ export default {
       methods: {
         
         openLinks() {
-          if (node.attributes.github != 'false') {
-            window.open(`https://github.com/search?q=${keyword}+stars%3A%3E${node.attributes.stars || node.attributes.s ||1000}+pushed%3A%3E%3D${node.attributes.pushed || node.attributes.p || moment().add(-1, 'years').format('YYYY-MM')}`,"_blank")
+          if (!(node.attributes.g && node.attributes.g == 'false')) {
+            if (node.attributes.github != 'false') {
+              window.open(`https://github.com/search?q=${keyword}+stars%3A%3E${node.attributes.stars || node.attributes.s ||1000}+pushed%3A%3E%3D${node.attributes.pushed || node.attributes.p || moment().add(-1, 'years').format('YYYY-MM')}`,"_blank")
+            }
+
+            if (node.attributes.google != 'false') {
+              window.open(`https://www.google.com/search?q=${keyword}`,"_blank")
+            }
           }
 
-          if (node.attributes.google != 'false') {
-            window.open(`https://www.google.com/search?q=${keyword}`,"_blank")
-          }
-
-          if (node.attributes.zhihu != 'false') {
+          if (node.attributes.zhihu && node.attributes.zhihu != 'false') {
             window.open(`https://www.zhihu.com/search?q=${keyword}`,"_blank")
           }
 
