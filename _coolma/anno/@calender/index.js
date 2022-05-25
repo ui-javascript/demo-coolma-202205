@@ -157,7 +157,7 @@ export default {
       const canlendar = document.getElementById(calendarId)
       if (canlendar) {
         try {
-          // 创建 Profile 实例，并挂载到一个元素上。
+          
           new Calendar().$mount(`#${calendarId}`)
         } catch (error) {
           console.log(error)

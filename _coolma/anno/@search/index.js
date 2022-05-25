@@ -10,7 +10,7 @@ export default {
   namespace: 'search',
 
   realAnnoRequiredArgNames: ['keyword'],
-  realAnnoExtArgNames: ['createAt', 'c', 'stars', 's'], // 补充字段, 数组形式, 非必填
+  realAnnoExtArgNames: ['pushed', 'p', 'stars', 's'], // 补充字段, 数组形式, 非必填
   realAnnoShortcutAttrs: [
     'github', 'google', 'zhihu', // 默认开启
     'jj', 'juejin', 'sof', 'stackoverflow', 'gitee', 'baidu', 'csdn', 'sf', 'segmentfault', 'bing' // @todo 需要显式设置 才开启
@@ -93,7 +93,7 @@ export default {
         
         openLinks() {
           if (node.attributes.github != 'false') {
-            window.open(`https://github.com/search?q=${keyword}+stars%3A%3E${node.attributes.stars || node.attributes.s ||1000}+created%3A%3E%3D${node.attributes.createAt || node.attributes.c || moment().add(-1, 'years').format('YYYY-MM')}`,"_blank")
+            window.open(`https://github.com/search?q=${keyword}+stars%3A%3E${node.attributes.stars || node.attributes.s ||1000}+pushed%3A%3E%3D${node.attributes.pushed || node.attributes.p || moment().add(-1, 'years').format('YYYY-MM')}`,"_blank")
           }
 
           if (node.attributes.google != 'false') {
@@ -119,7 +119,7 @@ export default {
     function renderTimer() {
       const tag = document.getElementById(searchId)
       if (tag) {
-        // 创建 Profile 实例，并挂载到一个元素上。
+        
         new Search().$mount(`#${searchId}`)
       } else {
         retryTimes++

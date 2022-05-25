@@ -54,7 +54,7 @@ export default {
     function renderTimer() {
       const alert = document.getElementById(dividerId)
       if (alert) {
-        // 创建 Profile 实例，并挂载到一个元素上。
+        
         new Divider().$mount(`#${dividerId}`)
       
       } else {

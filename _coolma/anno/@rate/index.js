@@ -61,7 +61,7 @@ export default {
     function renderTimer() {
       const rate = document.getElementById(rateId)
       if (rate) {
-        // 创建 Profile 实例，并挂载到一个元素上。
+        
         new Rate().$mount(`#${rateId}`)
       } else {
         retryTimes++

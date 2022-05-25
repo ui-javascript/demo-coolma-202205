@@ -54,7 +54,7 @@ export default {
     function renderTimer() {
       const icon = document.getElementById(iconId)
       if (icon) {
-        // 创建 Profile 实例，并挂载到一个元素上。
+        
         new Icon().$mount(`#${iconId}`)
       } else {
         retryTimes++

@@ -55,7 +55,7 @@ export default {
     function renderTimer() {
       const progress = document.getElementById(progressId)
       if (progress) {
-        // 创建 Profile 实例，并挂载到一个元素上。
+        
         new Progress().$mount(`#${progressId}`)
       
       } else {

@@ -62,7 +62,7 @@ export default {
       const backtop = document.getElementById(backtopId)
       if (backtop) {
         console.log('backtop '+backtopId)
-        // 创建 Profile 实例，并挂载到一个元素上。
+        
         new Backtop().$mount(`#${backtopId}`)
       } else {
         retryTimes++

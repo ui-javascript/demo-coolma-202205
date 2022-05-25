@@ -60,7 +60,7 @@ export default {
       const alert = document.getElementById(alertId)
       if (alert) {
 
-        // 创建 Profile 实例，并挂载到一个元素上。
+        
         new Alert().$mount(`#${alertId}`)
 
       } else {
