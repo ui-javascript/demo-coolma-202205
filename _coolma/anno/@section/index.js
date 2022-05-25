@@ -97,7 +97,7 @@ export default {
 
     if (node.name === "sub") {
       const nodeData = node.data || (node.data = {});
-      const hast = h("span", {}, "@" + upperCase(node.name));
+      const hast = h("span", {}, "@" + node.name);
   
       nodeData.hName = hast.tagName;
       nodeData.hProperties = hast.properties;

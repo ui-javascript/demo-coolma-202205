@@ -32,7 +32,7 @@ export default {
     
     if (!renderNode) {
       const data = node.data || (node.data = {});
-      const hast = h("span", {}, "@" + upperCase(node.name));
+      const hast = h("span", {}, "@" + node.name);
 
       data.hName = hast.tagName;
       data.hProperties = hast.properties;

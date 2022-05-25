@@ -23,7 +23,7 @@ export default {
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
    
     const data = node.data || (node.data = {});
-    const hast = h("span", {}, "@TODO");
+    const hast = h("span", {}, "@todo");
 
     data.hName = hast.tagName;
     data.hProperties = hast.properties;
