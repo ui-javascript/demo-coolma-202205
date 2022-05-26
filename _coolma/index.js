@@ -49,8 +49,10 @@ let content = `# 世界很大, 而我又是靓仔 @nice
 @tiger{.mask.mask-circle} 
 
 @abbr(HTML, "Hyper Text Markup Language") 
-@doc https://procomponents.ant.design/components/editable-table @icon(share) @hot 20221223 
-@until(22120309){t: '📣新发布', c: '20211212'}
+
+- @doc https://procomponents.ant.design/components/editable-table  @hot 20221223 @until(22120309){t: '📣新发布', c: '20211212'}
+
+- @code{.ml-1} https://github.com/ui-javascript/demo-coolma-202205  @icon(share)
 
 vue3 @search{jj, zhihu, g:false, stars:100}
 

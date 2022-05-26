@@ -45,26 +45,44 @@ export default {
     renderVoidElement(renderNode)
 
     const linkSplitArr =  urlVal.split("/");
-    const linkSplitName =
-      linkSplitArr.length > 0
-        ? linkSplitArr[linkSplitArr.length - 1] || urlVal
-        : urlVal;
+
+
+    let linkSplitName = urlVal;
+
+    let isGithubRepoUrl = false
+
+    debugger
+    if (node.name === "code" && linkSplitArr && linkSplitArr.length >= 3 && linkSplitArr[linkSplitArr.length - 3].includes('github.com')) {
+      debugger
+
+      linkSplitName = linkSplitArr[linkSplitArr.length - 1] 
+      isGithubRepoUrl = true
+    } 
 
       const data = node.data || (node.data = {});
-      const hast = h(
+
+      const link = h(
         node.attributes.tagName || "a",
         {
           ...node.attributes,
           [node.attributes.srcName || 'href']: urlVal,
           target: "_blank",
         },
-        [node.attributes.title || linkSplitName]
-      );
+        (node.attributes.title || linkSplitName)
+       )
+
+      const hast = isGithubRepoUrl 
+      ? h('span', {},  [
+        link,
+        h('img', {class:"ml-1", src: `https://img.shields.io/github/stars/${linkSplitArr[linkSplitArr.length-2]}/${linkSplitArr[linkSplitArr.length-1]}`}, null),
+        h('img', {class:"ml-1", src: `https://img.shields.io/github/last-commit/${linkSplitArr[linkSplitArr.length-2]}/${linkSplitArr[linkSplitArr.length-1]}`}, null)
+      ])
+      : link;
+
 
       data.hName = hast.tagName;
       data.hProperties = hast.properties;
       data.hChildren = hast.children;
-
 
 
   },
