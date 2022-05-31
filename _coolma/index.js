@@ -137,7 +137,7 @@ const App = {
     </nav>
     <div class="grid p-2">
       <textarea v-if="isVsCode !== 'true' && !mdUrl && editable" class="textarea textarea-info inline-block" style="min-height: 500px" v-model="before"></textarea>
-      <div class="pl-2 pr-2" v-html="after" />  
+      <div class="pl-2 pr-2 ml-auto mr-auto" v-html="after" style="max-width: 800px;" />  
     </div>
   </main>
   `,
