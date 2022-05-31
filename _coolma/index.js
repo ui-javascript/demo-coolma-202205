@@ -130,14 +130,20 @@ rehype().use(rehypePrism).process(/* some html */)
 
 const App = {
   template: `
-  <main class="container-fluid">
-    <nav>
+  <main class="container-fluid border-box" :style="(isVsCode !== 'true' && !mdUrl && editable) ? null : 'width: 800px'">
+
+    <nav class="grid p-2">
       <button v-show="isVsCode !== 'true' && !mdUrl && editable === true" @click="editable = false">隐藏编辑框</button>
       <button v-show="isVsCode !== 'true' && !mdUrl && editable === false" @click="editable = true">显示编辑框</button>
     </nav>
+
     <div class="grid p-2">
       <textarea v-if="isVsCode !== 'true' && !mdUrl && editable" class="textarea textarea-info inline-block" style="min-height: 500px" v-model="before"></textarea>
-      <div class="pl-2 pr-2 ml-auto mr-auto" v-html="after" style="max-width: 800px;" />  
+      <div 
+        v-html="after" 
+        class="pl-2 pr-2" 
+        :class="(isVsCode !== 'true' && !mdUrl && editable) ? null : 'ml-auto mr-auto'"
+         />  
     </div>
   </main>
   `,
