@@ -130,7 +130,7 @@ rehype().use(rehypePrism).process(/* some html */)
 
 const App = {
   template: `
-  <main class="container-fluid border-box" :style="(isVsCode !== 'true' && !mdUrl && editable) ? null : 'width: 800px'">
+  <main class="container-fluid border-box">
 
     <nav class="grid p-2">
       <button v-show="isVsCode !== 'true' && !mdUrl && editable === true" @click="editable = false">隐藏编辑框</button>
