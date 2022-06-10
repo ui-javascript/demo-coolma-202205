@@ -75,7 +75,7 @@ export default {
     // data.hChildren = hast.children;
     grandNode.children[spliceIdxs.beginIdx+1].children = spliceChildren
 
-    if (node.name === "sub") {
+    if (['sub', 'bak'].includes(node.name)) {
       const summaryHast = h(`summary`, {
         // role:"button",
         ...node.attributes
@@ -95,7 +95,7 @@ export default {
 
     // console.log(grandNode.children)
 
-    if (node.name === "sub") {
+    if (['sub', 'bak'].includes(node.name)) {
       const nodeData = node.data || (node.data = {});
       const hast = h("span", {}, "@" + node.name);
   
