@@ -142,7 +142,6 @@ const App = {
       <div 
         v-html="after" 
         class="pl-2 pr-2" 
-        :class="(isVsCode !== 'true' && !mdUrl && editable) ? null : 'ml-auto mr-auto'"
          />  
     </div>
   </main>
