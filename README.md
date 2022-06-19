@@ -1,18 +1,19 @@
 # README
 
-![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652722734252-MWYTBbmDQpZK.png)
+
+![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1655674557490-eJdkYpCZxJyn-image.png)
+
+![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1655674686195-zr4ZbGBFGYr7-image.png)
 
 ![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652367174757-jHcRW5JCSfAz.png)
 
 
 # 常用注解
 
-- @nice -- 高亮
-- @del -- 删除
-- @abbr(abbrName, fullName) -- 缩略词
-- @fetch(url) -- 请求数据展示成表格
+- @diary -- 核酸日记
 - @weather -- 天气预报
-- @bvid -- B站视频
+- @card -- 卡片
+- @ignore -- 不呈现这段内容
 
 # 演示地址
 
