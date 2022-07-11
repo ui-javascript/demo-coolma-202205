@@ -24,8 +24,8 @@
 # 2022-07-11
 
 - 弹幕 @danmu
-    - https://github.com/superhos/vue-baberrage
     - https://github.com/hellodigua/vue-danmaku
+    - https://github.com/superhos/vue-baberrage @nice @old
 
 # 2022-05
 

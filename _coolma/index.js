@@ -154,7 +154,7 @@ const App = {
   `,
   components: {
     vueDanmaku,
-  }
+  },
   // @tofix @todo 本来想采用这种方法渲染elementui组件
   // https://blog.csdn.net/weixin_40057800/article/details/90316624
   // 但是这里一旦console.log(this.html)的字符串值就会罢工
