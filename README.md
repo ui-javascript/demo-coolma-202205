@@ -12,10 +12,10 @@
 
 # 演示地址
 
-- 在线编辑模式
+- 编辑模式
     - https://ui-javascript.github.io/demo-coolma-202205/
 
-- URL预览形式
+- 预览模式
     - https://ui-javascript.github.io/demo-coolma-202205/#/?mdUrl=https://raw.githubusercontent.com/ui-javascript/temp-md-20220517/main/test.md
 
 - VSCode插件
