@@ -27,10 +27,15 @@ export default {
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs)  => {
    
+    realAnnoRequiredArgNames[0] = trim(realAnnoRequiredArgNames[0]).replace(/^(http|https):\/\//, "")
+
     const data = node.data || (node.data = {});
     const hast = h("img", {
       ...node.attributes,
+      style: "width: 64px; height: 64px",
+      fit: 'fit',
       src: `https://www.google.com/s2/favicons?sz=64&domain=${node.attributes[realAnnoRequiredArgNames[0]]}`,
+      // src: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
     });
 
     data.hName = hast.tagName;

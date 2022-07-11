@@ -44,7 +44,7 @@ export default {
     const data = node.data || (node.data = {});
     const hast = h("span", {
 
-    }, isUrl ? "@BY" : "-- ");
+    }, isUrl ? "@by" : "-- ");
 
     data.hName = hast.tagName;
     data.hProperties = hast.properties;

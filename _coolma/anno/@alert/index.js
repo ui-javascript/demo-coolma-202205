@@ -4,6 +4,7 @@ import { trim } from "lodash";
 import { customAlphabet, nanoid } from "nanoid";
 import Vue from "vue";
 
+
 export default {
   namespace: "alert",
 

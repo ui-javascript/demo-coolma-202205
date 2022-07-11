@@ -19,6 +19,9 @@ const isVsCode = params.isVsCode
 const mdUrl = params.mdUrl 
 console.log(isVsCode)
 
+let vm = null
+
+
 // let content = `
 // - hello @order
 //   - aasa
@@ -57,7 +60,7 @@ let content = `# 世界很大, 而我又是靓仔 @nice
 
 @bvid BV1YT4y1Q7xx
 
-@logo("https://web.ideanotes.cn/")
+@logo("element.eleme.io")
 
 ---
 
@@ -181,6 +184,18 @@ const App = {
       const res = await unifiedParser(before.value);
       console.log(String(res))
       after.value = String(res);
+
+      // var Content = Vue.extend({
+      //   template: `<div>${String(res)}</div>`,
+      //   data:  () => {
+      //     return {
+      //     }
+      //   }
+      // })
+
+      // vm = new Content().$mount(`#content`)
+
+   
     }, { 
       debounce: 50, 
       maxWait: 300
