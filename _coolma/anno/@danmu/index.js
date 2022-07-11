@@ -34,7 +34,7 @@ export default {
 
   
     var Danmu = Vue.extend({
-      template: `<vue-danmaku loop :danmus="danmus" extraStyle="color: #333" style="height:25px; width:100%"></vue-danmaku>`,
+      template: `<vue-danmaku loop :danmus="danmus" speeds="100" isSuspend extraStyle="color: #333;font-weight:bold;font-size: 20px;" style="height:25px; width:100%"></vue-danmaku>`,
       data: function () {
         return {
           danmus: [node.attributes[realAnnoRequiredArgNames[0]]],

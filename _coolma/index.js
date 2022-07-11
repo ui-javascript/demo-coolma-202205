@@ -41,7 +41,7 @@ let content = `# 世界很大, 而我又是靓仔 @nice
 
 > 真正被爱的时候不用多好看 @by 孟加拉巨蜥 
 
-我是一条弹幕 @danmu
+世界那么大, 我想去看看 @danmu
 
 @building 0.1
 
