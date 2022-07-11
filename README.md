@@ -1,9 +1,12 @@
 # README
 
+- 呈现效果
+
 ![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1655674557490-eJdkYpCZxJyn-image.png)
 
-![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1655674686195-zr4ZbGBFGYr7-image.png)
+- 书写格式
 
+![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1655674686195-zr4ZbGBFGYr7-image.png)
 
 ---
 
@@ -20,17 +23,17 @@
 
 # 2022-07-11
 
-- 弹幕
+- 弹幕 @danmu
     - https://github.com/superhos/vue-baberrage
     - https://github.com/hellodigua/vue-danmaku
 
 # 2022-05
 
-- 核酸日记
+- 核酸日记 @diary
 
 ![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1655674557490-eJdkYpCZxJyn-image.png)
 
-- 排版基础
+- 排版基础 @typo
 
 ![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652367174757-jHcRW5JCSfAz.png)
 

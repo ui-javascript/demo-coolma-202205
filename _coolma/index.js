@@ -10,7 +10,7 @@ import { useUrlSearchParams, watchDebounced, watchThrottled } from '@vueuse/core
 // import "@picocss/pico/css/pico.classless.min.css"
 import "./style.less";
 
-
+import vueDanmaku from 'vue-danmaku'
 import unifiedParser from "./utils/unifiedParserUtil";
 import Axios from "axios";
 
@@ -39,7 +39,9 @@ let content = `# 世界很大, 而我又是靓仔 @nice
 
 颜值 @tag 帅气 @tag{t:success} 搞笑 @tag{t:danger} @rate 4.7
 
-> 真正被爱的时候不用多好看 @by 孟加拉巨蜥
+> 真正被爱的时候不用多好看 @by 孟加拉巨蜥 
+
+我是一条弹幕 @danmu
 
 @building 0.1
 
@@ -150,6 +152,9 @@ const App = {
     </div>
   </main>
   `,
+  components: {
+    vueDanmaku,
+  }
   // @tofix @todo 本来想采用这种方法渲染elementui组件
   // https://blog.csdn.net/weixin_40057800/article/details/90316624
   // 但是这里一旦console.log(this.html)的字符串值就会罢工
