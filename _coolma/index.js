@@ -57,6 +57,8 @@ let content = `# 世界很大, 而我又是靓仔 @nice
 
 @bvid BV1YT4y1Q7xx
 
+baidu.com @logo
+
 
 ---
 
