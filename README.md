@@ -27,6 +27,8 @@
     - https://github.com/hellodigua/vue-danmaku
     - https://github.com/superhos/vue-baberrage @nice @old
 
+![](https://camo.githubusercontent.com/fa6955b7a32e78ce147c14133882cfa8c9d4acfb5f37ddd4e8da82292d7052e1/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f68656c6c6f64696775612f63646e2f696d672f7675652d64616e6d616b752e77656270)
+
 # 2022-05
 
 - 核酸日记 @diary
