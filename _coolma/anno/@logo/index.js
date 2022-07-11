@@ -11,15 +11,16 @@ export default {
 
   // 自动转换配置
   autoConvertArg2Attr: true,
-  needConvertPrevNode2Attr: true,
-  needConvertNextNode2Attr: true,
+  needConvertPrevNode2Attr: false,
+  needConvertNextNode2Attr: false,
   
   beforeRender: {
 
-    prevNode2Attr: (node, ancestors, realAnnoRequiredArgNames, prevNode) => {
-        node.attributes[realAnnoRequiredArgNames[0]] = trim(prevNode.value)
-        renderVoidElement(nextNode) // 取值结束不再需要渲染后置节点
-    }
+    // prevNode2Attr: (node, ancestors, realAnnoRequiredArgNames, prevNode) => {
+    //   debugger
+    //     node.attributes[realAnnoRequiredArgNames[0]] = trim(prevNode.value).replace(/^http(s)?:\/\//, "")
+    //     renderVoidElement(prevNode) // 取值结束不再需要渲染后置节点
+    // }
 
   },
 
