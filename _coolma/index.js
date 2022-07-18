@@ -5,12 +5,17 @@ import VueCompositionApi, {
 } from "@vue/composition-api";
 import { useUrlSearchParams, watchDebounced, watchThrottled } from '@vueuse/core'
 
+
 // import ElementUI from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css';
 // import "@picocss/pico/css/pico.classless.min.css"
 import "./style.less";
 
+// 第三方组件
 import vueDanmaku from 'vue-danmaku'
+import ChatBubble from "./components/ChatBubble"
+
+
 import unifiedParser from "./utils/unifiedParserUtil";
 import Axios from "axios";
 
@@ -59,6 +64,8 @@ let content = `# 世界很大, 而我又是靓仔 @nice
 
 - @code https://github.com/ui-javascript/demo-coolma-202205  
 
+
+hello @bubble
 
 @bvid BV1YT4y1Q7xx
 
@@ -154,6 +161,7 @@ const App = {
   `,
   components: {
     vueDanmaku,
+    ChatBubble,
   },
   // @tofix @todo 本来想采用这种方法渲染elementui组件
   // https://blog.csdn.net/weixin_40057800/article/details/90316624
