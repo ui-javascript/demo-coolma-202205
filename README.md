@@ -21,6 +21,12 @@
 - VSCode插件
     - https://marketplace.visualstudio.com/items?itemName=luo0412.vscode-coolma
 
+# 2022-07-18
+
+- 聊天气泡 @bubble
+
+![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1658104367596-bhe5t3MHxMsk-image.png)
+
 # 2022-07-11
 
 - 弹幕 @danmu
