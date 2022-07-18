@@ -3,14 +3,15 @@ import { h } from "hastscript";
 import { trim } from "lodash";
 import { customAlphabet, nanoid } from "nanoid";
 import Vue from "vue";
+// import ChatBubble from "../../components/ChatBubble"
 
 // https://codepen.io/Luo0412/pen/gOegQgp
 export default {
   namespace: "bubble",
 
   realAnnoRequiredArgNames: ['content'], // 不需要参数
-  realAnnoExtArgNames: ['type'], // 补充字段, 数组形式, 非必填
-  realAnnoShortcutAttrs: null,
+  realAnnoExtArgNames: ['direction'], // 补充字段, 数组形式, 非必填
+  realAnnoShortcutAttrs: ['d'],
 
   // 自动转换配置
   autoConvertArg2Attr: true,
@@ -32,12 +33,18 @@ export default {
   // @advice node.args映射至node.attributes的工作 请在beforeRender的函数内完成
   render: (node, ancestors, realAnnoRequiredArgNames, realAnnoShortcutAttrs, loseAttrs) => {
 
+    if (!node.attributes['direction']) {
+      node.attributes['direction'] = node.attributes['d']
+    }
   
     var ChatBubble = Vue.extend({
       template: `<chat-bubble
       content="${node.attributes[realAnnoRequiredArgNames[0]]}"
-      direction=${node.attributes['type'] ? "'" + node.attributes['type'] + "'" : 'left'}>
+      direction=${node.attributes['direction'] || 'left'}>
     </el-alert>`,
+      // components: {
+      //   ChatBubble
+      // },
       data: function () {
         return {
           value: node.attributes[realAnnoRequiredArgNames[0]],

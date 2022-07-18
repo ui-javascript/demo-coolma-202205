@@ -48,6 +48,10 @@ let content = `# 世界很大, 而我又是靓仔 @nice
 
 世界那么大, 我想去看看 @danmu
 
+我们不能同时拥有青春和青春的感受 @bubble
+
+亲爱的小孩 不要悲伤 你不爱这岁月 我却爱你的眼眸 @bubble{d: "right"}
+
 @building 0.1
 
 恭喜, 颜值认证成功! @success
@@ -65,7 +69,7 @@ let content = `# 世界很大, 而我又是靓仔 @nice
 - @code https://github.com/ui-javascript/demo-coolma-202205  
 
 
-hello @bubble
+
 
 @bvid BV1YT4y1Q7xx
 
@@ -161,7 +165,7 @@ const App = {
   `,
   components: {
     vueDanmaku,
-    ChatBubble,
+    // ChatBubble,
   },
   // @tofix @todo 本来想采用这种方法渲染elementui组件
   // https://blog.csdn.net/weixin_40057800/article/details/90316624
@@ -247,7 +251,11 @@ const App = {
 Vue.use(VueCompositionApi);
 // Vue.use(ElementUI); // 改用CDN
 
+// 注册全局组件
+Vue.component("ChatBubble", ChatBubble)
+
 Vue.config.productionTip = false;
+
 
 
 // 插件初始化

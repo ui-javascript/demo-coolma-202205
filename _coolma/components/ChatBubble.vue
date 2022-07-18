@@ -1,7 +1,9 @@
 <template>
-	<div class="talk-bubble tri-right round" :class="direction === 'left' ? 'left-in' : 'right-in'">
-		<div class="talktext">
-			<p>{content}</p>
+	<div class="clearfix">
+		<div class="talk-bubble tri-right round" :class="direction === 'left' ? 'left-in' : 'right-in'" :style="direction === 'left' ? 'float: left;' : 'float: right;'">
+			<div class="talktext">
+				<p>{{content}}</p>
+			</div>
 		</div>
 	</div>
 </template>
@@ -42,10 +44,10 @@ body {
 
 /* CSS talk bubble */
 .talk-bubble {
-	margin: 40px;
+	/* margin: 40px; */
 	display: inline-block;
 	position: relative;
-	width: 200px;
+	max-width: 80%;
 	height: auto;
 	background-color: lightyellow;
 	word-break: break-all;
@@ -278,7 +280,7 @@ body {
 
 /* talk bubble contents */
 .talktext {
-	padding: 1em;
+	padding: 1rem;
 	text-align: left;
 	line-height: 1.5em;
 }
