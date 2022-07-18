@@ -12,11 +12,11 @@ export default {
 	name: "ChatBubble",
 	props: {
 		content: {
-			type: Stirng,
+			type: String,
 			required: true
 		},
 		direction: {
-			type: Stirng,
+			type: String,
 			required: true
 		}
 	},
