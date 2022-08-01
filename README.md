@@ -1,12 +1,9 @@
 # README
 
-- 呈现效果
 
 ![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1655674557490-eJdkYpCZxJyn-image.png)
 
-- 书写格式
-
-![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1655674686195-zr4ZbGBFGYr7-image.png)
+![](https://luo0412.oss-cn-hangzhou.aliyuncs.com/1652367174757-jHcRW5JCSfAz.png)
 
 ---
 
