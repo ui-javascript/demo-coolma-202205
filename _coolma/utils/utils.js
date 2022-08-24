@@ -384,7 +384,7 @@ export function getNextLineCodeNode(parentNode, grandNode) {
   let nextLineCodeNode = null
 
 
-  if (parentNode.type !== "list") { // 不要作用于heading类型
+  if (parentNode.type !== "heading") { // 作用于heading类型
     return {}
   }
 
