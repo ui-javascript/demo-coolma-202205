@@ -140,7 +140,7 @@ rehype().use(rehypePrism).process(/* some html */)
 
 ---
 
-# 个人信息 @resume{ skin: blue, img: r, header， col: 2, icon: info}
+# 个人信息 @resume{ skin: blue, img: r, header, col: 2, icon: info}
 
 202208-202209 北京xxx系统 @b
 
@@ -152,11 +152,11 @@ rehype().use(rehypePrism).process(/* some html */)
 
 # 技能证书 @resume{skin: blue, img: r, icon: cert}
 
-xxxx
+xxx
 
 # 自我评价 @resume{skin: blue, img: r, footer, icon: about}
 
-xxxxx
+勤劳善良, 勇敢大方, 脸皮比较厚
 
 ---
 
