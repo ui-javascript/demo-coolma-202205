@@ -36,7 +36,7 @@ export function registerAnno(realRenderAnno, annoAlias, node, ancestors) {
   }
 
   if (node.name === "search") {
-    debugger
+    // debugger
   }
 
   // 参数自动转成属性
@@ -379,21 +379,21 @@ export function containNextNode2Section(node, parentNode, grandNode) {
 }
 
 
-export function getNextLineCodeNode(parentNode, grandNode) {
+export function getNextLineCodeNode(parentNode, currentNode) {
   let nodeLineCodeNodeIdx = null
   let nextLineCodeNode = null
 
 
-  if (parentNode.type !== "heading") { // 作用于heading类型
+  if (parentNode.type !== "root" || currentNode.type !== "heading") { // 作用于heading类型
     return {}
   }
 
-  for (let idx in grandNode.children) {
+  for (let idx in parentNode.children) {
 
-    const item = grandNode.children[idx];
+    const item = parentNode.children[idx];
     idx = parseInt(idx);
 
-    if (item === parentNode) {
+    if (item === currentNode) {
       nodeLineCodeNodeIdx = idx;
       break;
     }
@@ -401,19 +401,19 @@ export function getNextLineCodeNode(parentNode, grandNode) {
   }
 
 
-  if (nodeLineCodeNodeIdx == null || nodeLineCodeNodeIdx >= grandNode.children.length - 1) { // 没有后续元素, 直接结束
+  if (nodeLineCodeNodeIdx == null || nodeLineCodeNodeIdx >= parentNode.children.length - 1) { // 没有后续元素, 直接结束
     return {}
   }
 
 
   const nextLineCodeIdx = nodeLineCodeNodeIdx+1
-  if (!grandNode.children[nextLineCodeIdx] 
-    || grandNode.children[nextLineCodeIdx].type !== 'code' 
-    || !trim(grandNode.children[nextLineCodeIdx].value)) {
+  if (!parentNode.children[nextLineCodeIdx] 
+    || parentNode.children[nextLineCodeIdx].type !== 'code' 
+    || !trim(parentNode.children[nextLineCodeIdx].value)) {
       return {}
   }
 
-  nextLineCodeNode = grandNode.children[nextLineCodeIdx]
+  nextLineCodeNode = parentNode.children[nextLineCodeIdx]
 
   return {nextLineCodeNode, nodeLineCodeNodeIdx}
 

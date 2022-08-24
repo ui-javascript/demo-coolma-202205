@@ -29,11 +29,13 @@ export default {
       return 
     }
 
-    const parentNode = ancestors[ancestors.length - 3]; // 从上上上级list开始算
-    const grandNode = ancestors[ancestors.length - 4];
+
+    debugger
+    const parentNode = ancestors[ancestors.length - 2]; 
+    const currentNode = ancestors[ancestors.length - 1];
 
 
-    const { nextLineCodeNode, nodeLineCodeNodeIdx } = getNextLineCodeNode(parentNode, grandNode)
+    const { nextLineCodeNode, nodeLineCodeNodeIdx } = getNextLineCodeNode(parentNode, currentNode)
     if (!nextLineCodeNode || nodeLineCodeNodeIdx == null) {
       return 
     }
@@ -105,14 +107,14 @@ export default {
     let dateRange = [dateStart, dateEnd]
 
 
-    grandNode.children.splice(nodeLineCodeNodeIdx+1, 0, {
+    parentNode.children.splice(nodeLineCodeNodeIdx+1, 0, {
       type: 'paragraph',
       children: [],
     })
 
 
     const calendarId = getNanoId()
-    const data = grandNode.children[nodeLineCodeNodeIdx+1].data || (grandNode.children[nodeLineCodeNodeIdx+1].data = {});
+    const data = parentNode.children[nodeLineCodeNodeIdx+1].data || (parentNode.children[nodeLineCodeNodeIdx+1].data = {});
     const hast = h(`div#${calendarId}`, {
       style: "display: inline-block"
     }, []);

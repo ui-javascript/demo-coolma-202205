@@ -51,9 +51,7 @@ export default {
 
     let isGithubRepoUrl = false
 
-    debugger
     if (node.name === "code" && linkSplitArr && linkSplitArr.length >= 3 && linkSplitArr[linkSplitArr.length - 3].includes('github.com')) {
-      debugger
 
       linkSplitName = linkSplitArr[linkSplitArr.length - 1] 
       isGithubRepoUrl = true
