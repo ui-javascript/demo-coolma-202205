@@ -140,6 +140,26 @@ rehype().use(rehypePrism).process(/* some html */)
 
 ---
 
+# 个人信息 @resume{ skin: blue, img: r, header， col: 2, icon: info}
+
+202208-202209 北京xxx系统 @b
+
+- 数字大屏
+  - 技术栈: Echarts + ...
+  - 功能xxx: 拖拉拽
+
+# 工作经历 @resume{skin: blue, img: r, icon: job}
+
+# 技能证书 @resume{skin: blue, img: r, icon: cert}
+
+xxxx
+
+# 自我评价 @resume{skin: blue, img: r, footer, icon: about}
+
+xxxxx
+
+---
+
 # 参考 @ref
 
 @emoji{help} 
