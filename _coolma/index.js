@@ -48,6 +48,7 @@ let content = `# 世界很大, 而我又是靓仔 @nice
 
 世界那么大, 我想去看看 @danmu
 
+
 我们不能同时拥有青春和青春的感受 @bubble
 
 亲爱的小孩 不要悲伤 你不爱这岁月 我却爱你的眼眸 @bubble{d: "right"}
@@ -80,6 +81,16 @@ vue3 @search{jj, zhihu, g:false, stars:100}
 
 
 @bvid BV1YT4y1Q7xx
+
+---
+
+# 可交互脚本
+
+> 数值暂时绑定输出在 console.log(window.__COOLMA__)
+
+npm run @input{mt-2, name: scriptName, placeholder: 请输入脚本命令, defaultValue: dev, icon: search}
+
+npm run @input{name: scriptName2, placeholder: 请输入脚本命令, defaultValue: build, icon: video-play}
 
 ---
 

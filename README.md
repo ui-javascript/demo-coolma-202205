@@ -17,6 +17,12 @@
 - VSCode插件
     - https://marketplace.visualstudio.com/items?itemName=luo0412.vscode-coolma
 
+# 2022-10-26
+
+- 可交互脚本
+
+![](https://raw.githubusercontent.com/luo0412/static/main/202210261807361.png)
+
 # 2022-07-18
 
 - 聊天气泡 @bubble
