@@ -46,7 +46,7 @@ export default {
 
     var Input = Vue.extend({
       template: `<el-input v-model="name" :placeholder="placeholder">
-        <el-button v-if="icon" slot="append" :icon="'el-icon-' + icon"></el-button>
+        <el-button v-if="icon" slot="append" :icon="'el-icon-' + icon" @click="console.log(window.__COOLMA__)"></el-button>
       </el-input>`,
       data: function () {
         return {
@@ -54,18 +54,18 @@ export default {
           // prepend: node.attributes.prepend,
           // append: node.attributes.append,
           placeholder: node.attributes.placeholder,
-          name: node.attributes.defaultValue,
+          name: node.attributes.value || node.attributes.defaultValue,
         }
       },
       mounted() {
         window.__COOLMA__ = window.__COOLMA__ || {}
-        window.__COOLMA__[node.attributes.name] = node.attributes.defaultValue
+        window.__COOLMA__[node.attributes.name] = this.name
       },
       watch: {
         name: (val) => {
           window.__COOLMA__ = window.__COOLMA__ || {}
           window.__COOLMA__[node.attributes.name] = val
-          console.log(window.__COOLMA__)
+          // console.log(window.__COOLMA__)
         } 
       }
     })
