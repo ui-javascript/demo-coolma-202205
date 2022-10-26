@@ -34,7 +34,7 @@ export default {
    
     const inputId = getNanoId()
     const data = node.data || (node.data = {});
-    const hast = h(`spam`, {
+    const hast = h(`span`, {
       style: "display: inline-block"
     }, [  
       h(`span#${inputId}`, {...node.attributes}, '')
