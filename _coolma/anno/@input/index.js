@@ -59,7 +59,7 @@ export default {
       },
       mounted() {
         window.__COOLMA__ = window.__COOLMA__ || {}
-        window.__COOLMA__[node.attributes.name] = val
+        window.__COOLMA__[node.attributes.name] = node.attributes.defaultValue
       },
       watch: {
         name: (val) => {
