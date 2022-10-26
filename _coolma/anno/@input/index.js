@@ -36,7 +36,7 @@ export default {
     const data = node.data || (node.data = {});
     const hast = h(`span`, {
       style: "display: inline-block",
-      {...node.attributes}
+      ...node.attributes
     }, [  
       h(`span#${inputId}`, {...node.attributes}, '')
     ]);
