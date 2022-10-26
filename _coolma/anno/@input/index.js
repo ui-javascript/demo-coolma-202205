@@ -46,7 +46,7 @@ export default {
 
     var Input = Vue.extend({
       template: `<el-input v-model="name" :placeholder="placeholder">
-        <el-button v-if="icon" slot="append" :icon="'el-icon-' + icon" @click="console.log(window.__COOLMA__)"></el-button>
+        <el-button v-if="icon" slot="append" :icon="'el-icon-' + icon" @click="$message.success('可交互脚本绑定数值: ' + JSON.stringify(window.__COOLMA__))"></el-button>
       </el-input>`,
       data: function () {
         return {

@@ -86,11 +86,11 @@ vue3 @search{jj, zhihu, g:false, stars:100}
 
 # 可交互脚本
 
-> 数值暂时绑定输出在 console.log(window.__COOLMA__)
+> 数值暂时绑定输出在 console.log(\`window.__COOLMA__\`)
 
-npm run @input(dev){mt-2, placeholder: 请输入脚本命令, value: dev, icon: search}
+npm run @input(dev){mt-2, value: dev}
 
-npm run @input{name: scriptName2, placeholder: 请输入脚本命令, value: build, icon: video-play}
+npm run @input{name: build, placeholder: 请输入脚本命令, defaultValue: 'build:prod', icon: video-play}
 
 ---
 
